@@ -1,3 +1,4 @@
 env.py
 .venv
-venv
+/venv
+/staticfiles
