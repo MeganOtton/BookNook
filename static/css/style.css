@@ -1,0 +1,16 @@
+:root {
+    --main-red : #CF2A27;
+}
+
+.navbar {
+    background-color:#CF2A27 !important;
+    color: #ffffff !important;
+}
+
+.navbar-brand {
+    color: #ffffff !important;
+}
+
+.nav-link {
+    color: #ffffff !important;
+}
