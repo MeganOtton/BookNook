@@ -1,9 +1,57 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+{% load static %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
 <!-- index.html content starts here -->
-<h4>wasssuppp! Index testing</h4>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Welcome to the Store</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">Books</h2>
+        </div>
+    </div>
+
+    <div id="bookCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            {% for book in book_list %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="{{ book.bookcover.url }}" alt="{{ book.booktitle }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.booktitle }}</h5>
+                        <p class="card-text">{{ book.bookdescription }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#bookCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#bookCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    
+    <script>
+        $(document).ready(function(){
+            $('#bookCarousel').carousel({
+                interval: false
+            });
+        });
+    </script>
+    
+</div>
 
 <!-- index.html content ends here -->
 {% endblock %}
