@@ -39,7 +39,13 @@ body {
 
 .navbar-toggler {
     border: none !important;
+    color: var(--white) !important;
 }
+
+/* .collapse {
+    border: none !important;
+    color: var(--white) !important;
+} */
 
 .nav-link.active {
     color: white !important;
@@ -49,6 +55,7 @@ body {
 .navbar-nav {
     --bs-nav-link-color: white !important;
 }
+
 
 /*ABOVE ISNT WORKING CONSULT HUMAN PLS*/
 
