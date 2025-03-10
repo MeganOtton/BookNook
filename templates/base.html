@@ -28,26 +28,37 @@
 </head>
 
 <body>
+
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <div><i class="fa-solid fa-book-bookmark"></i>
+            <!-- Brand Name -->
+            <div>
+                <i class="fa-solid fa-book-bookmark fa-2xl"></i>
                 <a class="navbar-brand" href="{{ home_url }}">The Book Nook</a>
             </div>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
+                    <!-- Home -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ home_url }}">Home</a>
                     </li>
+
+                    <!-- Search -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ home_url }}">Search</a>
                     </li>
+
+                    <!-- My Library -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ home_url }}">My Library</a>
                     </li>
+
+                    <!-- Account -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ home_url }}">Account</a>
                     </li>
@@ -56,6 +67,7 @@
         </div>
     </nav>
 
+
     <main class="flex-shrink-0 main-bg">
 
         {% block content %}
@@ -63,6 +75,36 @@
         {% endblock content %}
 
     </main>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container d-flex justify-content-between">
+            <div>
+                <a href="https://github.com/MeganOtton" target="_blank" class="footer-icons">
+                    <i class="fab fa-github fa-2x"></i>
+                </a>
+            </div>
+            <div>
+                <a href="https://youtube.com" target="_blank" class="footer-icons">
+                    <i class="fab fa-youtube fa-2x"></i>
+                </a>
+                
+                <a href="https://facebook.com" target="_blank" class="footer-icons">
+                    <i class="fab fa-facebook fa-2x"></i>
+                </a>
+
+                <a href="https://instagram.com" target="_blank" class="footer-icons">
+                    <i class="fab fa-instagram fa-2x"></i>
+                </a>
+                
+                <a href="https://twitter.com" target="_blank" class="footer-icons">
+                    <i class="fab fa-twitter fa-2x"></i>
+                </a>
+                <a href="mailto:example@example.com" class="footer-icons">
+                    <i class="fas fa-envelope fa-2x"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
