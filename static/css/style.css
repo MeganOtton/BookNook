@@ -26,8 +26,6 @@ body {
     color: var(--white) !important;
 }
 
-/*BELOW ISNT WORKING CONSULT HUMAN PLS*/
-
 .nav-link {
     color: var(--white) !important;
 }
@@ -51,8 +49,9 @@ body {
     --bs-nav-link-color: white !important;
 }
 
-
-/*ABOVE ISNT WORKING CONSULT HUMAN PLS*/
+.NavIcon {
+    padding-right: 10px;
+}
 
 /* Footer */
 
