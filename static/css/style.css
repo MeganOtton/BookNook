@@ -42,11 +42,6 @@ body {
     color: var(--white) !important;
 }
 
-/* .collapse {
-    border: none !important;
-    color: var(--white) !important;
-} */
-
 .nav-link.active {
     color: white !important;
     text-decoration: underline;
@@ -63,7 +58,7 @@ body {
 
 .footer {
     background-color:#CF2A27 !important;
-    color: var(--white) !important;
+    color: var(--white);
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -72,5 +67,7 @@ body {
 }
 
 .footer-icons {
-    color: var(--white) !important;
+    padding : 5px;
+    color: var(--white);
+    text-decoration: none;
 }
