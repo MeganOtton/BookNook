@@ -55,16 +55,28 @@
             <h5>About:</h5>
             <h5>{{ book.bookdescription }}</h5>
             <h5>Topics</h5>
-            <h5>{{ book.booktopics }}</h5>
+            <p>
+                {% for topics in book.topics.all %}
+                    {{ topics }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No Topics available
+                {% endfor %}
+            </p>
         </div>
     </div>
 </section>
 
 <div class="book-info-bottom">
     <h5>About:</h5>
-    <h5>{{ book.bookdescription }}</h5>
+    <p>{{ book.bookdescription }}</p>
     <h5>Topics</h5>
-    <h5>{{ book.booktopics }}</h5>
+    <p>
+        {% for topics in book.topics.all %}
+            {{ topics }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            No Topics available
+        {% endfor %}
+    </p>
 </div>
 
 <div class="container mt-5">
