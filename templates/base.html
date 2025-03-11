@@ -33,7 +33,8 @@
         <div class="container-fluid">
             <!-- Brand Name -->
             <div>
-                <i class="fa-solid fa-book-bookmark fa-2xl"></i>
+                <a class="fa-solid fa-book-bookmark fa-2xl NavIcon" href="{{ home_url }}"></a>
+                
                 <a class="navbar-brand" href="{{ home_url }}">The Book Nook</a>
             </div>
             
@@ -58,10 +59,16 @@
                         <a class="nav-link" href="{{ home_url }}">My Library</a>
                     </li>
 
+                    <!-- Admin-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                    </li>
+
                     <!-- Account -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ home_url }}">Account</a>
                     </li>
+
                 </ul>
             </div>
         </div>
