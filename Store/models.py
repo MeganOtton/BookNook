@@ -17,10 +17,15 @@ class Genre(models.Model):
         return self.name  # To display the readable name
 
 class Topic(models.Model):
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=100, unique=True)
+
+    def save(self, *args, **kwargs):
+        # Capitalize the first letter of the genre name
+        self.name = self.name.capitalize()
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.name  # To display the readable name
 
 # Create your models here.
 class BookStorePage(models.Model):
@@ -49,7 +54,7 @@ class BookStorePage(models.Model):
 
     bookrating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], verbose_name="Book Rating")
 
-    topics = models.ManyToManyField('Topic', related_name='books', blank=True, verbose_name="Topics")
+    topics = models.ManyToManyField(Topic, related_name='books', blank=True, verbose_name="Topics")
 
     # series = models.ManyToManyField('Series', related_name='books')
 

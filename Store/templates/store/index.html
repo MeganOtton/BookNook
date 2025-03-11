@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-
 <!-- index.html content starts here -->
 
 <img src="{% static 'images/Hero_Image.webp' %}" class="hero_image" alt="Old books on a shelf">
@@ -338,4 +335,8 @@
 <div class="fix-footer">
 </div>
 <!-- index.html content ends here -->
+{% endblock content %}
+
+
+{% block extras %}
 {% endblock %}

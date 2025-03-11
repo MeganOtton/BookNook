@@ -18,18 +18,18 @@
             <div class="purchase-button">
                 <!-- Purchase Button  -->
                 <!-- When Clicked Will call move_game_to_chosen which will get it from the list and move it to the users purchased list -->
-                <form id="id_purchase_game" action="" method="post">
+                <form id="id_purchase_book" action="{%url 'move_book' book.booktitle %}" method="post">
                     {% csrf_token %}
-                    <button id="purchasedButton" type="submit" class="btn btn-primary orange_purchase_button" onclick="games_purchased()">Purchase</button>
+                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button">Purchase</button>
                 </form>
 
                 <!-- Check Purchase Button  -->
                 <!-- When Clicked Will call check_game_purchased which will check if the game is already in the users purchased list -->
                 <!-- This is not displayed and the user can not interact with this, Couldnt find an easier way to automate this so created a button 
                     that is display:none but has a script that on load will click this button automatically calling a python function -->
-                <form id="id_check_game_purchased" action="" method="post" style="display: none;">
+                <form id="id_check_book_purchased" action="{%url 'check_book_purchased' book.booktitle %}" method="post" style="display: none;">
                     {% csrf_token %}
-                    <button id="checkPurchasedButton" type="submit" class="btn btn-primary orange_purchase_button" onclick="games_purchased()">Check Purchase</button>
+                    <button id="checkPurchasedButton" type="submit" class="btn btn-primary Red_purchase_button">Check Purchase</button>
                 </form>
             </div>
     </div>
@@ -55,16 +55,28 @@
             <h5>About:</h5>
             <h5>{{ book.bookdescription }}</h5>
             <h5>Topics</h5>
-            <h5>{{ book.booktopics }}</h5>
+            <p>
+                {% for topics in book.topics.all %}
+                    {{ topics }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No Topics available
+                {% endfor %}
+            </p>
         </div>
     </div>
 </section>
 
 <div class="book-info-bottom">
     <h5>About:</h5>
-    <h5>{{ book.bookdescription }}</h5>
+    <p>{{ book.bookdescription }}</p>
     <h5>Topics</h5>
-    <h5>{{ book.booktopics }}</h5>
+    <p>
+        {% for topics in book.topics.all %}
+            {{ topics }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            No Topics available
+        {% endfor %}
+    </p>
 </div>
 
 <div class="container mt-5">
@@ -110,5 +122,10 @@
 </div>
 
 
+
 <!-- Book Page content ends here -->
-{% endblock %}
+{% endblock content%}
+
+{% block extras %}
+<script src="{% static 'js/purchase_checker.js' %}"></script>
+{% endblock extras %}

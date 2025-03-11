@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container accountbox">
+    <h2>User Profile</h2>
+    <img src="{% static 'images/nobody.jpg' %}" alt="Profile Picture" class="img-thumbnail profilepic">
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+    <p><strong>Last Logged In:</strong> {{ user.last_login }}</p>
+    <h3>Books Purchased</h3>
+     <ul>
+        <!-- Loop through the games purchased by the user -->
+        {% for book in account.purchased_books.all %}
+            <li>{{ book.booktitle }}</li>
+        {% empty %}
+            <li>No books purchased.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}
