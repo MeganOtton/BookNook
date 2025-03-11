@@ -11,6 +11,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Navbar */
@@ -21,7 +22,7 @@ body {
     top: 0;
     z-index: 1030;
     box-shadow: 0 4px 6px var(--shadow-color);
-    width: 100%;
+    width: 100%; /* Ensure navbar does not exceed viewport width */
 }
 
 .navbar-brand {
@@ -62,9 +63,10 @@ body {
     color: var(--white);
     position: fixed;
     bottom: 0;
-    width: 100%;
-    z-index: 30;
+    width: 100%; /* Ensure footer does not exceed viewport width */
+    z-index: 99;
     box-shadow: 0 -4px 6px var(--shadow-color);
+    margin-top: 200px !important;
 }
 
 .footer-icons {
@@ -75,21 +77,24 @@ body {
 
 /* BookPage.html */
 .Book {
-    width: 18rem;
+    width: 4rem;
 }
 
 /* Custom positioning for the carousel controls */
 
 .carousel-control-prev {
-    left: -25px;
+    top: -15px;
+    left: -5px;
 }
 
 .carousel-control-next {
-    right: -25px;
+    top: -15px;
+    right: -5px;
 }
 
 .wood-shelf {
     width: 100%;
+    max-width: 100%; 
 }
 
 
@@ -97,7 +102,8 @@ body {
     position: relative;
     top: -20px;
     left: -20px;
-    z-index: 1000;
+    z-index: 1;
+    max-width: 100%; 
 }
 
 .shelf-title {
@@ -108,4 +114,9 @@ body {
     color: white;
     font-weight: bold;
     font-size: 1.2rem;
+    max-width: calc(100% - 40px); /* Ensure shelf title does not exceed viewport width */
+}
+
+.card-body {
+    display: none;
 }
