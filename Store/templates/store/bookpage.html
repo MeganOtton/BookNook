@@ -39,7 +39,14 @@
     <div class="book-info">
         <div class="book-info-top">
             <h5>{{ book.authorname }}</h5>
-            <h5>{{ book.genre }}</h5>
+            <h5>Genres: </h5>
+            <p>
+                {% for genre in book.genre.all %}
+                    {{ genre }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No genres available
+                {% endfor %}
+            </p>
             <h5>{{ book.chapter }} Chapters</h5>
             <h5>{{ book.bookrating }}</h5>
         </div>
