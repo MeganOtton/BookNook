@@ -72,13 +72,8 @@ body {
 }
 
 /* BookPage.html */
-/* Book Title */
-
-.book-title {
-    background-color: var(--main-red);
-    color: var(--white);
-    font-size: 2.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
+.Book {
+    width: 18rem;
 }
+
+
