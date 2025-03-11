@@ -6,11 +6,16 @@
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
 <!-- index.html content starts here -->
-    
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Welcome to the Store</h1>
-    <h2 class="text-center mb-4">Books</h2>
 
+<!-- <img src="{% static 'images/Bookstore.webp' %}" class="bookstore" alt="Bookstore"> -->
+
+<div class="container mt-5">
+
+    <div class="shelf-title-wrapper">
+        <span class="shelf-title">Recommened</span>
+    </div>
+    
+    
     <div id="bookCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in book_list %}
@@ -36,19 +41,17 @@
             {% endfor %}
         </div>
         <!-- Carousel Controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
+        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
 
-    <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+
+        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
     </div>
-    
 </div>
-
 
 <!-- index.html content ends here -->
 {% endblock %}

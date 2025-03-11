@@ -1,6 +1,7 @@
 :root {
     --white: #ffffff;
     --main-red : #CF2A27;
+    --ribbon-red : #990000;
     --shadow-color : #00000036;
 }
 
@@ -20,6 +21,7 @@ body {
     top: 0;
     z-index: 1030;
     box-shadow: 0 4px 6px var(--shadow-color);
+    width: 100%;
 }
 
 .navbar-brand {
@@ -76,4 +78,34 @@ body {
     width: 18rem;
 }
 
+/* Custom positioning for the carousel controls */
 
+.carousel-control-prev {
+    left: -25px;
+}
+
+.carousel-control-next {
+    right: -25px;
+}
+
+.wood-shelf {
+    width: 100%;
+}
+
+
+.shelf-title-wrapper {
+    position: relative;
+    top: -20px;
+    left: -20px;
+    z-index: 1000;
+}
+
+.shelf-title {
+    background-color: var(--ribbon-red);
+    padding: 10px 20px;
+    border-radius: 0 8px 8px 0; /* Rounded right corners */
+
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
