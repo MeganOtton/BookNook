@@ -2,7 +2,7 @@
     --white: #ffffff;
     --main-red : #CF2A27;
     --ribbon-red : #990000;
-    --shadow-color : #00000036;
+    --shadow-color : #0000007e;
 }
 
 /* Body */
@@ -54,6 +54,7 @@ body {
 
 .NavIcon {
     padding-right: 10px;
+    color: white !important;
 }
 
 /* Footer */
@@ -75,35 +76,41 @@ body {
     text-decoration: none;
 }
 
-/* BookPage.html */
-.Book {
-    width: 4rem;
-}
-
-/* Custom positioning for the carousel controls */
-
-.carousel-control-prev {
-    top: -15px;
-    left: -5px;
-}
-
-.carousel-control-next {
-    top: -15px;
-    right: -5px;
-}
-
-.wood-shelf {
+/* Index.html */
+/* Hero Image */
+.hero_image {
     width: 100%;
-    max-width: 100%; 
+    height: auto;
 }
 
+.wood-shelf-hero {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: -8px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
 
+/* Book Shelf */
 .shelf-title-wrapper {
     position: relative;
     top: -20px;
     left: -20px;
     z-index: 1;
     max-width: 100%; 
+}
+
+.Book {
+    width: 4rem;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    border: 2px solid rgba(0, 0, 0, 0.897) !important;
+    border-radius: .25rem;
+}
+
+.wood-shelf {
+    width: 100%;
+    max-width: 100%; 
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .shelf-title {
@@ -120,3 +127,101 @@ body {
 .card-body {
     display: none;
 }
+
+/* Custom positioning for the carousel controls */
+.carousel-control-prev {
+    top: -15px;
+    left: -5px;
+}
+
+.carousel-control-next {
+    top: -15px;
+    right: -5px;
+}
+
+/* bookpage.html */
+/* Book Title */
+.booktitle-ribbon {
+    background-color: var(--ribbon-red);
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.booktitle {
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    margin-right: 60px;
+}
+
+.Save-Book-Info,
+.Options-Book-Info {
+    display: flex;
+    justify-content: flex-end;
+    padding: 3px;
+}
+
+/* Book Title */
+.main_purchase_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Book-Cover-Image {
+    width: auto;
+    height: 15rem;
+
+    margin-left: 10px;
+}
+
+.book-info-top, .book-info-bottom-tablet  {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+
+    margin-right: 10px;
+    width: 8rem;
+}
+
+.book-info-top {
+    margin-bottom: 10px;
+    height: 15rem;
+}
+
+.book-info-bottom-tablet {
+    margin-bottom: 10px;
+    display: none;
+}
+
+.book-info-bottom {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.purchase-button {
+    position: absolute;
+    top: 320px; 
+    left: 47px; 
+    z-index: 10; 
+}
+
+.btn-primary {
+    background-color: var(--ribbon-red);
+    border-color: var(--ribbon-red);
+}
+
+
+

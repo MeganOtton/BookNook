@@ -1,11 +1,107 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
+
 {% block content %}
 
 <!-- Book Page content starts here -->
-<div class="booktitle">
-    <h1>{{ book.title }}</h1>
+<div class="booktitle-ribbon">
+    <h3 class="booktitle">{{ book.booktitle }}</h3>
+    <i class="fa-solid fa-heart fa-2xl Save-Book-Info" style="color: #ffffff;"></i>
+    <i class="fa-solid fa-gear fa-2xl Options-Book-Info" style="color: #ffffff;"></i>
 </div>
+
+<section class="main_purchase_info">
+    <div class="bookcover-purchase">
+        <img src="{{ book.bookcover.url }}" class="Book-Cover-Image" alt="{{ book.booktitle }}"> 
+        
+            <div class="purchase-button">
+                <!-- Purchase Button  -->
+                <!-- When Clicked Will call move_game_to_chosen which will get it from the list and move it to the users purchased list -->
+                <form id="id_purchase_game" action="" method="post">
+                    {% csrf_token %}
+                    <button id="purchasedButton" type="submit" class="btn btn-primary orange_purchase_button" onclick="games_purchased()">Purchase</button>
+                </form>
+
+                <!-- Check Purchase Button  -->
+                <!-- When Clicked Will call check_game_purchased which will check if the game is already in the users purchased list -->
+                <!-- This is not displayed and the user can not interact with this, Couldnt find an easier way to automate this so created a button 
+                    that is display:none but has a script that on load will click this button automatically calling a python function -->
+                <form id="id_check_game_purchased" action="" method="post" style="display: none;">
+                    {% csrf_token %}
+                    <button id="checkPurchasedButton" type="submit" class="btn btn-primary orange_purchase_button" onclick="games_purchased()">Check Purchase</button>
+                </form>
+            </div>
+    </div>
+
+    
+
+    <div class="book-info">
+        <div class="book-info-top">
+            <h5>{{ book.authorname }}</h5>
+            <h5>{{ book.genre }}</h5>
+            <h5>{{ book.chapter }} Chapters</h5>
+            <h5>{{ book.bookrating }}</h5>
+        </div>
+
+        <div class="book-info-bottom-tablet">
+            <h5>About:</h5>
+            <h5>{{ book.bookdescription }}</h5>
+            <h5>Topics</h5>
+            <h5>{{ book.booktopics }}</h5>
+        </div>
+    </div>
+</section>
+
+<div class="book-info-bottom">
+    <h5>About:</h5>
+    <h5>{{ book.bookdescription }}</h5>
+    <h5>Topics</h5>
+    <h5>{{ book.booktopics }}</h5>
+</div>
+
+<div class="container mt-5">
+
+    <div class="shelf-title-wrapper">
+        <span class="shelf-title">Series</span>
+    </div>
+    
+    <div id="bookCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            {% for book in book_details %}
+                {% if forloop.counter0|divisibleby:3 %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="d-flex justify-content-center">
+                {% endif %}
+
+                <div class="card mx-2 Book">
+                    <a href="{% url 'book_details_list' book.slug %}">
+                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.booktitle }}</h5>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                        </div> <!-- .d-flex -->
+                    </div> <!-- .carousel-item -->
+                {% endif %}
+            {% endfor %}
+        </div>
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+
+        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+    </div>
+</div>
+
 
 <!-- Book Page content ends here -->
 {% endblock %}

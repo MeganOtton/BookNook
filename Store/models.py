@@ -27,6 +27,8 @@ class BookStorePage(models.Model):
     
     genre = models.CharField(max_length=200, null=True, blank=True, default='')
 
+    chapter = models.IntegerField(default=0)
+
     bookcover = CloudinaryField('image', default='placeholder')
 
     bookdescription = models.TextField()
