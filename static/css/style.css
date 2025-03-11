@@ -68,12 +68,17 @@ body {
     z-index: 99;
     box-shadow: 0 -4px 6px var(--shadow-color);
     margin-top: 200px !important;
+    padding-top: 20px !important;
 }
 
 .footer-icons {
     padding : 5px;
     color: var(--white);
     text-decoration: none;
+}
+
+.fix-footer {
+    padding-top: 100px !important;
 }
 
 /* Index.html */
@@ -92,6 +97,14 @@ body {
 }
 
 /* Book Shelf */
+.shelf-container-recommended {
+    margin-top: 2rem !important;
+}
+
+.mt-5 {
+    margin-top: 2.3rem !important;
+}
+
 .shelf-title-wrapper {
     position: relative;
     top: -20px;
