@@ -3,6 +3,7 @@
     --main-red : #CF2A27;
     --ribbon-red : #990000;
     --shadow-color : #0000007e;
+    --text-black : #212529;
 }
 
 /* Body */
@@ -183,7 +184,7 @@ body {
     padding: 3px;
 }
 
-/* Book Title */
+/* Purchase Info */
 .main_purchase_info {
     display: flex;
     justify-content: space-between;
@@ -257,6 +258,7 @@ body {
     flex-direction: column
 }
 
+/* Button */
 .signout {
     background-color: var(--ribbon-red);
     color: white;
@@ -269,4 +271,159 @@ body {
 .logoutbutton {
     display: flex;
     justify-content: center;
+}
+
+/* Account.html */
+/* Title Ribbon */
+.accounttitle-ribbon {
+    background-color: var(--ribbon-red);
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.accounttitle {
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+}
+
+.Options-Account-Info {
+    padding-right: 10px;
+}
+
+/* Account */
+.account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.accountbox {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 90%;
+
+    margin-bottom: 10px;
+    padding-top: 10px;
+}
+
+.username-box {
+    border: 1px solid black;
+    padding-left: 2px;
+    margin-bottom: 10px;
+}
+
+.account-type-box {
+    border: 1px solid black;
+    padding-left: 2px;
+}
+
+/* Account Stats */
+.account-stats {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 90%;
+    
+    padding-top: 10px;
+    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.favourite-genre {
+    margin-bottom: 2px;
+}
+
+.divider-line {
+    width: 100%; 
+    border-top: 1px solid #000;
+
+    margin: 0px !important;
+    opacity: 100% !important;
+}
+
+/* Account Purchases */
+.account-purchases {
+    width: 90%;
+    padding: 0px;
+}
+
+
+/* Account Extras */
+.tab-section, .hidden-section {
+    display: none;
+}
+
+.tab-section.active, .hidden-section.active {
+    display: block;
+}
+
+.btn.active {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.account-extra-box {
+    width: 90%;
+}
+
+.top-options {
+    margin-bottom: 0.5rem;
+}
+
+.tab-section {
+    margin-top: 0.5rem;
+}
+
+
+.review-tab {
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.see-hidden-tab {
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.hidden-author-button {
+    border-radius: 0px;
+
+    margin-right: 4px;
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.hidden-book-button {
+    border-radius: 0px;
+
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.hidden-topic-button {
+    border-radius: 0px;
+
+    margin-left: 4px !important;
+    font-weight: 600;
+    color: var(--text-black);
 }

@@ -3,21 +3,216 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container accountbox">
-    <h2>User Profile</h2>
-    <img src="{% static 'images/nobody.jpg' %}" alt="Profile Picture" class="img-thumbnail profilepic">
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
-    <p><strong>Last Logged In:</strong> {{ user.last_login }}</p>
+
+<div class="accounttitle-ribbon">
+    <h1 class="accounttitle">Account</h1>
+    <i class="fa-solid fa-gear fa-2xl Options-Account-Info" style="color: #ffffff;"></i> <!-- Link this to have change password and other account options-->
+</div>
+
+<div class="account-info">
+
+    <div class="container accountbox">
+        <p class="username-box"><strong>Username:</strong> {{ user.username }}</p>
+        <p class="account-type-box"><strong>Account Type:</strong> <!-- ACCOUNT TYPE INSERT --> </p>
+    </div>
+
+    <div class="container account-stats">
+        <p class="favourite-genre"><strong>Favourite Genre:</strong></p>
+        <hr class="divider-line">
+        <p class="favourite-genre-stat"> Based on % Read <!-- Based on % Read --> </p>
+
+        <p class="favourite-genre"><strong>Favourite Author:</strong></p>
+        <hr class="divider-line">
+        <p class="favourite-genre-stat">  Based on % Read<!-- Based on % Read --> </p>
+    </div>
+
+    <!-- FIX THIS! DOESNT WORK!! -->
+    <div class="container account-purchases">
+        <div class="card my-3">
+            <div class="card-header" data-bs-toggle="collapse" data-bs-target="#purchasedBooks" style="cursor: pointer;">
+              <strong>Purchased Books</strong>
+            </div>
+            <div id="purchasedBooks" class="collapse show">
+                <div class="card-body p-0" style="max-height: 200px; overflow-y: auto;">
+                    <table class="table table-bordered m-0">
+                        <thead class="table-light">
+                            <tr>
+                            <th>Book Title</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in account.purchased_books.all %}
+                            <tr>
+                            <td>{{ book.booktitle }}</td>
+                            <td>{{ book.bookprice }}</td>
+                            <!--INSERT BELOW INTO MODEL-->
+                            <td><!--{{ book.book_date_purchased }}--></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                            <td colspan="3" class="text-center">No purchased books</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Extras -->
+   
+    <div class="container border p-3 rounded shadow-sm bg-light account-extra-box">
+        <div class="d-flex justify-content-between top-options">
+            <button class="btn btn-outline-dark review-tab" onclick="showTab('hiddenTab')">See Hidden</button>
+            <button class="btn btn-outline-dark see-hidden-tab" onclick="showTab('reviewTab')">Your Reviews</button>
+        </div>
+    
+        <hr class="divider-line">
+
+        <!-- See Hidden Section -->
+        <div id="hiddenTab" class="tab-section">
+            <div class="mb-2">
+                <div class="btn-group hidden-tab-section" role="group">
+                    <button class="btn btn-outline-secondary hidden-author-button" onclick="showHiddenSection('authorsSection')">Hidden Authors</button>
+                    <button class="btn btn-outline-secondary hidden-book-button" onclick="showHiddenSection('booksSection')">Hidden Books</button>
+                    <button class="btn btn-outline-secondary hidden-topic-button" onclick="showHiddenSection('topicsSection')">Hidden Topics</button>
+                </div>
+            </div>
+            
+            <hr class="divider-line">
+
+            <!-- Hidden Authors -->
+            <div id="authorsSection" class="hidden-section tab-section">
+                <h5>Hidden Authors</h5>
+                {% for author in hidden_authors %} <!-- WONT WORK UNTIL WE HAVE THE ABILITY TO HIDE AUTHORS --> 
+                    <div class="d-flex justify-content-between border p-2 my-2">
+                        <span>{{ author.name }}</span>
+                        <span>{{ author.hidden_date }}</span>
+                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
+                    </div>
+                {% empty %}
+                    <p>No hidden authors.</p>
+                {% endfor %}
+            </div>
+    
+            <!-- Hidden Books -->
+            <div id="booksSection" class="hidden-section tab-section">
+                <h5>Hidden Books</h5>
+                {% for book in hidden_books %} <!-- WONT WORK UNTIL WE HAVE THE ABILITY TO HIDE BOOKS --> 
+                    <div class="d-flex justify-content-between border p-2 my-2">
+                        <div>
+                            <strong>{{ book.title }}</strong><br>
+                            <small>Author: {{ book.author }}</small>
+                        </div>
+                        <span>{{ book.hidden_date }}</span>
+                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
+                    </div>
+                {% empty %}
+                    <p>No hidden books.</p>
+                {% endfor %}
+            </div>
+    
+            <!-- Hidden Topics -->
+            <div id="topicsSection" class="hidden-section tab-section">
+                <h5>Hidden Topics</h5>
+                {% for topic in hidden_topics %} <!-- WONT WORK UNTIL WE HAVE THE ABILITY TO HIDE TOPICS --> 
+                    <div class="d-flex justify-content-between border p-2 my-2">
+                        <span>{{ topic.name }}</span>
+                        <span>{{ topic.hidden_date }}</span>
+                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
+                    </div>
+                {% empty %}
+                    <p>No hidden topics.</p>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <!-- User Reviews Section -->
+        <div id="reviewTab" class="tab-section">
+            <h5>Your Reviews</h5>
+            {% for review in user_reviews %}
+                <div class="border p-3 mb-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong>{{ review.book_title }}</strong> — Rating: {{ review.rating }}/5
+                        </div>
+                        <small>{{ review.date }}</small>
+                    </div>
+                    <p class="mt-2">{{ review.text|truncatechars:150 }}</p>
+                    <a href="{% url 'review_detail' review.id %}" class="btn btn-outline-primary btn-sm">Go To Review</a>
+                </div>
+            {% empty %}
+                <p>You have not written any reviews.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+<div class="fix-footer">
+</div>
+
+{% endblock content %}
+
+{% block extras %}
+<script>
+    function showTab(tabId) {
+        // Show the main tab section
+        document.querySelectorAll('.tab-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+
+        // Top buttons - highlight correct one
+        const btnSeeHidden = document.getElementById('btnSeeHidden');
+        const btnYourReviews = document.getElementById('btnYourReviews');
+
+        if (tabId === 'hiddenTab') {
+            btnSeeHidden.classList.add('active');
+            btnYourReviews.classList.remove('active');
+        } else {
+            btnSeeHidden.classList.remove('active');
+            btnYourReviews.classList.add('active');
+
+            // Clear inner highlights if leaving hidden tab
+            document.querySelectorAll('#hiddenGroup .btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        // Always hide all hidden sections when switching tabs
+        document.querySelectorAll('.hidden-section').forEach(el => el.classList.remove('active'));
+    }
+
+    function showHiddenSection(sectionId, clickedButton) {
+        // Show selected hidden section
+        document.querySelectorAll('.hidden-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+
+        // Inner hidden section buttons - highlight correct one
+        document.querySelectorAll('#hiddenGroup .btn').forEach(btn => btn.classList.remove('active'));
+        clickedButton.classList.add('active');
+
+        // ✅ Force See Hidden button to stay active too
+        document.getElementById('btnSeeHidden').classList.add('active');
+        document.getElementById('btnYourReviews').classList.remove('active');
+    }
+
+    // Default: show reviews tab
+    window.onload = function () {
+        showTab('reviewTab');
+    };
+</script>
+
+{% endblock extras %}
+
+<!-- <div>
     <h3>Books Purchased</h3>
      <ul>
-        <!-- Loop through the games purchased by the user -->
         {% for book in account.purchased_books.all %}
             <li>{{ book.booktitle }}</li>
         {% empty %}
             <li>No books purchased.</li>
         {% endfor %}
     </ul>
-</div>
-{% endblock content %}
+</div> -->
