@@ -59,16 +59,39 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ home_url }}">My Library</a>
                     </li>
-
+                    
+                    {% if user.is_authenticated and user.is_superuser %}
                     <!-- Admin-->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
                     </li>
 
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+
                     <!-- Account -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ account_url }}">Account</a>
                     </li>
+                    
+                    <!-- Logout -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
+                    </li>
+
+                    <!-- Register -->
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page"
+                            href="{% url 'account_signup' %}">Register</a>
+                    </li>
+
+                    <!-- Login -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Login</a>
+                    </li>
+                    {% endif %}
 
                 </ul>
             </div>
