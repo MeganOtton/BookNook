@@ -63,7 +63,9 @@ class BookStorePage(models.Model):
     #     User, on_delete=models.CASCADE, related_name="blog_posts"
     # )
 
+    created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
+    updated_on = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -71,7 +73,10 @@ class BookStorePage(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.booktitle
+         return f"{self.booktitle} Author {self.authorname}"
+
+    class Meta:
+        ordering = ["-created_on"]
 
 
 # class Post(models.Model):
@@ -98,4 +103,4 @@ class Comment(models.Model):
         ordering = ["created_on"]
 
     def __str__(self):
-        return f"Comment by {self.author} on {self.post}, | {self.body}"
+        return f"Comment by {self.author} on {self.bookstorepage}, | {self.body}"

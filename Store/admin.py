@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import BookStorePage, Genre, Topic
+from .models import BookStorePage, Genre, Topic, Comment
 
 
 # Register your models here.
@@ -18,3 +18,6 @@ class GenreAdmin(admin.ModelAdmin):
 @admin.register(Topic)
 class TopicsAdmin(admin.ModelAdmin):
     list_display = ('name',)
+
+# Register your models here.
+admin.site.register(Comment)

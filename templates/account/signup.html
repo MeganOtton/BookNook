@@ -2,7 +2,6 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock head_title %}
 
 {% block content %}
 <h1>{% trans "Sign Up" %}</h1>
@@ -15,7 +14,64 @@
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
+  
+  <!-- Additional fields -->
+  <div>
+    <label for="birth_date">{% trans "Birth Date" %}</label>
+    <input type="text" id="birth_date" name="birth_date" placeholder="DD/MM/YYYY" 
+           pattern="^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/([12]\d{3})$" 
+           required oninput="this.value = this.value.replace(/[^0-9\/]/g, '')">
+  </div>
+
+  <br>
+
+  <div>
+    <label for="account_type">{% trans "Account Type" %}</label>
+    <select id="account_type" name="account_type" required>
+      <option value="reader">{% trans "Reader" %}</option>
+      <option value="author">{% trans "Author" %}</option>
+    </select>
+  </div>
+
+  <br>
+  
   <button type="submit">{% trans "Sign Up" %} &raquo;</button>
 </form>
 
 {% endblock content %}
+
+{% block extras %}
+<!-- <script>
+  // Ensure the DOM is fully loaded before attaching events
+  document.addEventListener('DOMContentLoaded', function () {
+    const birthDateInput = document.getElementById('birth_date');
+
+    // Event listener for 'input' to format the date while typing
+    birthDateInput.addEventListener('input', function (e) {
+      let value = e.target.value;
+
+      // Remove everything that is not a digit
+      value = value.replace(/\D/g, '');
+
+      // Add slashes after 2 digits (for day) and 4 digits (for month)
+      if (value.length > 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2);
+      }
+      if (value.length > 5) {
+        value = value.slice(0, 5) + '/' + value.slice(5, 10);
+      }
+
+      // Update the input value with the formatted string
+      e.target.value = value;
+    });
+
+    // Restrict input to digits only (prevents pasting non-numeric characters)
+    birthDateInput.addEventListener('keypress', function (e) {
+      const char = String.fromCharCode(e.which);
+      if (!/\d/.test(char)) {
+        e.preventDefault(); // Allow only numbers
+      }
+    });
+  });
+</script> -->
+{% endblock extras %}

@@ -103,7 +103,6 @@
                     {{ comment.author }} | {{ comment.created_on }}
                 </p>
                 <div><h4 id="title{{ comment.id }}">{{ comment.title }}</h4></div>
-                <div>Playstaion Level | <span id="level{{ comment.id }}">{{ comment.level }}</span></div>
                 <p>Rating | <span id="rating{{ comment.id }}">{{ comment.rating }}</span></p>
                 <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#commentDetails{{ comment.id }}" aria-expanded="false" aria-controls="commentDetails{{ comment.id }}">
                     View Details
@@ -146,7 +145,7 @@
                     </form>
                 {% endif %}
                 {% if request.GET.purchased == 'false' %}
-                <p>Purchase the Game to leave a comment</p>
+                <p>Purchase the Book to leave a comment</p>
                 {% endif %}
             {% else %}
                 <p>Log in to leave a comment</p>
@@ -179,5 +178,6 @@
 {% endblock content%}
 
 {% block extras %}
+<script src="{% static 'js/comments.js' %}"></script>
 <script src="{% static 'js/purchase_checker.js' %}"></script>
 {% endblock extras %}

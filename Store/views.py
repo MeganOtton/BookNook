@@ -18,18 +18,38 @@ def Store(request):
 
 # Submit Comment Form View
 def book_details(request, slug):
-   queryset = BookStorePage.objects.filter(status=1)
-   context_object_name = 'book_list'
-   book_details_list = get_object_or_404(queryset, slug=slug)
-   template_name = "store/bookpage.html"
-   paginate_by = 6
+    queryset = BookStorePage.objects.filter(status=1)
+    context_object_name = 'book_list'
+    book_details_list = get_object_or_404(queryset, slug=slug)
+    comments = book_details_list.comments.all().order_by("-created_on")
+    comment_count = book_details_list.comments.filter(approved=True).count()
+    template_name = "store/bookpage.html"
+    paginate_by = 6
+   
+    if request.method == "POST":
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.post = book_details_list
+            comment.save()
+            messages.add_message(
+                request, messages.SUCCESS,
+                'Comment submitted'
+            )
+            return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+    else:
+        comment_form = CommentForm()
 
-   return render(
-      request,
-      "store/bookpage.html",
-      {"book": book_details_list,
-      },  
-   )
+    return render(
+        request,
+        "store/bookpage.html",
+        {"book": book_details_list,
+        "comments": comments,
+        "comment_count": comment_count,
+        "comment_form": comment_form,
+        },  
+    )
 
 def comment_edit(request, slug, comment_id):
     """
