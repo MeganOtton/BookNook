@@ -238,40 +238,7 @@ body {
     border-radius: 1rem ;
 }
 
-/* Logout.html */
-/* BorderBox */
-.container-logout {
-    background-color: white;
-    border: 1px solid white;
-    border-radius: 5px;
 
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-
-    display: flex;
-    flex-direction: column
-}
-
-/* Button */
-.signout {
-    background-color: var(--ribbon-red);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px;
-    justify-content: center;
-}
-
-.logoutbutton {
-    display: flex;
-    justify-content: center;
-}
 
 /* Account.html */
 /* Title Ribbon */
@@ -426,4 +393,75 @@ body {
     margin-left: 4px !important;
     font-weight: 600;
     color: var(--text-black);
+}
+
+/* Logout.html */
+/* BorderBox */
+.container-logout {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    display: flex;
+    flex-direction: column
+}
+
+/* Button */
+.signout {
+    background-color: var(--ribbon-red);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    justify-content: center;
+}
+
+.logoutbutton {
+    display: flex;
+    justify-content: center;
+}
+
+/* login.html */
+/* login box */
+.login-info-box {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+.login-box {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 100%;
+
+    margin-top: 10px;
+}
+
+.singin-text {
+    padding-top: 10px;
+}
+
+.signin-form {
+    display: flex;
+    flex-direction: column
+}
+
+.signin_button {
+    background-color: var(--ribbon-red);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    justify-content: center;
+    margin-bottom: 10px;
 }
