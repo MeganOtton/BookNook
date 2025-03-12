@@ -79,49 +79,101 @@
     </p>
 </div>
 
-<div class="container mt-5">
 
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Series</span>
+<!-- Comment Count -->
+<div class="row">
+    <div class="col-12">
+        <strong class="text-secondary">
+            <i class="far fa-comments"></i> {{ comment_count }}
+        </strong>
     </div>
-    
-    <div id="bookCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_details %}
-                {% if forloop.counter0|divisibleby:3 %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                {% endif %}
-
-                <div class="card mx-2 Book">
-                    <a href="{% url 'book_details_list' book.slug %}">
-                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ book.booktitle }}</h5>
-                    </div>
-                </div>
-
-                {% if forloop.counter|divisibleby:3 or forloop.last %}
-                        </div> <!-- .d-flex -->
-                    </div> <!-- .carousel-item -->
-                {% endif %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-
-        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+    <div class="col-12">
+        <hr>
     </div>
 </div>
 
+<!-- Comments Are Listed Here -->
+<div class="row ">
+    <div class="col-md-8 card mb-4 mt-3 comments">
+        <h3 class="commentheading">Comments:</h3>
+        <div class="card-body">
+            {% for comment in comments %}
+            <div class="p-2 comments{% if not comment.approved and comment.author == user %} faded{% elif not comment.approved %} d-none{% endif %}">
+                <p class="font-weight-bold">
+                    {{ comment.author }} | {{ comment.created_on }}
+                </p>
+                <div><h4 id="title{{ comment.id }}">{{ comment.title }}</h4></div>
+                <div>Playstaion Level | <span id="level{{ comment.id }}">{{ comment.level }}</span></div>
+                <p>Rating | <span id="rating{{ comment.id }}">{{ comment.rating }}</span></p>
+                <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#commentDetails{{ comment.id }}" aria-expanded="false" aria-controls="commentDetails{{ comment.id }}">
+                    View Details
+                </button>
+                <div class="collapse" id="commentDetails{{ comment.id }}">
+                    <div class="col-12">
+                        <hr>
+                    </div>
+                    <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
+                    <div class="col-12">
+                        <hr>
+                    </div>
+                </div>
+                {% if not comment.approved and comment.author == user %}
+                <p class="approval">This comment is awaiting approval</p>
+                {% endif %}
+                {% if user.is_authenticated and comment.author == user %}
+                <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
+                <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 
+    <!-- Comment Form -->
+    <!-- If user is not logged in as well as if they have not purchased the game they can not create a comment on the Game Post -->
+    <div class="col-md-4 card mb-4 mt-3 ">
+        <div class="card-body">
+            <!-- If User is not Signed In -->
+            {% if user.is_authenticated %}
+                <!-- If User has Purchased the Game -->
+                {% if request.GET.purchased == 'true' %}
+                    <h3>Leave a comment:</h3>
+                    <p>Posting as: {{ user.username }}</p>
+                    <form id="commentForm" method="post" style="margin-top: 1.3em;">
+                        {{ comment_form | crispy }}
+                        {% csrf_token %}
+                        <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
+                    </form>
+                {% endif %}
+                {% if request.GET.purchased == 'false' %}
+                <p>Purchase the Game to leave a comment</p>
+                {% endif %}
+            {% else %}
+                <p>Log in to leave a comment</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete your comment? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+</div>
+</div>
 
 <!-- Book Page content ends here -->
 {% endblock content%}

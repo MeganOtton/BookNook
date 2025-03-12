@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 STATUS = ((0, "Draft"), (1, "Published"))
 
 class Genre(models.Model):
@@ -84,3 +85,17 @@ class BookStorePage(models.Model):
 #     created_on = models.DateTimeField(auto_now_add=True)
 #     status = models.IntegerField(choices=STATUS, default=0)
 
+class Comment(models.Model):
+    bookstorepage = models.ForeignKey(BookStorePage, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
+    title = models.CharField(max_length=200)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], verbose_name="Book Rating")
+    body = models.TextField()
+    approved = models.BooleanField(default=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_on"]
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.post}, | {self.body}"
