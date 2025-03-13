@@ -80,22 +80,11 @@
 </div>
 
 
-<!-- Comment Count -->
-<div class="row">
-    <div class="col-12">
-        <strong class="text-secondary">
-            <i class="far fa-comments"></i> {{ comment_count }}
-        </strong>
-    </div>
-    <div class="col-12">
-        <hr>
-    </div>
-</div>
-
-<!-- Comments Are Listed Here -->
+<!-- Reviews Are Listed Here -->
 <div class="row ">
     <div class="col-md-8 card mb-4 mt-3 comments">
-        <h3 class="commentheading">Comments:</h3>
+        <h3 class="commentheading">Reviews:</h3>
+        <p>{{ comments }}</p>
         <div class="card-body">
             {% for comment in comments %}
             <div class="p-2 comments{% if not comment.approved and comment.author == user %} faded{% elif not comment.approved %} d-none{% endif %}">
@@ -117,7 +106,7 @@
                     </div>
                 </div>
                 {% if not comment.approved and comment.author == user %}
-                <p class="approval">This comment is awaiting approval</p>
+                <p class="approval">This Review is awaiting approval</p>
                 {% endif %}
                 {% if user.is_authenticated and comment.author == user %}
                 <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
@@ -128,7 +117,7 @@
         </div>
     </div>
 
-    <!-- Comment Form -->
+    <!-- Review Form -->
     <!-- If user is not logged in as well as if they have not purchased the game they can not create a comment on the Game Post -->
     <div class="col-md-4 card mb-4 mt-3 ">
         <div class="card-body">
@@ -136,7 +125,7 @@
             {% if user.is_authenticated %}
                 <!-- If User has Purchased the Game -->
                 {% if request.GET.purchased == 'true' %}
-                    <h3>Leave a comment:</h3>
+                    <h3>Leave a Review:</h3>
                     <p>Posting as: {{ user.username }}</p>
                     <form id="commentForm" method="post" style="margin-top: 1.3em;">
                         {{ comment_form | crispy }}
@@ -145,10 +134,10 @@
                     </form>
                 {% endif %}
                 {% if request.GET.purchased == 'false' %}
-                <p>Purchase the Book to leave a comment</p>
+                <p>Purchase the Book to leave a Review</p>
                 {% endif %}
             {% else %}
-                <p>Log in to leave a comment</p>
+                <p>Log in to leave a Review</p>
             {% endif %}
         </div>
     </div>
@@ -160,11 +149,11 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
+            <h5 class="modal-title" id="deleteModalLabel">Delete Review?</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            Are you sure you want to delete your comment? This action cannot be undone.
+            Are you sure you want to delete your Review? This action cannot be undone.
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -175,6 +164,9 @@
 </div>
 
 <!-- Book Page content ends here -->
+
+<div class="fix-footer">
+</div>
 {% endblock content%}
 
 {% block extras %}

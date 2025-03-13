@@ -139,7 +139,7 @@ body {
     max-width: calc(100% - 40px); /* Ensure shelf title does not exceed viewport width */
 }
 
-.card-body {
+.book-title-index {
     display: none;
 }
 
