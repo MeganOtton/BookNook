@@ -3,7 +3,7 @@ from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .models import BookStorePage, Comment
-from .forms import CommentForm
+from .forms import RatingForm
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -27,19 +27,19 @@ def book_details(request, slug):
     paginate_by = 6
    
     if request.method == "POST":
-        comment_form = CommentForm(data=request.POST)
+        comment_form = RatingForm(data=request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.author = request.user
-            comment.post = book_details_list
+            comment.bookstorepage = book_details_list
             comment.save()
             messages.add_message(
                 request, messages.SUCCESS,
                 'Comment submitted'
             )
-            return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+            return HttpResponseRedirect(reverse('book_details_list', args=[slug]))
     else:
-        comment_form = CommentForm()
+        comment_form = RatingForm()
 
     return render(
         request,
@@ -60,7 +60,7 @@ def comment_edit(request, slug, comment_id):
         queryset = BookStorePage.objects.filter(status=1)
         post = get_object_or_404(queryset, slug=slug)
         comment = get_object_or_404(Comment, pk=comment_id)
-        comment_form = CommentForm(data=request.POST, instance=comment)
+        comment_form = RatingForm(data=request.POST, instance=comment)
 
         if comment_form.is_valid() and comment.author == request.user:
             comment = comment_form.save(commit=False)
@@ -71,7 +71,7 @@ def comment_edit(request, slug, comment_id):
         else:
             messages.add_message(request, messages.ERROR, 'Error updating comment!')
 
-    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+    return HttpResponseRedirect(reverse('book_details_list', args=[slug]))
 
 
 # Delete comment view
@@ -89,4 +89,17 @@ def comment_delete(request, slug, comment_id):
     else:
         messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
 
-    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+    return HttpResponseRedirect(reverse('book_details_list', args=[slug]))
+
+
+def user_reviews(request):
+    # Fetch comments made by the logged-in user
+    user_reviews = Comment.objects.filter(author=request.user).select_related('bookstorepage')
+
+    # Pass the reviews to the template
+    return render(request, 'Account/account.html', {'user_reviews': user_reviews})
+
+def review_detail(request, id):
+    # Fetch the specific review based on the ID
+    review = get_object_or_404(Comment, id=id)
+    return render(request, 'review_detail.html', {'review': review})

@@ -26,11 +26,12 @@
         <p class="favourite-genre-stat">  Based on % Read<!-- Based on % Read --> </p>
     </div>
 
-    <!-- FIX THIS! DOESNT WORK!! -->
+    
     <div class="container account-purchases">
         <div class="card my-3">
             <div class="card-header" data-bs-toggle="collapse" data-bs-target="#purchasedBooks" style="cursor: pointer;">
               <strong>Purchased Books</strong>
+              <i class="fa-solid fa-chevron-down" id="collapseArrow"></i>
             </div>
             <div id="purchasedBooks" class="collapse show">
                 <div class="card-body p-0" style="max-height: 200px; overflow-y: auto;">
@@ -39,7 +40,6 @@
                             <tr>
                             <th>Book Title</th>
                             <th>Price</th>
-                            <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,8 +47,6 @@
                             <tr>
                             <td>{{ book.booktitle }}</td>
                             <td>{{ book.bookprice }}</td>
-                            <!--INSERT BELOW INTO MODEL-->
-                            <td><!--{{ book.book_date_purchased }}--></td>
                             </tr>
                             {% empty %}
                             <tr>
@@ -66,8 +64,8 @@
    
     <div class="container border p-3 rounded shadow-sm bg-light account-extra-box">
         <div class="d-flex justify-content-between top-options">
-            <button class="btn btn-outline-dark review-tab" onclick="showTab('hiddenTab')">See Hidden</button>
-            <button class="btn btn-outline-dark see-hidden-tab" onclick="showTab('reviewTab')">Your Reviews</button>
+            <button id="btnSeeHidden" class="btn btn-outline-dark review-tab" onclick="showTab('hiddenTab')">See Hidden</button>
+            <button id="btnYourReviews" class="btn btn-outline-dark see-hidden-tab" onclick="showTab('reviewTab')">Your Reviews</button>
         </div>
     
         <hr class="divider-line">
@@ -148,6 +146,8 @@
                 <p>You have not written any reviews.</p>
             {% endfor %}
         </div>
+
+        
     </div>
 </div>
 
@@ -157,60 +157,5 @@
 {% endblock content %}
 
 {% block extras %}
-<script>
-    function showTab(tabId) {
-        // Show the main tab section
-        document.querySelectorAll('.tab-section').forEach(el => el.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-
-        // Top buttons - highlight correct one
-        const btnSeeHidden = document.getElementById('btnSeeHidden');
-        const btnYourReviews = document.getElementById('btnYourReviews');
-
-        if (tabId === 'hiddenTab') {
-            btnSeeHidden.classList.add('active');
-            btnYourReviews.classList.remove('active');
-        } else {
-            btnSeeHidden.classList.remove('active');
-            btnYourReviews.classList.add('active');
-
-            // Clear inner highlights if leaving hidden tab
-            document.querySelectorAll('#hiddenGroup .btn').forEach(btn => btn.classList.remove('active'));
-        }
-
-        // Always hide all hidden sections when switching tabs
-        document.querySelectorAll('.hidden-section').forEach(el => el.classList.remove('active'));
-    }
-
-    function showHiddenSection(sectionId, clickedButton) {
-        // Show selected hidden section
-        document.querySelectorAll('.hidden-section').forEach(el => el.classList.remove('active'));
-        document.getElementById(sectionId).classList.add('active');
-
-        // Inner hidden section buttons - highlight correct one
-        document.querySelectorAll('#hiddenGroup .btn').forEach(btn => btn.classList.remove('active'));
-        clickedButton.classList.add('active');
-
-        // ✅ Force See Hidden button to stay active too
-        document.getElementById('btnSeeHidden').classList.add('active');
-        document.getElementById('btnYourReviews').classList.remove('active');
-    }
-
-    // Default: show reviews tab
-    window.onload = function () {
-        showTab('reviewTab');
-    };
-</script>
-
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock extras %}
-
-<!-- <div>
-    <h3>Books Purchased</h3>
-     <ul>
-        {% for book in account.purchased_books.all %}
-            <li>{{ book.booktitle }}</li>
-        {% empty %}
-            <li>No books purchased.</li>
-        {% endfor %}
-    </ul>
-</div> -->

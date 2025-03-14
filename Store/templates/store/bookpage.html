@@ -20,7 +20,7 @@
                 <!-- When Clicked Will call move_game_to_chosen which will get it from the list and move it to the users purchased list -->
                 <form id="id_purchase_book" action="{%url 'move_book' book.booktitle %}" method="post">
                     {% csrf_token %}
-                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button">Purchase</button>
+                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button">£{{ book.bookprice }}</button>
                 </form>
 
                 <!-- Check Purchase Button  -->
@@ -79,32 +79,74 @@
     </p>
 </div>
 
+<!-- Review Section -->
+<div class="review">
+    <!-- Review Info -->
+    <div>
+        <h5>Reviews Total: {{ book.comments.count }}</h5>
+        
+        <div class="rating">
+            {% with total=book.average_rating|default:0 %}
+                {% for i in "12345" %}
+                    {% if total >= i|add:"0" %}
+                        <span>★</span>
+                    {% else %}
+                        <span>☆</span>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </div>
 
-<!-- Reviews Are Listed Here -->
-<div class="row ">
-    <div class="col-md-8 card mb-4 mt-3 comments">
+    </div>
+
+    <!-- Create A Review -->
+    <div class="review">
+        <div class="leave-review-header">
+            <i class="fa-solid fa-chevron-down fa-2xl toggle-review-form" style="cursor: pointer;"></i>
+            <h3>Leave a Review</h3>
+        </div>
+        <div class="leave-review-form" style="display: none;">
+            <div class="card-body">
+                <!-- If User is not Signed In -->
+                {% if user.is_authenticated %}
+                    <!-- If User has Purchased the book -->
+                    {% if request.GET.purchased == 'true' %}
+                        <h3>Leave a Review:</h3>
+                        <p>Posting as: {{ user.username }}</p>
+                        <form id="commentForm" method="POST" style="margin-top: 1.3em;">
+                            {{ comment_form | crispy }}
+                            {% csrf_token %}
+                            <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
+                        </form>
+                    {% endif %}
+                    {% if request.GET.purchased == 'false' %}
+                        <p>Purchase the Book to leave a Review</p>
+                    {% endif %}
+                {% else %}
+                    <p>Log in to leave a Review</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Are Listed Here -->
+    <div class="comments">
         <h3 class="commentheading">Reviews:</h3>
-        <p>{{ comments }}</p>
         <div class="card-body">
             {% for comment in comments %}
             <div class="p-2 comments{% if not comment.approved and comment.author == user %} faded{% elif not comment.approved %} d-none{% endif %}">
+
                 <p class="font-weight-bold">
-                    {{ comment.author }} | {{ comment.created_on }}
+                    {{ comment.author }} | {{ comment.rating }}/5                       {{ comment.created_on }}
                 </p>
-                <div><h4 id="title{{ comment.id }}">{{ comment.title }}</h4></div>
-                <p>Rating | <span id="rating{{ comment.id }}">{{ comment.rating }}</span></p>
-                <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#commentDetails{{ comment.id }}" aria-expanded="false" aria-controls="commentDetails{{ comment.id }}">
-                    View Details
-                </button>
-                <div class="collapse" id="commentDetails{{ comment.id }}">
-                    <div class="col-12">
-                        <hr>
-                    </div>
+
+                <div>
+                    <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
                     <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
-                    <div class="col-12">
-                        <hr>
-                    </div>
                 </div>
+                
+                
+
                 {% if not comment.approved and comment.author == user %}
                 <p class="approval">This Review is awaiting approval</p>
                 {% endif %}
@@ -118,30 +160,8 @@
     </div>
 
     <!-- Review Form -->
-    <!-- If user is not logged in as well as if they have not purchased the game they can not create a comment on the Game Post -->
-    <div class="col-md-4 card mb-4 mt-3 ">
-        <div class="card-body">
-            <!-- If User is not Signed In -->
-            {% if user.is_authenticated %}
-                <!-- If User has Purchased the Game -->
-                {% if request.GET.purchased == 'true' %}
-                    <h3>Leave a Review:</h3>
-                    <p>Posting as: {{ user.username }}</p>
-                    <form id="commentForm" method="post" style="margin-top: 1.3em;">
-                        {{ comment_form | crispy }}
-                        {% csrf_token %}
-                        <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
-                    </form>
-                {% endif %}
-                {% if request.GET.purchased == 'false' %}
-                <p>Purchase the Book to leave a Review</p>
-                {% endif %}
-            {% else %}
-                <p>Log in to leave a Review</p>
-            {% endif %}
-        </div>
-    </div>
-</div>
+    <!-- If user is not logged in as well as if they have not purchased the book they can not create a comment on the book Post -->
+    
 </div>
 
 <!-- Delete confirmation modal -->
@@ -159,9 +179,8 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
         </div>
-    </div>
 </div>
-</div>
+
 
 <!-- Book Page content ends here -->
 
@@ -170,6 +189,16 @@
 {% endblock content%}
 
 {% block extras %}
+
+<script>
+    document.querySelector('.toggle-review-form').addEventListener('click', function() {
+        const form = document.querySelector('.leave-review-form');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        this.classList.toggle('fa-chevron-down');
+        this.classList.toggle('fa-chevron-up');
+    });
+</script>
+
 <script src="{% static 'js/comments.js' %}"></script>
 <script src="{% static 'js/purchase_checker.js' %}"></script>
 {% endblock extras %}

@@ -238,7 +238,27 @@ body {
     border-radius: 1rem ;
 }
 
+.review {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px; 
+}
 
+.comments {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.rating span {
+    font-size: 24px;
+}
 
 /* Account.html */
 /* Title Ribbon */
@@ -464,4 +484,12 @@ body {
     padding: 5px;
     justify-content: center;
     margin-bottom: 10px;
+}
+
+#collapseArrow {
+    transition: transform 0.3s ease;
+}
+
+.collapse.show + #collapseArrow {
+    transform: rotate(180deg);
 }
