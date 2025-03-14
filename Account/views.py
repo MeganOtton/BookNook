@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
 from django.contrib import messages
@@ -6,6 +6,10 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import Account
 from Store.models import BookStorePage
+from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from .forms import CustomUserCreationForm
 
 # Profile detailed view
 # This view displays the user's profile page
@@ -84,3 +88,18 @@ def check_book_ownership(request, booktitle):
     else:   
         return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
     
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import CustomUserCreationForm
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'signup.html', {'form': form})

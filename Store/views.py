@@ -103,3 +103,5 @@ def review_detail(request, id):
     # Fetch the specific review based on the ID
     review = get_object_or_404(Comment, id=id)
     return render(request, 'review_detail.html', {'review': review})
+
+

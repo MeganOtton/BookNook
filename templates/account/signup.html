@@ -17,21 +17,23 @@
   
   <!-- Additional fields -->
   <div>
-    <label for="birth_date">{% trans "Birth Date" %}</label>
-    <input type="text" id="birth_date" name="birth_date" placeholder="DD/MM/YYYY" 
-           pattern="^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/([12]\d{3})$" 
-           required oninput="this.value = this.value.replace(/[^0-9\/]/g, '')">
+    <label for="birthdate">{% trans "Birth Date" %}</label>
+    <input method="POST" type="date" id="birthdate" name="birthdate">
   </div>
 
   <br>
 
-  <div>
+  <!-- <div>
     <label for="account_type">{% trans "Account Type" %}</label>
     <select id="account_type" name="account_type" required>
-      <option value="reader">{% trans "Reader" %}</option>
-      <option value="author">{% trans "Author" %}</option>
+        {% for value, label in account_type_choices %}
+          <option value="{{ value }}" {% if value == account.account_type %}selected{% endif %}>
+              {% trans label %}
+          </option>
+        {% endfor %}
     </select>
-  </div>
+  </div> -->
+
 
   <br>
   
