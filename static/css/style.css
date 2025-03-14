@@ -7,6 +7,11 @@
 }
 
 /* Body */
+.alert {
+    background-color: var(--white);
+}
+
+/* Body */
 body {
     background-image: url('../images/wood.webp');
     background-repeat: no-repeat;
@@ -81,6 +86,15 @@ body {
 
 .fix-footer {
     padding-top: 100px !important;
+}
+
+.fix-footer-index {
+    width: 100%;
+    height: 100px;
+}
+
+.fix-footer-inner {
+    color: transparent;
 }
 
 /* Index.html */
@@ -211,17 +225,21 @@ body {
 .book-info-top {
     margin-bottom: 10px;
     height: 15rem;
+    padding: 5px;
 }
 
 .book-info-bottom-tablet {
     margin-bottom: 10px;
     display: none;
+    padding: 5px;
 }
 
 .book-info-bottom {
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
+    padding: 5px;
+
     margin-right: 10px;
     margin-left: 10px;
     margin-top: 10px;
@@ -238,26 +256,81 @@ body {
     border-radius: 1rem ;
 }
 
-.review {
-    background-color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    margin-right: 10px;
-    margin-left: 10px;
-    margin-top: 10px; 
-}
-
-.comments {
+.review-box {
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
     margin-right: 10px;
     margin-left: 10px;
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.reviews-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 5px;
+}
+
+.review-total {
+    margin-bottom: 0px !important;
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.create-a-review-box {
+    padding: 5px;
+}
+
+.Create-review-header {
+    display: flex;
+    padding: 5px;
+    align-items: center;
+
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.create-review-icon {
+    margin-right: 5px;
+}
+
+.create-review-text {
+    margin-bottom: 0px;
+
+}
+
+.view-reviews {
+    padding: 5px;
+}
+
+.review {
+    border: 1px solid black;
+    padding: 2px;
+    margin-bottom: 5px;
 }
 
 .rating span {
     font-size: 24px;
+}
+
+.review-user-info {
+    display: flex;
+}
+
+.Review-Author {
+    font-size: 20px;
+}
+
+.User-Review-Rating {
+    font-size: 20px;
+}
+
+.User-Review-Date {
+    font-size: 20px;
 }
 
 /* Account.html */

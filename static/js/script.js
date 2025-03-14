@@ -62,3 +62,12 @@ function showHiddenSection(sectionId, clickedButton) {
 window.onload = function () {
     showTab('reviewTab');
 };
+
+
+// NEW REVIEW FORM TOGGLE
+document.querySelector('.toggle-review-form').addEventListener('click', function() {
+    const form = document.querySelector('.leave-review-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    this.classList.toggle('fa-chevron-down');
+    this.classList.toggle('fa-chevron-up');
+});
