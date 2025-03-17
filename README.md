@@ -32,19 +32,11 @@ ___
 
 ### User Stories
 
-As a website visitor, I want an easy-to-navigate multi-page layout, so that I can quickly find different sections such as articles, resources, and the contact page.
-
-As a person who needs help, I want an easy-to-navigate page, so that I can quickly find ways to get help.
-
-As a person struggling with insomnia, I want to find sleep tips and tools, so I can improve my sleep patterns and overall health.
-
-As a user experiencing a mental health crisis, I want to quickly find emergency contact information and resources, so I can get immediate help when needed.
-
-As a user curious about mental health, I want to read information on various mental health topics, so I can stay informed and improve my well-being.
+- 
 
 ### Color Design
 
-Color selection is a important part to any design, however with the nature of the project this consideration is even greater due to the needs of the end user and the potential for negatively impacting their well-being. Colors have connotations to various emotions and using 'calming' colours has been linked to a more stable mental state.
+For this project I have mimicked a previous project I completed on a similar topic to help speed up time, I have chosen simple reds to mimic old fashioned ribbon bookmarks. I have used a wooden background to mimic the back of a library shelf with the actual shelves themselves having shelf images. The design of this webpage is to represent an actual library bookshelf but digitally.
 
 #### Add Color Pallette Image
 
@@ -61,15 +53,15 @@ ___
 These wireframes have been created using Balsamiq to define the key feature layout to guide the user experience design as well as blocking out the rough color pallete to identify any key issues. I will be utilising Bootstrap's framework to help blockout the website key elements. 
 #### Index Page
 
-![Index Wireframe](https://github.com/user-attachments/assets/55f3d638-9c4f-4725-9307-f4b39e080683)
+
 
 #### Resources Page
 
-![Resources Wireframe](https://github.com/user-attachments/assets/7cbc0297-33a5-49f2-ad51-56a6abd73122)
+
 
 #### Contact Us Page
 
-![Contact Us Wireframe](https://github.com/user-attachments/assets/c77d6d64-d6c1-4a44-8c37-fa02c278a719)
+
 
 ## Imagery
 ___
