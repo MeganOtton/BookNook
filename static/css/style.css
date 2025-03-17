@@ -423,7 +423,6 @@ body {
     padding: 0px;
 }
 
-
 /* Account Extras */
 .tab-section, .hidden-section {
     display: none;
@@ -553,8 +552,10 @@ body {
     background-color: var(--ribbon-red);
     color: white;
     border: none;
+
     border-radius: 5px;
     padding: 5px;
+
     justify-content: center;
     margin-bottom: 10px;
 }
@@ -565,4 +566,36 @@ body {
 
 .collapse.show + #collapseArrow {
     transform: rotate(180deg);
+}
+
+/* register.html */
+/* register box */
+.register-box {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.register-form {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 100%;
+
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.singup-button-box {
+    display: flex;
+    flex-direction: column
+}
+
+.signup-button {
+    background-color: var(--ribbon-red);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    justify-content: center;
+    margin-bottom: 10px;
 }
