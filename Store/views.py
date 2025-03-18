@@ -7,14 +7,34 @@ from .forms import RatingForm
 
 # Create your views here.
 class BookList(generic.ListView):
-   queryset = BookStorePage.objects.filter(status=1)
-   context_object_name = 'book_list'
-   template_name = "store/index.html"
-   paginate_by = 6
+    queryset = BookStorePage.objects.filter(status=1)
+    context_object_name = 'book_list'
+    template_name = "store/index.html"
+    paginate_by = 6
 
-def Store(request):
-    return render(request, 'store/index.html')
+    def Store(request):
+        return render(request, 'store/index.html')
 
+
+class BookListSearch(generic.ListView):
+    model = BookStorePage
+    template_name = "store/search.html"  # This should always be "store/search.html"
+    context_object_name = 'book_list_search'
+    paginate_by = 6
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return BookStorePage.objects.filter(status=1, booktitle__icontains=query)
+        return BookStorePage.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Always provide these context variables, regardless of whether there's a search query
+        context['recommended_books'] = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
+        context['romance_books'] = BookStorePage.objects.filter(status=1, genre__name='Romance')[:6]
+        context['fantasy_books'] = BookStorePage.objects.filter(status=1, genre__name='Fantasy')[:6]
+        return context
 
 # Submit Comment Form View
 def book_details(request, slug):

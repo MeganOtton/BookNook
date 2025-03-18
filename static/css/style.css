@@ -13,6 +13,14 @@
     margin-top: 10px !important;
 }
 
+.alert-updated-age {
+    background-color: var(--white);
+    margin-bottom: 10px !important;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
 /* Body */
 body {
     background-image: url('../images/wood.webp');
@@ -527,7 +535,7 @@ body {
     margin-bottom: 5px;
 }
 
-.admin-tools-button{
+.admin-tools-button, .Public-Page-button, .new-book-button{
     border-radius: 1rem;
     background-color: var(--ribbon-red) !important;
     border-color: var(--ribbon-red) !important;
@@ -535,6 +543,16 @@ body {
     font-size: 0.9rem; /* Adjust font size as needed */
 
     color: white !important;
+}
+
+.Public-Page-button, .new-book-button{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.author-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Logout.html */

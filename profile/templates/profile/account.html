@@ -4,6 +4,13 @@
 
 {% block content %}
 
+{% if role_updated %}
+<div class="alert success alert-dismissible fade show alert-updated-age" id="msg" role="alert">
+    Your role has been updated to {{ new_role }} based on your current age.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
 <div class="accounttitle-ribbon">
     <h1 class="accounttitle">Account</h1>
     <i class="fa-solid fa-gear fa-2xl Options-Account-Info" style="color: #ffffff;"></i> <!-- Link this to have change password and other account options-->

@@ -12,6 +12,7 @@ from django.contrib.auth import login
 from .forms import CustomSignupForm, CustomAuthorSignupForm
 from django.urls import reverse_lazy
 from django.views.generic import FormView
+from datetime import date
 
 
 
@@ -38,6 +39,29 @@ class ProfileDetailedView(DetailView, LoginRequiredMixin):
 
     def get_object(self):
         return get_object_or_404(Profile, user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        role_updated = False
+        new_role = None
+
+        if self.object.birthdate:
+            today = date.today()
+            age = today.year - self.object.birthdate.year - ((today.month, today.day) < (self.object.birthdate.month, self.object.birthdate.day))
+            
+            new_role = 'Adult' if age >= 18 else 'Child'
+            
+            if self.object.role != new_role:
+                self.object.role = new_role
+                self.object.save()
+                role_updated = True
+
+        if role_updated:
+            messages.info(request, f"Your role has been updated to {new_role} based on your current age.")
+            return redirect('profile')  # Assuming 'profile' is the name of your profile URL
+
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
 class ProfileAuthorDetailedView(DetailView, LoginRequiredMixin):
     model = Profile
