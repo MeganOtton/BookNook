@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Avg
+from django.utils import timezone
+
 
 STATUS = ((0, "Draft"), (1, "Published"))
 
@@ -52,8 +55,6 @@ class BookStorePage(models.Model):
 
     bookprice = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, verbose_name="Book Price")
 
-    bookrating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], verbose_name="Book Rating")
-
     topics = models.ManyToManyField(Topic, related_name='books', blank=True, verbose_name="Topics")
 
     # series = models.ManyToManyField('Series', related_name='books')
@@ -62,7 +63,14 @@ class BookStorePage(models.Model):
     #     User, on_delete=models.CASCADE, related_name="blog_posts"
     # )
 
+    created_on = models.DateTimeField(default=timezone.now)
     status = models.IntegerField(choices=STATUS, default=0)
+    updated_on = models.DateTimeField(auto_now=True)
+
+    @property
+    def average_rating(self):
+        avg = self.comments.aggregate(Avg('rating'))['rating__avg']
+        return round(avg, 1) if avg else 0.0
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -70,17 +78,23 @@ class BookStorePage(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.booktitle
+         return f"{self.booktitle} Author {self.authorname}"
 
+    class Meta:
+        ordering = ["-created_on"]
 
-# class Post(models.Model):
-#     title = models.CharField(max_length=200, unique=True)
-#     slug = models.SlugField(max_length=200, unique=True)
-#     author = models.ForeignKey(
-#         User, on_delete=models.CASCADE, related_name="blog_posts"
-#     )
-#     featured_image = CloudinaryField('image', default='placeholder')
-#     content = models.TextField()
-#     created_on = models.DateTimeField(auto_now_add=True)
-#     status = models.IntegerField(choices=STATUS, default=0)
+class Comment(models.Model):
+    bookstorepage = models.ForeignKey(BookStorePage, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
+    title = models.CharField(max_length=200)
+    rating = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name="Book Rating")
+    body = models.TextField()
+    approved = models.BooleanField(default=True)
+    created_on = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["created_on"]
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.bookstorepage}, | {self.body}"
+    

@@ -20,7 +20,7 @@
                 <!-- When Clicked Will call move_game_to_chosen which will get it from the list and move it to the users purchased list -->
                 <form id="id_purchase_book" action="{%url 'move_book' book.booktitle %}" method="post">
                     {% csrf_token %}
-                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button">Purchase</button>
+                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button">£{{ book.bookprice }}</button>
                 </form>
 
                 <!-- Check Purchase Button  -->
@@ -79,41 +79,46 @@
     </p>
 </div>
 
-<div class="container mt-5">
+<!-- Series NOT COMPLETE -->
+<div class="container mt-5 shelf-container-nonfiction">
 
     <div class="shelf-title-wrapper">
         <span class="shelf-title">Series</span>
     </div>
     
-    <div id="bookCarousel" class="carousel slide">
+    <div id="nonFictionCarousel" class="carousel slide">
         <div class="carousel-inner">
-            {% for book in book_details %}
-                {% if forloop.counter0|divisibleby:3 %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                {% endif %}
+            {% for book in book_list %}
+                {% for genre in book.genre.all %}
+                    {% if genre.name == 'Non-Fiction' %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <div class="d-flex justify-content-center">
+                        {% endif %}
 
-                <div class="card mx-2 Book">
-                    <a href="{% url 'book_details_list' book.slug %}">
-                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ book.booktitle }}</h5>
-                    </div>
-                </div>
+                        <div class="card mx-2 Book">
+                            <a href="{% url 'book_details_list' book.slug %}">
+                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                            </a>
+                            <div class="card-body book-title-index">
+                                <h5 class="card-title">{{ book.booktitle }}</h5>
+                            </div>
+                        </div>
 
-                {% if forloop.counter|divisibleby:3 or forloop.last %}
-                        </div> <!-- .d-flex -->
-                    </div> <!-- .carousel-item -->
-                {% endif %}
+                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                </div> <!-- .d-flex -->
+                            </div> <!-- .carousel-item -->
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </div>
         <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         </button>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
         </button>
 
@@ -121,11 +126,222 @@
     </div>
 </div>
 
+<!-- Similar NOT COMPLETE -->
+<div class="container mt-5 shelf-container-nonfiction">
 
+    <div class="shelf-title-wrapper">
+        <span class="shelf-title">Similar</span>
+    </div>
+    
+    <div id="nonFictionCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            {% for book in book_list %}
+                {% for genre in book.genre.all %}
+                    {% if genre.name == 'Non-Fiction' %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <div class="d-flex justify-content-center">
+                        {% endif %}
+
+                        <div class="card mx-2 Book">
+                            <a href="{% url 'book_details_list' book.slug %}">
+                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                            </a>
+                            <div class="card-body book-title-index">
+                                <h5 class="card-title">{{ book.booktitle }}</h5>
+                            </div>
+                        </div>
+
+                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                </div> <!-- .d-flex -->
+                            </div> <!-- .carousel-item -->
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+
+        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+    </div>
+</div>
+
+<!-- By Author NOT COMPLETE -->
+<div class="container mt-5 shelf-container-nonfiction">
+
+    <div class="shelf-title-wrapper">
+        <span class="shelf-title">By Author</span>
+    </div>
+    
+    <div id="nonFictionCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            {% for book in book_list %}
+                {% for genre in book.genre.all %}
+                    {% if genre.name == 'Non-Fiction' %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <div class="d-flex justify-content-center">
+                        {% endif %}
+
+                        <div class="card mx-2 Book">
+                            <a href="{% url 'book_details_list' book.slug %}">
+                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                            </a>
+                            <div class="card-body book-title-index">
+                                <h5 class="card-title">{{ book.booktitle }}</h5>
+                            </div>
+                        </div>
+
+                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                </div> <!-- .d-flex -->
+                            </div> <!-- .carousel-item -->
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+
+        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+    </div>
+</div>
+
+<!-- Review Section -->
+<div class="review-box">
+    <!-- Review Info -->
+    <div class="reviews-info">
+        <h5 class="review-total">Reviews Total: {{ book.comments.count }}</h5>
+        
+        <div class="rating">
+            {% with total=book.average_rating|default:0 %}
+                {% for i in "12345" %}
+                    {% if total >= i|add:"0" %}
+                        <span>★</span>
+                    {% else %}
+                        <span>☆</span>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </div>
+
+    </div>
+
+    <!-- Create A Review -->
+    <div class="leave-review">
+        <div class="create-a-review-box">
+            <div class="Create-review-header">
+                <i class="fa-solid fa-plus fa-xl toggle-review-form create-review-icon" style="cursor: pointer;"></i>
+                <h3 class="create-review-text">Create a Review</h3>
+            </div>  
+        </div>
+        
+        <div class="leave-review-form" style="display: none;">
+            <div class="card-body">
+                <!-- If User is not Signed In -->
+                {% if user.is_authenticated %}
+                    <!-- If User has Purchased the book -->
+                    {% if request.GET.purchased == 'true' %}
+                        <h3>Leave a Review:</h3>
+                        <p>Posting as: {{ user.username }}</p>
+                        <form id="commentForm" method="POST" style="margin-top: 1.3em;">
+                            {{ comment_form | crispy }}
+                            {% csrf_token %}
+                            <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
+                        </form>
+                    {% endif %}
+                    {% if request.GET.purchased == 'false' %}
+                        <p>Purchase the Book to leave a Review</p>
+                    {% endif %}
+                {% else %}
+                    <p>Log in to leave a Review</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Are Listed Here -->
+    <div class="Reviews">
+        <div class="view-reviews">
+            {% for comment in comments %}
+            <div class="p-2 review{% if not comment.approved and comment.author == user %} faded{% elif not comment.approved %} d-none{% endif %}">
+                <div class="review-user-info">
+                    <h3 class="Review-Author">
+                        {{ comment.author }}
+                    </h3>
+                    <h3 class="User-Review-Rating">
+                        {{ comment.rating }}/5
+                    </h3>  
+                    <h3 class="User-Review-Date">
+                    {{ comment.created_on }}
+                    </h3>  
+                </div>
+                
+
+                <div>
+                    <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
+                    <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
+                </div>
+                
+                
+
+                {% if not comment.approved and comment.author == user %}
+                <p class="approval">This Review is awaiting approval</p>
+                {% endif %}
+                {% if user.is_authenticated and comment.author == user %}
+                <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
+                <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Review?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your Review? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>    
+
+
+<div class="fix-footer-index">
+    <span class="fix-footer-inner"> TESTING 123 </span>
+</div>
 
 <!-- Book Page content ends here -->
+
 {% endblock content%}
 
 {% block extras %}
+<script src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'js/comments.js' %}"></script>
 <script src="{% static 'js/purchase_checker.js' %}"></script>
 {% endblock extras %}

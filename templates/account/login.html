@@ -6,29 +6,30 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
+<div class="login-info-box">
+  <div class="container login-box">
+      <div class="row singin-text">
+          <div >
+              <h3>{% trans "Sign In" %}</h3>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 mt-3 offset-md-2">
-            <h3>{% trans "Sign In" %}</h3>
-
-            <p>{% blocktrans %}Welcome back to the code|star blog. To leave a comment or like a post, please log in. If
-                you
-                have not created an account yet, then <a class="link" href="{{ signup_url }}">sign up</a>
-                first.{% endblocktrans %}</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 mt-3 offset-md-2">
-            <form class="login" method="POST" action="{% url 'account_login' %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                {% endif %}
-                <button class="btn btn-signup right" type="submit">{% trans "Sign In" %}</button>
-            </form>
-        </div>
-    </div>
+              <p>{% blocktrans %}Welcome back to The Book Nook! To fully enjoy the site, please log in. If
+                  you have not created an account yet, then <a class="link" href="{{ signup_url }}">sign up</a>
+                  first.{% endblocktrans %}</p>
+          </div>
+      </div>
+      <div class="row singin-form">
+          <div >
+              <form class="login" method="POST" action="{% url 'account_login' %}">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  {% if redirect_field_value %}
+                  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                  {% endif %}
+                  <button class="btn btn-signup right signin_button" type="submit">{% trans "Sign In" %}</button>
+              </form>
+          </div>
+      </div>
+  </div>
 </div>
+
 {% endblock %}

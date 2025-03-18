@@ -3,6 +3,12 @@
     --main-red : #CF2A27;
     --ribbon-red : #990000;
     --shadow-color : #0000007e;
+    --text-black : #212529;
+}
+
+/* Body */
+.alert {
+    background-color: var(--white);
 }
 
 /* Body */
@@ -82,6 +88,15 @@ body {
     padding-top: 100px !important;
 }
 
+.fix-footer-index {
+    width: 100%;
+    height: 100px;
+}
+
+.fix-footer-inner {
+    color: transparent;
+}
+
 /* Index.html */
 /* Hero Image */
 .hero_image {
@@ -138,7 +153,7 @@ body {
     max-width: calc(100% - 40px); /* Ensure shelf title does not exceed viewport width */
 }
 
-.card-body {
+.book-title-index {
     display: none;
 }
 
@@ -183,7 +198,7 @@ body {
     padding: 3px;
 }
 
-/* Book Title */
+/* Purchase Info */
 .main_purchase_info {
     display: flex;
     justify-content: space-between;
@@ -210,17 +225,21 @@ body {
 .book-info-top {
     margin-bottom: 10px;
     height: 15rem;
+    padding: 5px;
 }
 
 .book-info-bottom-tablet {
     margin-bottom: 10px;
     display: none;
+    padding: 5px;
 }
 
 .book-info-bottom {
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
+    padding: 5px;
+
     margin-right: 10px;
     margin-left: 10px;
     margin-top: 10px;
@@ -237,5 +256,346 @@ body {
     border-radius: 1rem ;
 }
 
+.review-box {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.reviews-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 5px;
+}
+
+.review-total {
+    margin-bottom: 0px !important;
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.create-a-review-box {
+    padding: 5px;
+}
+
+.Create-review-header {
+    display: flex;
+    padding: 5px;
+    align-items: center;
+
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.create-review-icon {
+    margin-right: 5px;
+}
+
+.create-review-text {
+    margin-bottom: 0px;
+
+}
+
+.view-reviews {
+    padding: 5px;
+}
+
+.review {
+    border: 1px solid black;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+.rating span {
+    font-size: 24px;
+}
+
+.review-user-info {
+    display: flex;
+}
+
+.Review-Author {
+    font-size: 20px;
+}
+
+.User-Review-Rating {
+    font-size: 20px;
+}
+
+.User-Review-Date {
+    font-size: 20px;
+}
+
+/* Account.html */
+/* Title Ribbon */
+.accounttitle-ribbon {
+    background-color: var(--ribbon-red);
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.accounttitle {
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+}
+
+.Options-Account-Info {
+    padding-right: 10px;
+}
+
+/* Account */
+.account-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.accountbox {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 90%;
+
+    margin-bottom: 10px;
+    padding-top: 10px;
+}
+
+.username-box {
+    border: 1px solid black;
+    padding-left: 2px;
+    margin-bottom: 10px;
+}
+
+.account-type-box {
+    border: 1px solid black;
+    padding-left: 2px;
+}
+
+/* Account Stats */
+.account-stats {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 90%;
+    
+    padding-top: 10px;
+    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.favourite-genre {
+    margin-bottom: 2px;
+}
+
+.divider-line {
+    width: 100%; 
+    border-top: 1px solid #000;
+
+    margin: 0px !important;
+    opacity: 100% !important;
+}
+
+/* Account Purchases */
+.account-purchases {
+    width: 90%;
+    padding: 0px;
+}
+
+/* Account Extras */
+.tab-section, .hidden-section {
+    display: none;
+}
+
+.tab-section.active, .hidden-section.active {
+    display: block;
+}
+
+.btn.active {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.account-extra-box {
+    width: 90%;
+}
+
+.top-options {
+    margin-bottom: 0.5rem;
+}
+
+.tab-section {
+    margin-top: 0.5rem;
+}
 
 
+.review-tab {
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.see-hidden-tab {
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.hidden-author-button {
+    border-radius: 0px;
+
+    margin-right: 4px;
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.hidden-book-button {
+    border-radius: 0px;
+
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+.hidden-topic-button {
+    border-radius: 0px;
+
+    margin-left: 4px !important;
+    font-weight: 600;
+    color: var(--text-black);
+}
+
+/* Logout.html */
+/* BorderBox */
+.container-logout {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    display: flex;
+    flex-direction: column
+}
+
+/* Button */
+.signout {
+    background-color: var(--ribbon-red);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    justify-content: center;
+}
+
+.logoutbutton {
+    display: flex;
+    justify-content: center;
+}
+
+/* login.html */
+/* login box */
+.login-info-box {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+.login-box {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 100%;
+
+    margin-top: 10px;
+}
+
+.singin-text {
+    padding-top: 10px;
+}
+
+.signin-form {
+    display: flex;
+    flex-direction: column
+}
+
+.signin_button {
+    background-color: var(--ribbon-red);
+    color: white;
+    border: none;
+
+    border-radius: 5px;
+    padding: 5px;
+
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#collapseArrow {
+    transition: transform 0.3s ease;
+}
+
+.collapse.show + #collapseArrow {
+    transform: rotate(180deg);
+}
+
+/* register.html */
+/* register box */
+.register-box {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.register-form {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 100%;
+
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.singup-button-box {
+    display: flex;
+    flex-direction: column
+}
+
+.signup-button {
+    background-color: var(--ribbon-red);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    justify-content: center;
+    margin-bottom: 10px;
+}

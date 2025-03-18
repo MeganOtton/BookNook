@@ -55,7 +55,6 @@ function checkBookPurchasedTrue() {
 // The purchase button will display 'Purchase'
 function checkBookPurchasedFalse() {
     const purchaseButton = document.getElementById('purchasedButton');
-    purchaseButton.textContent = 'Purchase';
     purchaseButton.disabled = false;
     console.log ('checkBookPurchasedFalse')
     return;
