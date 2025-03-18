@@ -19,6 +19,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from .models import CustomShelf
+
 
 @login_required
 def library_view(request):
@@ -234,8 +236,36 @@ def library_view(request):
     user_profile = Profile.objects.get(user=request.user)
     purchased_books = user_profile.purchased_books.all()
     wishlisted_books = user_profile.wishlisted_books.all()
+    user_shelves = CustomShelf.objects.filter(user=request.user)
     context = {
         'purchased_books': purchased_books,
         'wishlisted_books': wishlisted_books,
+        'user_shelves': user_shelves,
     }
     return render(request, 'profile/library.html', context)
+
+
+
+
+@require_POST
+@login_required
+def create_shelf(request):
+    if request.method == 'POST':
+        shelf_name = request.POST.get('shelf_name')
+        # Create the shelf in your database
+        new_shelf = CustomShelf.objects.create(name=shelf_name, user=request.user)
+        return JsonResponse({'success': True, 'shelf_id': new_shelf.id, 'shelf_name': new_shelf.name})
+    return JsonResponse({'success': False}, status=400)
+
+@require_POST
+@login_required
+def assign_book_to_shelf(request):
+    shelf_id = request.POST.get('shelf_id')
+    book_id = request.POST.get('book_id')
+    try:
+        shelf = CustomShelf.objects.get(id=shelf_id, user=request.user)
+        book = BookStorePage.objects.get(id=book_id)
+        shelf.books.add(book)
+        return JsonResponse({'success': True})
+    except (CustomShelf.DoesNotExist, BookStorePage.DoesNotExist):
+        return JsonResponse({'success': False, 'error': 'Shelf or book not found'})

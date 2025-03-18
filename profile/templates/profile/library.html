@@ -84,7 +84,13 @@
                     </a>
                     <div class="card-body book-title-index">
                         <h5 class="card-title">{{ book.booktitle }}</h5>
-                    </div>
+                        <select class="shelf-select" data-book-id="{{ book.id }}">
+                            <option value="">Assign to Shelf</option>
+                            {% for shelf in user_shelves %}
+                              <option value="{{ shelf.id }}">{{ shelf.name }}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
                 </div>
             
                 {% if forloop.counter|divisibleby:3 or forloop.last %}
@@ -166,9 +172,14 @@
     </div>
 </div>
 
-
+<form id="create-shelf-form">
+    <input type="text" id="shelf-name" required>
+    <button type="submit">Create Shelf</button>
+    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+</form>
 
 {% endblock content%}
 
 {% block extras %}
+<script src="{% static 'js/customshelf.js' %}"></script>
 {% endblock extras %}

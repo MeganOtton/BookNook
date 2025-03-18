@@ -11,4 +11,7 @@ urlpatterns = [
     path('signup/author/', views.AuthorSignupView.as_view(), name='account_signup_author'),
     path('library/', views.library_view, name='library'),
     path('account/', views.account_view, name='account'),
+    path('create_shelf/', views.create_shelf, name='create_shelf'),
+    path('assign_book_to_shelf/', views.assign_book_to_shelf, name='assign_book_to_shelf'),
 ]
+
