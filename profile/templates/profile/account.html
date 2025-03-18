@@ -138,19 +138,22 @@
         <!-- User Reviews Section -->
         <div id="reviewTab" class="tab-section">
             <h5>Your Reviews</h5>
-            {% for review in user_reviews %}
-                <div class="border p-3 mb-3">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <strong>{{ review.book_title }}</strong> — Rating: {{ review.rating }}/5
-                        </div>
-                        <small>{{ review.date }}</small>
+            <p>Debug: Total comments in database: {{ all_comments_count }}</p>
+            <p>Debug: Comments for current user: {{ user_comments_count }}</p>
+            <p>Debug: Username: {{ user.username }}</p>
+            {% for comment in user_comments %}
+                <div class="border p-3 mb-3 rounded shadow-sm">
+                    <p>Debug: Comment ID: {{ comment.id }}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0">{{ comment.bookstorepage.booktitle }}</h6>
+                        <span class="badge bg-primary">{{ comment.rating }}/5</span>
                     </div>
-                    <p class="mt-2">{{ review.text|truncatechars:150 }}</p>
-                    <a href="{% url 'review_detail' review.id %}" class="btn btn-outline-primary btn-sm">Go To Review</a>
+                    <small class="text-muted">Reviewed on {{ comment.created_on|date:"F d, Y" }}</small>
+                    <p class="mt-2">{{ comment.body|truncatechars:150 }}</p>
+                    <a href="{% url 'book_details_list' comment.bookstorepage.slug %}#comment-{{ comment.id }}" class="btn btn-outline-primary btn-sm">Go to Review</a>
                 </div>
             {% empty %}
-                <p>You have not written any reviews.</p>
+                <p class="text-muted">You haven't written any reviews yet.</p>
             {% endfor %}
         </div>
 

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import Profile
-from Store.models import BookStorePage
+from Store.models import BookStorePage, Comment
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
@@ -48,7 +48,7 @@ class ProfileDetailedView(DetailView, LoginRequiredMixin):
     def get_object(self):
         return get_object_or_404(Profile, user=self.request.user)
 
-    def get(self, request, *args, **kwargs):
+    def get_birthdate(self, request, *args, **kwargs):
         self.object = self.get_object()
         role_updated = False
         new_role = None
@@ -89,7 +89,38 @@ class ProfileAdminDetailedView(DetailView, LoginRequiredMixin):
     def get_object(self):
         return get_object_or_404(Profile, user=self.request.user)
 
+# Add the new account view function here
 
+@login_required
+def account_view(request):
+    current_user = request.user
+    print(f"Current user: {current_user.username} (ID: {current_user.id})")
+    
+    # Query all comments
+    all_comments = Comment.objects.all()
+    print(f"Total number of comments in the database: {all_comments.count()}")
+    
+    # Query comments for the current user
+    user_comments = Comment.objects.filter(author=current_user)
+    print(f"Number of comments for current user: {user_comments.count()}")
+    
+    # Print details of all comments
+    for comment in all_comments:
+        print(f"Comment ID: {comment.id}, Author ID: {comment.author.id}, Author: {comment.author.username}, Book: {comment.bookstorepage.booktitle}, Body: {comment.body[:50]}...")
+    
+    # Check if the current user has any comments
+    if user_comments.exists():
+        print("Current user has comments.")
+    else:
+        print("Current user has no comments.")
+    
+    context = {
+        'user_comments': user_comments,
+        'profile': current_user.profile,
+        'all_comments_count': all_comments.count(),
+        'user_comments_count': user_comments.count(),
+    }
+    return render(request, 'profile/account.html', context)
 
 # Function to move a game to the user's purchased games
 # This function is called when a user clicks the purchase button

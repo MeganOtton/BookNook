@@ -10,4 +10,5 @@ urlpatterns = [
     path('check_book_purchased/<str:booktitle>', views.check_book_ownership, name='check_book_purchased'),
     path('signup/author/', views.AuthorSignupView.as_view(), name='account_signup_author'),
     path('library/', views.library_view, name='library'),
+    path('account/', views.account_view, name='account'),
 ]

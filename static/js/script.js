@@ -4,17 +4,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const collapseElement = document.getElementById('purchasedBooks');
     const collapseArrow = document.getElementById('collapseArrow');
 
-    // When the collapse expands
-    collapseElement.addEventListener('shown.bs.collapse', function () {
-        collapseArrow.classList.remove('fa-chevron-up');
-        collapseArrow.classList.add('fa-chevron-down');
-    });
+    // Check if both elements exist before adding event listeners
+    if (collapseElement && collapseArrow) {
+        // When the collapse expands
+        collapseElement.addEventListener('shown.bs.collapse', function () {
+            collapseArrow.classList.remove('fa-chevron-up');
+            collapseArrow.classList.add('fa-chevron-down');
+        });
 
-    // When the collapse collapses
-    collapseElement.addEventListener('hidden.bs.collapse', function () {
-        collapseArrow.classList.remove('fa-chevron-down');
-        collapseArrow.classList.add('fa-chevron-up');
-    });
+        // When the collapse collapses
+        collapseElement.addEventListener('hidden.bs.collapse', function () {
+            collapseArrow.classList.remove('fa-chevron-down');
+            collapseArrow.classList.add('fa-chevron-up');
+        });
+    } else {
+        console.log('One or both elements (purchasedBooks, collapseArrow) not found in the DOM');
+    }
 });
 
 
@@ -62,12 +67,3 @@ function showHiddenSection(sectionId, clickedButton) {
 window.onload = function () {
     showTab('reviewTab');
 };
-
-
-// NEW REVIEW FORM TOGGLE
-document.querySelector('.toggle-review-form').addEventListener('click', function() {
-    const form = document.querySelector('.leave-review-form');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    this.classList.toggle('fa-chevron-down');
-    this.classList.toggle('fa-chevron-up');
-});

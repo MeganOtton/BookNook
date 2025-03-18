@@ -9,54 +9,77 @@ const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
 const deleteButtons = document.getElementsByClassName("btn-delete");
 const deleteConfirm = document.getElementById("deleteConfirm");
 
+function safeGetElementById(id) {
+    return document.getElementById(id) || { value: '' };
+}
+
+function safeGetInnerText(element) {
+    return element ? element.innerText.trim() : '';
+}
+
+function convertRatingToChoice(rating) {
+    const numericRating = parseInt(rating);
+    const ratingMap = {
+        1: '1 ★',
+        2: '2 ★★',
+        3: '3 ★★★',
+        4: '4 ★★★★',
+        5: '5 ★★★★★'
+    };
+    return ratingMap[numericRating] || numericRating.toString();
+}
+
+for (let button of editButtons) {
+    button.addEventListener("click", (e) => {
+        let commentId = e.target.getAttribute("data-comment_id");
+
+        let commentElement = e.target.closest('.review');
+        let commentTitle = safeGetInnerText(commentElement.querySelector(`#title${commentId}`));
+        let commentRating = safeGetInnerText(commentElement.querySelector('.User-Review-Rating')).split('/')[0];
+        let commentText = safeGetInnerText(commentElement.querySelector(`#text${commentId}`));
+
+        if (commentTitle_Value) commentTitle_Value.value = commentTitle;
+        if (commentRating_Value) commentRating_Value.value = commentRating;
+        if (commentBody_Value) commentBody_Value.value = commentText;
+
+        if (submitButton) submitButton.innerText = "Update";
+        if (commentForm) commentForm.setAttribute("action", `edit_comment/${commentId}`);
+
+        // Show the review form
+        const leaveReviewForm = document.querySelector('.leave-review-form');
+        if (leaveReviewForm) {
+            leaveReviewForm.style.display = 'block';
+        }
+
+        // Scroll to the form
+        if (commentForm) commentForm.scrollIntoView({behavior: "smooth"});
+    });
+}
 
 /**
-* Initializes edit functionality for the provided edit buttons.
-* 
-* For each button in the `editButtons` collection:
-* - Retrieves the associated comment's ID upon click.
-* - Fetches the content of the corresponding comment.
-* - Populates the `commentText` input/textarea with the comment's content for editing.
-* - Updates the submit button's text to "Update".
-* - Sets the form's action attribute to the `edit_comment/{commentId}` endpoint.
-*/
-for (let button of editButtons) {
-  button.addEventListener("click", (e) => {
-    let commentId = e.target.getAttribute("data-comment_id");
-
-    let commentTitle = document.getElementById(`title${commentId}`).innerText;
-    let commentLevel = document.getElementById(`level${commentId}`).innerText;
-    let commentRating = document.getElementById(`rating${commentId}`).innerText;
-    let commentText = document.getElementById(`text${commentId}`).innerText;
-
-
-    commentTitle_Value.value = commentTitle;
-    commentLevel_Value.value = commentLevel;
-    commentRating_Value.value = commentRating;
-    commentBody_Value.value = commentText;
-
-
-
-    submitButton.innerText = "Update";
-    commentForm.setAttribute("action", `edit_comment/${commentId}`);
-  });
+ * Initializes deletion functionality for the provided delete buttons.
+ */
+for (let button of deleteButtons) {
+    button.addEventListener("click", (e) => {
+        let commentId = e.target.getAttribute("data-comment_id");
+        if (deleteConfirm) deleteConfirm.href = `delete_comment/${commentId}`;
+        if (deleteModal) deleteModal.show();
+    });
 }
 
 
-/**
-* Initializes deletion functionality for the provided delete buttons.
-* 
-* For each button in the `deleteButtons` collection:
-* - Retrieves the associated comment's ID upon click.
-* - Updates the `deleteConfirm` link's href to point to the 
-* deletion endpoint for the specific comment.
-* - Displays a confirmation modal (`deleteModal`) to prompt 
-* the user for confirmation before deletion.
-*/
-for (let button of deleteButtons) {
-    button.addEventListener("click", (e) => {
-      let commentId = e.target.getAttribute("data-comment_id");
-      deleteConfirm.href = `delete_comment/${commentId}`;
-      deleteModal.show();
-    });
+// NEW REVIEW FORM TOGGLE
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleReviewForm = document.querySelector('.toggle-review-form');
+  const leaveReviewForm = document.querySelector('.leave-review-form');
+
+  if (toggleReviewForm && leaveReviewForm) {
+      toggleReviewForm.addEventListener('click', function() {
+          leaveReviewForm.style.display = leaveReviewForm.style.display === 'none' ? 'block' : 'none';
+          this.classList.toggle('fa-chevron-down');
+          this.classList.toggle('fa-chevron-up');
+      });
+  } else {
+      console.log('Review form toggle elements not found');
   }
+});
