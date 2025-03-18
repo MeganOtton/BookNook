@@ -9,7 +9,22 @@ from Store.models import BookStorePage
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from .forms import CustomSignupForm
+from .forms import CustomSignupForm, CustomAuthorSignupForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.views.generic import FormView
+
+
+
+class AuthorSignupView(FormView):
+    form_class = CustomAuthorSignupForm
+    template_name = 'profile/signup_author.html'
+    success_url = reverse_lazy('account_login')
+
+    def form_valid(self, form):
+        user = form.save(self.request)
+        login(self.request, user)
+        return super().form_valid(form)
 
 # Profile detailed view
 # This view displays the user's profile page
@@ -24,6 +39,26 @@ class ProfileDetailedView(DetailView, LoginRequiredMixin):
 
     def get_object(self):
         return get_object_or_404(Profile, user=self.request.user)
+
+class ProfileAuthorDetailedView(DetailView, LoginRequiredMixin):
+    model = Profile
+    template_name = "profile/account_author.html"
+    context_object_name = "profile_author"
+
+
+    def get_object(self):
+        return get_object_or_404(Profile, user=self.request.user)
+
+class ProfileAdminDetailedView(DetailView, LoginRequiredMixin):
+    model = Profile
+    template_name = "profile/account_admin.html"
+    context_object_name = "profile_admin"
+
+
+    def get_object(self):
+        return get_object_or_404(Profile, user=self.request.user)
+
+
 
 # Function to move a game to the user's purchased games
 # This function is called when a user clicks the purchase button
@@ -87,19 +122,3 @@ def check_book_ownership(request, booktitle):
             return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
     else:   
         return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
-    
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-# from .forms import CustomUserCreationForm
-
-# def signup_view(request):
-#     if request.method == 'POST':
-#         form = CustomUserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = CustomUserCreationForm()
-#     return render(request, 'signup.html', {'form': form})

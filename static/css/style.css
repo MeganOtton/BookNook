@@ -9,6 +9,8 @@
 /* Body */
 .alert {
     background-color: var(--white);
+    margin-bottom: 10px !important;
+    margin-top: 10px !important;
 }
 
 /* Body */
@@ -37,6 +39,10 @@ body {
 
 .nav-link {
     color: var(--white) !important;
+}
+
+.nav-item {
+    font-size: 16px;
 }
 
 .navbar-toggler-icon {
@@ -245,16 +251,24 @@ body {
     margin-top: 10px;
 }
 
-.btn-primary {
+.purchase-button {
     position: absolute;
-    top: 320px; 
-    left: 47px; 
-    z-index: 10; 
-    border-radius: 1rem ;
+    bottom: 10px; /* Adjust this value to fine-tune the vertical position */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    border-radius: 1rem;
     background-color: var(--ribbon-red) !important;
     border-color: var(--ribbon-red) !important;
-    border-radius: 1rem ;
+    padding: 5px 15px; /* Adjust padding as needed */
+    font-size: 0.9rem; /* Adjust font size as needed */
 }
+
+.bookcover-purchase {
+    position: relative;
+    display: inline-block;
+}
+
 
 .review-box {
     background-color: white;
@@ -487,6 +501,42 @@ body {
     color: var(--text-black);
 }
 
+/* account_admin.html */
+/* admin-overview-box */
+
+.admin-overview-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Quick-Overview, .requested-features, .bug-reports {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 90%;
+    
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.overview-text, .requested-features-text, .bug-reports-text {
+    border: 1px solid black;
+    padding-left: 2px;
+    margin-bottom: 5px;
+}
+
+.admin-tools-button{
+    border-radius: 1rem;
+    background-color: var(--ribbon-red) !important;
+    border-color: var(--ribbon-red) !important;
+    padding: 5px 15px; /* Adjust padding as needed */
+    font-size: 0.9rem; /* Adjust font size as needed */
+
+    color: white !important;
+}
+
 /* Logout.html */
 /* BorderBox */
 .container-logout {
@@ -598,4 +648,8 @@ body {
     padding: 5px;
     justify-content: center;
     margin-bottom: 10px;
+}
+
+li {
+    font-size: 12px;
 }

@@ -7,12 +7,14 @@ import datetime
 
 class Profile(models.Model):
     ROLE_CHOICES = [
-        ('child', 'Child Reader'),
-        ('adult', 'Adult Reader'),
+        ('Child', 'Child Reader'),
+        ('Adult', 'Adult Reader'),
+        ('Author', 'Author'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birthdate = models.DateField(null=True, blank=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='adult')
+    birthdate_author = models.DateField(null=True, blank=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Adult')
     purchased_books = models.ManyToManyField(BookStorePage, related_name='purchased_books', blank=True)
 
     def save(self, *args, **kwargs):
@@ -20,9 +22,14 @@ class Profile(models.Model):
             today = datetime.date.today()
             age = today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
             if age < 18:
-                self.role = 'child'
+                self.role = 'Child'
             else:
-                self.role = 'adult'
+                self.role = 'Adult'
+        super().save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        if self.birthdate_author:
+            self.role = 'Author'
         super().save(*args, **kwargs)
 
     def __str__(self):

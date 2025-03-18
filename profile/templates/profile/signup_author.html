@@ -7,17 +7,16 @@
 <div class="register-box">
   <div class="register-form">
     
-    <h1>{% trans "Sign Up" %}</h1>
+    <h1>{% trans "Sign Up Author" %}</h1>
 
     <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
     <p>
-      {% url 'account_signup_author' as account_signup_author_url %}
-      {% blocktrans %}Registering as an Author? Then please <a href="{{ account_signup_author_url }}">sign up as author</a>.{% endblocktrans %}
+      {% url 'account_signup' as account_signup_url %}
+      {% blocktrans %}Registering as an Reader? Then please <a href="{{ account_signup_url }}">sign up as reader</a>.{% endblocktrans %}
     </p>
-    <!-- <p>{% blocktrans %}Registering as a Author? Then please <a href="{{% account_signup_author_url %}}">sign up as author</a>.{% endblocktrans %}</p> GET URL, Make page -->
 
-    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    <form class="signup_author" id="signup_form" method="post" action="{% url 'account_signup_author' %}">
       {% csrf_token %}
       {{ form.as_p }}
       {% if redirect_field_value %}
@@ -32,6 +31,8 @@
 
   </div>  
 </div>
+
+
 
 {% endblock content %}
 

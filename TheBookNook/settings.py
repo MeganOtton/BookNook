@@ -159,4 +159,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ACCOUNT_FORMS = {
     'signup': 'profile.forms.CustomSignupForm',
+    'signup_author': 'profile.forms.CustomAuthorSignupForm',
 }
