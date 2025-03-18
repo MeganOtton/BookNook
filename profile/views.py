@@ -4,12 +4,12 @@ from django.views.generic import DetailView
 from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .models import Account
+from .models import Profile
 from Store.models import BookStorePage
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm
+from .forms import CustomSignupForm
 
 # Profile detailed view
 # This view displays the user's profile page
@@ -17,13 +17,13 @@ from .forms import CustomUserCreationForm
 # It also displays the user's profile information
 # It is only accessible to logged in users
 class ProfileDetailedView(DetailView, LoginRequiredMixin):
-    model = Account
-    template_name = "Account/account.html"
-    context_object_name = "account"
+    model = Profile
+    template_name = "profile/account.html"
+    context_object_name = "profile"
 
 
     def get_object(self):
-        return get_object_or_404(Account, user=self.request.user)
+        return get_object_or_404(Profile, user=self.request.user)
 
 # Function to move a game to the user's purchased games
 # This function is called when a user clicks the purchase button
@@ -39,7 +39,7 @@ def move_book_to_chosen(request, booktitle):
     if request.user.is_authenticated:
         if request.method == 'POST':
             user = request.user
-            profile = get_object_or_404(Account, user=user)
+            profile = get_object_or_404(Profile, user=user)
         else:
             post = get_object_or_404(BookStorePage, booktitle=booktitle)
 
@@ -78,7 +78,7 @@ def check_book_ownership(request, booktitle):
     post = get_object_or_404(BookStorePage, booktitle=booktitle)
     if request.user.is_authenticated:
         user = request.user
-        profile = get_object_or_404(Account, user=user)
+        profile = get_object_or_404(Profile, user=user)
         
 
         if post in profile.purchased_books.all():
@@ -91,15 +91,15 @@ def check_book_ownership(request, booktitle):
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm
+# from .forms import CustomUserCreationForm
 
-def signup_view(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+# def signup_view(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'signup.html', {'form': form})

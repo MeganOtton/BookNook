@@ -11,13 +11,9 @@
 
     <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
-    <form class="signup" id="signup_form" method="POST" action="{% url 'account_signup' %}">
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
-      <p>{{ form.username.label_tag }} {{ form.username }}</p>
-      <p>{{ form.email.label_tag }} {{ form.email }}</p>
-      <p>{{ form.birthdate.label_tag }} {{ form.birthdate }}</p>
-      <p>{{ form.password1.label_tag }} {{ form.password1 }}</p>
-      <p>{{ form.password2.label_tag }} {{ form.password2 }}</p>
+      {{ form.as_p }}
       {% if redirect_field_value %}
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       {% endif %}

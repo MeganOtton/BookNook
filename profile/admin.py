@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Account
+from .models import Profile
 from django.contrib.auth.models import User
 
-class AccountAdmin(admin.ModelAdmin):
+class ProfileAdmin(admin.ModelAdmin):
     filter_horizontal = ('purchased_books',)
 
 admin.site.unregister(User)
 admin.site.register(User)
-admin.site.register(Account, AccountAdmin)
+admin.site.register(Profile, ProfileAdmin)

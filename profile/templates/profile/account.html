@@ -43,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for book in account.purchased_books.all %}
+                            {% for book in profile.purchased_books.all %}
                             <tr>
                             <td>{{ book.booktitle }}</td>
                             <td>{{ book.bookprice }}</td>
