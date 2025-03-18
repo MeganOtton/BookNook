@@ -16,6 +16,7 @@ class Profile(models.Model):
     birthdate_author = models.DateField(null=True, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Adult')
     purchased_books = models.ManyToManyField(BookStorePage, related_name='purchased_books', blank=True)
+    wishlisted_books = models.ManyToManyField(BookStorePage, related_name='wishlisted_books', blank=True)
 
     def save(self, *args, **kwargs):
         if self.birthdate:
@@ -44,3 +45,4 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+

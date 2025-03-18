@@ -4,6 +4,10 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .models import BookStorePage, Comment
 from .forms import RatingForm
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from profile.models import Profile
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -123,5 +127,3 @@ def review_detail(request, id):
     # Fetch the specific review based on the ID
     review = get_object_or_404(Comment, id=id)
     return render(request, 'review_detail.html', {'review': review})
-
-

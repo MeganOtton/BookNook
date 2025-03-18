@@ -13,6 +13,9 @@ from .forms import CustomSignupForm, CustomAuthorSignupForm
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from datetime import date
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -145,3 +148,36 @@ def check_book_ownership(request, booktitle):
             return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
     else:   
         return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
+
+    
+# Function to move a game to the user's purchased games
+# This function is called when a user clicks the purchase button
+# It adds the game to the user's purchased games
+# It also displays a message to the user
+# It redirects the user to the game detail page
+
+# If the user is not logged in, it displays a message to the user
+# It redirects the user to the game detail page
+
+def move_book_to_wishlist(request, booktitle):
+    post = get_object_or_404(BookStorePage, booktitle=booktitle)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            user = request.user
+            profile = get_object_or_404(Profile, user=user)
+        else:
+            post = get_object_or_404(BookStorePage, booktitle=booktitle)
+
+        if post in profile.wishlisted_books.all():
+            profile.wishlisted_books.remove(post)
+            profile.save()
+            messages.error(request, f"You have Removed {booktitle} from your wishlist.")
+            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
+        else:
+            profile.wishlisted_books.add(post)
+            profile.save()
+            messages.success(request, f"You have wishlisted {booktitle}, if you want to remove it, click the heart again")
+            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
+    else :
+        messages.error(request, f'Please Sign In to purchase: {booktitle}')
+    return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")

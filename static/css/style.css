@@ -671,3 +671,11 @@ body {
 li {
     font-size: 12px;
 }
+
+.wishlist-icon {
+    color: #ffffff;
+}
+
+.wishlist-icon.active {
+    color: red;
+}
