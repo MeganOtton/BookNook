@@ -201,8 +201,10 @@ def move_book_to_wishlist(request, booktitle):
 @login_required
 def library_view(request):
     user_profile = Profile.objects.get(user=request.user)
+    purchased_books = user_profile.purchased_books.all()
     wishlisted_books = user_profile.wishlisted_books.all()
     context = {
+        'purchased_books': purchased_books,
         'wishlisted_books': wishlisted_books,
     }
     return render(request, 'profile/library.html', context)

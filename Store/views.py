@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from profile.models import Profile
+from django.db.models import Q
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -22,19 +23,24 @@ class BookList(generic.ListView):
 
 class BookListSearch(generic.ListView):
     model = BookStorePage
-    template_name = "store/search.html"  # This should always be "store/search.html"
+    template_name = "store/search.html"
     context_object_name = 'book_list_search'
     paginate_by = 6
 
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return BookStorePage.objects.filter(status=1, booktitle__icontains=query)
+            return BookStorePage.objects.filter(
+                Q(status=1) &
+                (Q(booktitle__icontains=query) |
+                 Q(genre__name__icontains=query) |
+                 Q(topics__name__icontains=query) |
+                 Q(authorname__icontains=query))
+            ).distinct()
         return BookStorePage.objects.none()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Always provide these context variables, regardless of whether there's a search query
         context['recommended_books'] = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
         context['romance_books'] = BookStorePage.objects.filter(status=1, genre__name='Romance')[:6]
         context['fantasy_books'] = BookStorePage.objects.filter(status=1, genre__name='Fantasy')[:6]
