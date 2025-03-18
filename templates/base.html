@@ -61,7 +61,7 @@
                     {% if user.is_authenticated %}
                         <!-- My Library -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ home_url }}">My Library</a>
+                            <a class="nav-link" href="{% url 'library' %}">My Library</a>
                         </li>
                     {% endif %}
                     

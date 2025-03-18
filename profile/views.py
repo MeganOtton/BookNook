@@ -16,8 +16,13 @@ from datetime import date
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Profile
 
-
+@login_required
+def library_view(request):
+    return render(request, 'profile/library.html')
 
 class AuthorSignupView(FormView):
     form_class = CustomAuthorSignupForm
@@ -192,3 +197,12 @@ def move_book_to_wishlist(request, booktitle):
         messages.error(request, f'Please Sign In to update your wishlist.')
     
     return HttpResponseRedirect(reverse('book_details_list', kwargs={'slug': post.slug}))
+
+@login_required
+def library_view(request):
+    user_profile = Profile.objects.get(user=request.user)
+    wishlisted_books = user_profile.wishlisted_books.all()
+    context = {
+        'wishlisted_books': wishlisted_books,
+    }
+    return render(request, 'profile/library.html', context)
