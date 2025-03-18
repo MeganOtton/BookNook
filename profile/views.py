@@ -98,22 +98,26 @@ class ProfileAdminDetailedView(DetailView, LoginRequiredMixin):
 def move_book_to_chosen(request, booktitle):
     post = get_object_or_404(BookStorePage, booktitle=booktitle)
     if request.user.is_authenticated:
-        if request.method == 'POST':
-            user = request.user
-            profile = get_object_or_404(Profile, user=user)
-        else:
-            post = get_object_or_404(BookStorePage, booktitle=booktitle)
+        user = request.user
+        profile = get_object_or_404(Profile, user=user)
 
         if post in profile.purchased_books.all():
             messages.error(request, f"You have already purchased the book: {booktitle}")
-            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=true")
         else:
             profile.purchased_books.add(post)
+            
+            # Check if the book is in the wishlist and remove it
+            if post in profile.wishlisted_books.all():
+                profile.wishlisted_books.remove(post)
+                messages.info(request, f"{booktitle} has been removed from your wishlist as you've purchased it.")
+            
             profile.save()
             messages.success(request, f"You have purchased the book: {booktitle}")
-            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=true")
-    else :
+        
+        return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=true")
+    else:
         messages.error(request, f'Please Sign In to purchase: {booktitle}')
+    
     return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
 
 
@@ -162,22 +166,29 @@ def check_book_ownership(request, booktitle):
 def move_book_to_wishlist(request, booktitle):
     post = get_object_or_404(BookStorePage, booktitle=booktitle)
     if request.user.is_authenticated:
-        if request.method == 'POST':
-            user = request.user
-            profile = get_object_or_404(Profile, user=user)
-        else:
-            post = get_object_or_404(BookStorePage, booktitle=booktitle)
+        user = request.user
+        profile = get_object_or_404(Profile, user=user)
 
-        if post in profile.wishlisted_books.all():
+        if post in profile.purchased_books.all():
+            # If the book is already purchased, remove it from wishlist if it's there
+            if post in profile.wishlisted_books.all():
+                profile.wishlisted_books.remove(post)
+                profile.save()
+                messages.info(request, f"{booktitle} has been removed from your wishlist as you've already purchased it.")
+            else:
+                messages.info(request, f"You've already purchased {booktitle}. It can't be added to the wishlist.")
+                return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=true")
+        elif post in profile.wishlisted_books.all():
             profile.wishlisted_books.remove(post)
             profile.save()
-            messages.error(request, f"You have Removed {booktitle} from your wishlist.")
-            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
+            messages.success(request, f"You have removed {booktitle} from your wishlist.")
         else:
             profile.wishlisted_books.add(post)
             profile.save()
-            messages.success(request, f"You have wishlisted {booktitle}, if you want to remove it, click the heart again")
-            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
-    else :
-        messages.error(request, f'Please Sign In to purchase: {booktitle}')
-    return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
+            messages.success(request, f"You have added {booktitle} to your wishlist. Click the heart again to remove it.")
+        
+        return HttpResponseRedirect(reverse('book_details_list', kwargs={'slug': post.slug}))
+    else:
+        messages.error(request, f'Please Sign In to update your wishlist.')
+    
+    return HttpResponseRedirect(reverse('book_details_list', kwargs={'slug': post.slug}))
