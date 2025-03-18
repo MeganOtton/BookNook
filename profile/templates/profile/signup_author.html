@@ -2,7 +2,6 @@
 
 {% load i18n %}
 
-
 {% block content %}
 <div class="register-box">
   <div class="register-form">
@@ -13,17 +12,42 @@
 
     <p>
       {% url 'account_signup' as account_signup_url %}
-      {% blocktrans %}Registering as an Reader? Then please <a href="{{ account_signup_url }}">sign up as reader</a>.{% endblocktrans %}
+      {% blocktrans %}Registering as a Reader? Then please <a href="{{ account_signup_url }}">sign up as reader</a>.{% endblocktrans %}
     </p>
 
     <form class="signup_author" id="signup_form" method="post" action="{% url 'account_signup_author' %}">
       {% csrf_token %}
-      {{ form.as_p }}
-      {% if redirect_field_value %}
-      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
       {% endif %}
 
-      <div class="singup-button-box">
+      {% for field in form %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.errors %}
+            <div class="alert alert-danger">
+              {% for error in field.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+
+      <div class="signup-button-box">
         <button type="submit" class="signup-button">{% trans "Sign Up" %} &raquo;</button>  
       </div>
       
@@ -31,9 +55,6 @@
 
   </div>  
 </div>
-
-
-
 {% endblock content %}
 
 {% block extras %}

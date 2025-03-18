@@ -504,14 +504,14 @@ body {
 /* account_admin.html */
 /* admin-overview-box */
 
-.admin-overview-box {
+.admin-overview-box, .author-review-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
 }
 
-.Quick-Overview, .requested-features, .bug-reports {
+.Quick-Overview, .requested-features, .bug-reports, .author-overview {
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
@@ -521,7 +521,7 @@ body {
     margin-bottom: 10px;
 }
 
-.overview-text, .requested-features-text, .bug-reports-text {
+.overview-text, .requested-features-text, .bug-reports-text, .author-overview-text {
     border: 1px solid black;
     padding-left: 2px;
     margin-bottom: 5px;
