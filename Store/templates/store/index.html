@@ -1,336 +1,668 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 {% block content %}
 <!-- index.html content starts here -->
 
 <img src="{% static 'images/Hero_Image.webp' %}" class="hero_image" alt="Old books on a shelf">
 <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf-hero" alt="Wood Shelf">
 
+
+
 <!-- Reccommended Shelf -->
-<!-- FIX THIS Recommended = Best rated - Already Read / Favourite Genre - hidden topics and authors FIX THIS-->
-<div class="container shelf-container-recommended">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Recommended</span>
-    </div>
-    
-    <div id="bookCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% if forloop.counter0|divisibleby:3 %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                {% endif %}
-
-                <div class="card mx-2 Book">
-                    <a href="{% url 'book_details_list' book.slug %}">
-                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                    </a>
-                    <div class="card-body book-title-index">
-                        <h5 class="card-title">{{ book.booktitle }}</h5>
-                    </div>
+<!-- FIX THIS Recommended =  Already Read / Favourite Genre - hidden topics and authors FIX THIS-->
+{% if user.is_authenticated %}
+    {% with recommended_books=book_list|filter_accessible_books:user.profile %}
+        {% if recommended_books %}
+            <div class="container mt-5 shelf-container">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Recommended</span>
                 </div>
+                
+                <div id="recommendedCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in recommended_books %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
 
-                {% if forloop.counter|divisibleby:3 or forloop.last %}
-                        </div> <!-- .d-flex -->
-                    </div> <!-- .carousel-item -->
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endif %}
+
+<!-- Popular Shelf -->
+{% with popular_books=book_list|filter_and_sort_by_rating %}
+    {% if popular_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=popular_books|filter_accessible_books:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Popular</span>
+                        </div>
+                        
+                        <div id="popularCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
+
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
+
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#popularCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#popularCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
                 {% endif %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-
-        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+            {% endwith %}
+        {% endif %}
+    {% endif %}
+{% endwith %}
 
 <!-- Romance Shelf -->
-<div class="container mt-5 shelf-container">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Romance</span>
-    </div>
-    
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Romance' %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
+{% with romance_books=book_list|filter_by_genre:"Romance" %}
+    {% if romance_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=romance_books|filter_accessible_books:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Romance</span>
                         </div>
+                        
+                        <div id="romanceCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#RomanceCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#RomanceCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
 
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+                            <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            <div class="container mt-5 shelf-container">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Romance</span>
+                </div>
+                
+                <div id="romanceCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in romance_books %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
+
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
 
 <!-- Fantasy Shelf -->
-<div class="container mt-5 shelf-container">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Fantasy</span>
-    </div>
-    
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Fantasy' %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
+{% with fantasy_books=book_list|filter_by_genre:"Fantasy" %}
+    {% if fantasy_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=fantasy_books|filter_accessible_books:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Fantasy</span>
                         </div>
+                        
+                        <div id="fantasyCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#FantasyCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#FantasyCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
 
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+                            <button class="carousel-control-next" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            <div class="container mt-5 shelf-container">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Fantasy</span>
+                </div>
+                
+                <div id="fantasyCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in fantasy_books %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
+
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
 
 <!-- Mystery Shelf -->
-<div class="container mt-5 shelf-container">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Mystery</span>
-    </div>
-    
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Mystery' %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
+{% with mystery_books=book_list|filter_by_genre:"Mystery" %}
+    {% if mystery_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=mystery_books|filter_accessible_books:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Mystery</span>
                         </div>
+                        
+                        <div id="mysteryCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#MysteryCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#MysteryCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
 
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+                            <button class="carousel-control-next" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            <div class="container mt-5 shelf-container">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Mystery</span>
+                </div>
+                
+                <div id="mysteryCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in mystery_books %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
+
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
 
 <!-- Thriller Shelf -->
-<div class="container mt-5 shelf-container">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Thriller</span>
-    </div>
-    
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Thriller' %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
+{% with thriller_books=book_list|filter_by_genre:"Thriller" %}
+    {% if thriller_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=thriller_books|filter_accessible_books:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Thriller</span>
                         </div>
+                        
+                        <div id="thrillerCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#ThrillerCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#ThrillerCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
 
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+                            <button class="carousel-control-next" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            <div class="container mt-5 shelf-container">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Thriller</span>
+                </div>
+                
+                <div id="thrillerCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in thriller_books %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
+
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
 
 <!-- Science Fiction Shelf -->
-<div class="container mt-5 shelf-container">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Science Fiction</span>
-    </div>
-    
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Science Fiction' %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
+{% with scifi_books=book_list|filter_by_genre:"Science Fiction" %}
+    {% if scifi_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=scifi_books|filter_accessible_books:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Science Fiction</span>
                         </div>
+                        
+                        <div id="scifiCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#ScienceFictionCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#ScienceFictionCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#scifiCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
 
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+                            <button class="carousel-control-next" type="button" data-bs-target="#scifiCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            <div class="container mt-5 shelf-container">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Science Fiction</span>
+                </div>
+                
+                <div id="scifiCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in scifi_books %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
+
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#scifiCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#scifiCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
 
 <!-- Non Fiction Shelf -->
-<div class="container mt-5 shelf-container-nonfiction">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Non-Fiction</span>
-    </div>
-    
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Non-Fiction' %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
+{% with nonfiction_books=book_list|filter_by_genre:"Non-Fiction" %}
+    {% if nonfiction_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=nonfiction_books|filter_accessible_books:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container-nonfiction">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Non-Fiction</span>
                         </div>
+                        
+                        <div id="nonfictionCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            <div class="container mt-5 shelf-container-nonfiction">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Non-Fiction</span>
+                </div>
+                
+                <div id="nonfictionCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in nonfiction_books %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
 
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
 
 <div class="fix-footer">
 </div>

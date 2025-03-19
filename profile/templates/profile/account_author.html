@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="accounttitle-ribbon">
+    <h1 class="accounttitle">Author Overview</h1>
+    <i class="fa-solid fa-gear fa-2xl Options-Account-Info" style="color: #ffffff;"></i> <!-- Link this to have change password and other account options-->
+</div>
+
+<div class="author-review-box">
+    <div class="author-overview">
+        <p class="author-overview-text"><strong>Total Readers: # {{ total_readers }}</strong></p> <!--ADD FUNCTIONALITY-->
+        <p class="author-overview-text"><strong>Total Reviews: # {{ total_reviews }}</strong></p> <!--ADD FUNCTIONALITY-->
+        <p class="author-overview-text"><strong>Total Wishlisted: # {{ total_wishlisted }}</strong> </p> <!--ADD FUNCTIONALITY-->
+    </div>
+
+    <div class="container Books-Overview">
+
+        <div class="published_books">
+            <div class="card my-3">
+
+                <div class="card-header" data-bs-toggle="collapse" data-bs-target="#publishedBooks" style="cursor: pointer;">
+                <strong>Total Books Published: # {{ total_books_published_author }}</strong> <!--ADD FUNCTIONALITY-->
+                <i class="fa-solid fa-chevron-down" id="collapseArrow"></i>
+                </div>
+
+                <div id="publishedBooks" class="collapse show">
+                    <div class="card-body p-0" style="max-height: 200px; overflow-y: auto;">
+                        <table class="table table-bordered m-0">
+                            <tbody>
+                                {% for book in profile.purchased_books.all %}
+                                <tr>
+                                <td>{{ book.booktitle }}</td>
+                                <td><i class="fa-solid fa-circle-info"></i></td> <!--ADD FUNCTIONALITY, it shows a box below it with the books stats -->
+                                <td><i class="fa-solid fa-location-arrow"></i></td> <!--ADD FUNCTIONALITY, make it go to the book page-->
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                <td colspan="3" class="text-center">No purchased books</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="awaiting_approval_books">
+            <div class="card my-3">
+
+                <div class="card-header" data-bs-toggle="collapse" data-bs-target="#approvalBooks" style="cursor: pointer;">
+                <strong>Books Awaiting Approval: # {{ total_books_Awaiting_Approval_author }}</strong> <!--ADD FUNCTIONALITY-->
+                <i class="fa-solid fa-chevron-down" id="collapseArrow"></i>
+                </div>
+
+                <div id="approvalBooks" class="collapse show">
+                    <div class="card-body p-0" style="max-height: 200px; overflow-y: auto;">
+                        <table class="table table-bordered m-0">
+                            <tbody>
+                                {% for book in profile.purchased_books.all %}
+                                <tr>
+                                <td>{{ book.booktitle }}</td>
+                                <td><i class="fa-solid fa-circle-info"></i></td> <!--ADD FUNCTIONALITY, make it go to the book page-->
+                                <td><i class="fa-solid fa-circle-info"></i></td> <!--ADD FUNCTIONALITY, get the latest update in a model, ie awaiting approval or currently being reviewed -->
+                                <td><i class="fa-solid fa-location-arrow"></i></td> <!--ADD FUNCTIONALITY, make it go to the book page-->
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                <td colspan="3" class="text-center">No purchased books</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drafts_books">
+            <div class="card my-3">
+
+                <div class="card-header" data-bs-toggle="collapse" data-bs-target="#draftsBooks" style="cursor: pointer;">
+                <strong>Drafts: # {{ total_books_drafts_author }}</strong> <!--ADD FUNCTIONALITY-->
+                <i class="fa-solid fa-chevron-down" id="collapseArrow"></i>
+                </div>
+
+                <div id="draftsBooks" class="collapse show">
+                    <div class="card-body p-0" style="max-height: 200px; overflow-y: auto;">
+                        <table class="table table-bordered m-0">
+                            <tbody>
+                                {% for book in profile.purchased_books.all %}
+                                <tr>
+                                <td>{{ book.booktitle }}</td>
+                                <td><i class="fa-solid fa-pen"></i></td> <!--ADD FUNCTIONALITY, make it go to the edit book form-->
+                                <td><i class="fa-solid fa-circle-info"></i></td> <!--ADD FUNCTIONALITY, get the latest update in a model, ie awaiting approval or currently being reviewed -->
+                                <td><i class="fa-solid fa-location-arrow"></i></td> <!--ADD FUNCTIONALITY, make it go to the book page preview-->
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                <td colspan="3" class="text-center">No purchased books</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="author-buttons">
+        <a href="{% url 'profile_author' %}" class="btn Public-Page-button">Public Page</a>
+
+        <a href="{% url 'profile_author' %}" class="btn new-book-button">New Book</a>    
+    </div>
+    
+    
+</div>
+
+<div class="fix-footer">
+</div>
+
+{% endblock content %}
+
+{% block extras %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock extras %}

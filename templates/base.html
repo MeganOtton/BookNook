@@ -55,13 +55,15 @@
 
                     <!-- Search -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ home_url }}">Search</a>
+                        <a class="nav-link" href="{% url 'book_search' %}">Search</a>
                     </li>
-
-                    <!-- My Library -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ home_url }}">My Library</a>
-                    </li>
+                    
+                    {% if user.is_authenticated %}
+                        <!-- My Library -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'library' %}">My Library</a>
+                        </li>
+                    {% endif %}
                     
                     {% if user.is_authenticated and user.is_superuser %}
                     <!-- Admin-->
@@ -72,28 +74,29 @@
                     {% endif %}
 
                     {% if user.is_authenticated %}
-
-                    <!-- Account -->
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == account_url %}active{% endif %}" href="{% url 'profile' %}">Account</a>
-                    </li>
-                    
-                    <!-- Logout -->
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
-                    </li>
-
-                    <!-- Register -->
+                        {% if user.is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == profile_url %}active{% endif %}" href="{% url 'profile_admin' %}">Account</a>
+                            </li>
+                        {% elif user.profile.role == 'Author' %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == profile_url %}active{% endif %}" href="{% url 'profile_author' %}">Account</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == profile_url %}active{% endif %}" href="{% url 'profile' %}">Account</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
+                        </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page"
-                            href="{% url 'account_signup' %}">Register</a>
-                    </li>
-
-                    <!-- Login -->
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Login</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page" href="{% url 'account_signup' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Login</a>
+                        </li>
                     {% endif %}
 
                 </ul>

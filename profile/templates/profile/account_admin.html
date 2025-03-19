@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="accounttitle-ribbon">
+    <h1 class="accounttitle">Admin Overview</h1>
+</div>
+
+<div class="admin-overview-box">
+    <div class="Quick-Overview">
+        <p class="overview-text"><strong>Total Books: # {{ total_books }}</strong></p> <!--ADD FUNCTIONALITY-->
+        <p class="overview-text"><strong>Total Authors: # {{ total_authors }}</strong></p> <!--ADD FUNCTIONALITY-->
+        <p class="overview-text"><strong>Total Users: # {{ total_users }}</strong></p> <!--ADD FUNCTIONALITY-->
+        <p class="overview-text"><strong>Popular Genre: # {{ popular_genre }}</strong> </p> <!--ADD FUNCTIONALITY-->
+    </div>
+
+    <div class="requested-features">
+        <p class="requested-features-text"><strong>Requested Features:</strong></p>
+        <p class="requested-features-text">No Requested Features</p> <!--No Functionality As of Yet-->
+        <p class="requested-features-text">This feature is coming soon</p>
+    </div>
+
+    <div class="bug-reports">
+        <p class="bug-reports-text"><strong>Requested Features:</strong></p>
+        <p class="bug-reports-text">No Requested Features</p> <!--No Functionality As of Yet-->
+        <p class="bug-reports-text">This feature is coming soon</p>
+    </div>
+
+    <a href="{% url 'admin:index' %}" class="btn admin-tools-button">Admin Tools</a>
+</div>
+
+<div class="fix-footer">
+</div>
+
+{% endblock content %}
+
+{% block extras %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock extras %}

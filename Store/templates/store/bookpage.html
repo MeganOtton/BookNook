@@ -5,36 +5,43 @@
 {% block content %}
 
 <!-- Book Page content starts here -->
-<div class="booktitle-ribbon">
+
+<form id="wishlist_form" action="{% url 'move_wishlist_book' book.booktitle %}" method="post" class="booktitle-ribbon">
     <h3 class="booktitle">{{ book.booktitle }}</h3>
-    <i class="fa-solid fa-heart fa-2xl Save-Book-Info" style="color: #ffffff;"></i>
-    <i class="fa-solid fa-gear fa-2xl Options-Book-Info" style="color: #ffffff;"></i>
-</div>
+    {% csrf_token %}
+    <button type="submit" class="wishlist-toggle" style="background: none; border: none; padding: 0;">
+        <i class="fa-solid fa-heart fa-2xl Save-Book-Info wishlist-icon {% if book in user.profile.wishlisted_books.all %}active{% endif %}"></i>
+    </button>
+    <i class="fa-solid fa-gear fa-2xl Options-Book-Info" style="color: #ffffff; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#optionsModal"></i>
+</form>
 
 <section class="main_purchase_info">
     <div class="bookcover-purchase">
         <img src="{{ book.bookcover.url }}" class="Book-Cover-Image" alt="{{ book.booktitle }}"> 
-        
-            <div class="purchase-button">
-                <!-- Purchase Button  -->
-                <!-- When Clicked Will call move_game_to_chosen which will get it from the list and move it to the users purchased list -->
-                <form id="id_purchase_book" action="{%url 'move_book' book.booktitle %}" method="post">
-                    {% csrf_token %}
-                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button">£{{ book.bookprice }}</button>
-                </form>
 
-                <!-- Check Purchase Button  -->
-                <!-- When Clicked Will call check_game_purchased which will check if the game is already in the users purchased list -->
-                <!-- This is not displayed and the user can not interact with this, Couldnt find an easier way to automate this so created a button 
-                    that is display:none but has a script that on load will click this button automatically calling a python function -->
-                <form id="id_check_book_purchased" action="{%url 'check_book_purchased' book.booktitle %}" method="post" style="display: none;">
-                    {% csrf_token %}
-                    <button id="checkPurchasedButton" type="submit" class="btn btn-primary Red_purchase_button">Check Purchase</button>
-                </form>
-            </div>
+        <div>
+             <!-- Purchase Button -->
+            <form id="id_purchase_book" action="{% url 'move_book' book.booktitle %}" method="post">
+                {% csrf_token %}
+                {% if book in user.profile.purchased_books.all %}
+                    <button id="purchasedButton" type="button" class="btn btn-primary Red_purchase_button purchase-button" disabled>Purchased</button>
+                {% else %}
+                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">£{{ book.bookprice }}</button>
+                {% endif %}
+            </form>
+
+            <!-- Check Purchase Button  -->
+            <!-- When Clicked Will call check_game_purchased which will check if the game is already in the users purchased list -->
+            <!-- This is not displayed and the user can not interact with this, Couldnt find an easier way to automate this so created a button 
+                that is display:none but has a script that on load will click this button automatically calling a python function -->
+            <!-- <form id="id_check_book_purchased" action="{%url 'check_book_purchased' book.booktitle %}" method="post" style="display: none;">
+                {% csrf_token %}
+                <button id="checkPurchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">Check Purchase</button>
+            </form> -->
+        </div>
     </div>
 
-    
+
 
     <div class="book-info">
         <div class="book-info-top">
@@ -85,7 +92,7 @@
     <div class="shelf-title-wrapper">
         <span class="shelf-title">Series</span>
     </div>
-    
+
     <div id="nonFictionCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in book_list %}
@@ -132,7 +139,7 @@
     <div class="shelf-title-wrapper">
         <span class="shelf-title">Similar</span>
     </div>
-    
+
     <div id="nonFictionCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in book_list %}
@@ -179,7 +186,7 @@
     <div class="shelf-title-wrapper">
         <span class="shelf-title">By Author</span>
     </div>
-    
+
     <div id="nonFictionCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in book_list %}
@@ -225,7 +232,7 @@
     <!-- Review Info -->
     <div class="reviews-info">
         <h5 class="review-total">Reviews Total: {{ book.comments.count }}</h5>
-        
+
         <div class="rating">
             {% with total=book.average_rating|default:0 %}
                 {% for i in "12345" %}
@@ -248,23 +255,24 @@
                 <h3 class="create-review-text">Create a Review</h3>
             </div>  
         </div>
-        
+
         <div class="leave-review-form" style="display: none;">
             <div class="card-body">
-                <!-- If User is not Signed In -->
                 {% if user.is_authenticated %}
-                    <!-- If User has Purchased the book -->
-                    {% if request.GET.purchased == 'true' %}
-                        <h3>Leave a Review:</h3>
-                        <p>Posting as: {{ user.username }}</p>
-                        <form id="commentForm" method="POST" style="margin-top: 1.3em;">
-                            {{ comment_form | crispy }}
-                            {% csrf_token %}
-                            <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
-                        </form>
-                    {% endif %}
-                    {% if request.GET.purchased == 'false' %}
-                        <p>Purchase the Book to leave a Review</p>
+                    {% if not user.is_superuser and user.profile.role != 'Author' %}
+                        {% if book in user.profile.purchased_books.all %}
+                            <h3>Leave a Review:</h3>
+                            <p>Posting as: {{ user.username }}</p>
+                            <form id="commentForm" method="POST" style="margin-top: 1.3em;">
+                                {{ comment_form | crispy }}
+                                {% csrf_token %}
+                                <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
+                            </form>
+                        {% else %}
+                            <p>Purchase the Book to leave a Review</p>
+                        {% endif %}
+                    {% else %}
+                        <p>As an Author or Administrator, you cannot leave reviews.</p>
                     {% endif %}
                 {% else %}
                     <p>Log in to leave a Review</p>
@@ -276,40 +284,60 @@
     <!-- Reviews Are Listed Here -->
     <div class="Reviews">
         <div class="view-reviews">
+            {% if user.is_authenticated %}
+                {% for comment in comments %}
+                    <div id="comment-{{ comment.id }}" class="comment">
+                        {% if comment.author == user %}
+                            <div class="p-2 review{% if not comment.approved %} faded{% endif %}">
+                                <div class="review-user-info">
+                                    <h3 class="Review-Author">
+                                        {{ comment.author }} (You)
+                                    </h3>
+                                    <h3 class="User-Review-Rating">
+                                        {{ comment.rating }}/5
+                                    </h3>  
+                                    <h3 class="User-Review-Date">
+                                        {{ comment.created_on }}
+                                    </h3>  
+                                </div>
+                                <div>
+                                    <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
+                                    <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
+                                </div>
+                                {% if not comment.approved %}
+                                    <p class="approval">This Review is awaiting approval</p>
+                                {% endif %}
+                                <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
+                                <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             {% for comment in comments %}
-            <div class="p-2 review{% if not comment.approved and comment.author == user %} faded{% elif not comment.approved %} d-none{% endif %}">
-                <div class="review-user-info">
-                    <h3 class="Review-Author">
-                        {{ comment.author }}
-                    </h3>
-                    <h3 class="User-Review-Rating">
-                        {{ comment.rating }}/5
-                    </h3>  
-                    <h3 class="User-Review-Date">
-                    {{ comment.created_on }}
-                    </h3>  
-                </div>
-                
-
-                <div>
-                    <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
-                    <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
-                </div>
-                
-                
-
-                {% if not comment.approved and comment.author == user %}
-                <p class="approval">This Review is awaiting approval</p>
+                {% if comment.author != user %}
+                    <div class="p-2 review{% if not comment.approved %} d-none{% endif %}">
+                        <div class="review-user-info">
+                            <h3 class="Review-Author">
+                                {{ comment.author }}
+                            </h3>
+                            <h3 class="User-Review-Rating">
+                                {{ comment.rating }}/5
+                            </h3>  
+                            <h3 class="User-Review-Date">
+                                {{ comment.created_on }}
+                            </h3>  
+                        </div>
+                        <div>
+                            <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
+                            <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
+                        </div>
+                    </div>
                 {% endif %}
-                {% if user.is_authenticated and comment.author == user %}
-                <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
-                <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
-                {% endif %}
-            </div>
             {% endfor %}
         </div>
     </div>
-
 </div>
 
 <!-- Delete confirmation modal -->
@@ -329,7 +357,52 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
+    
+<!-- Options Modal -->
+<div class="modal fade" id="optionsModal" tabindex="-1" aria-labelledby="optionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="optionsModalLabel">Hide Options</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <p>This allows you to hide Authors, Books or Topics you dont want to see again. This prevents them from appearing under searches or on your home page. To unhide the selected choice go to your account and select the eye next to the hidden catagory. </p>
+
+            <div class="modal-body">
+                <form id="hideOptionsForm" method="POST" action="{% url 'hide_options' book.id %}">
+                    {% csrf_token %}
+                    <!-- <div class="mb-3">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="hide_author" class="form-check-input">
+                            Hide Author <i class="fa-solid fa-eye-slash"></i>
+                        </label>
+                    </div> -->
+                    <div class="mb-3 hide-option">
+                        <input type="checkbox" name="hide_book" class="form-check-input visually-hidden" id="hideBook" {% if is_book_hidden %}checked{% endif %}>
+                        <label class="form-check-label d-flex align-items-center" for="hideBook">
+                            <span class="me-2">Hide Book</span>
+                        </label>
+                        <i class="fa-solid {% if is_book_hidden %}fa-eye{% else %}fa-eye-slash{% endif %} toggle-hide" data-target="hideBook"></i>
+                    </div>
+                    <div class="mb-3">
+                        <label>Hide Topics:</label>
+                        {% for topic in book.topics.all %}
+                            <div class="form-check">
+                                <input type="checkbox" name="hide_topics" value="{{ topic.id }}" class="form-check-input" id="topic{{ topic.id }}">
+                                <label class="form-check-label" for="topic{{ topic.id }}">
+                                    {{ topic.name }} <i class="fa-solid fa-eye-slash"></i>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="fix-footer-index">
@@ -341,7 +414,8 @@
 {% endblock content%}
 
 {% block extras %}
+<script src="{% static 'js/eye.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
 <script src="{% static 'js/comments.js' %}"></script>
-<script src="{% static 'js/purchase_checker.js' %}"></script>
+<!-- <script src="{% static 'js/purchase_checker.js' %}"></script> -->
 {% endblock extras %}

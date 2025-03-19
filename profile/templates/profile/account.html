@@ -4,6 +4,13 @@
 
 {% block content %}
 
+{% if role_updated %}
+    <div class="alert success alert-dismissible fade show alert-updated-age" id="msg" role="alert">
+        Your role has been updated to {{ new_role }} based on your current age.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
 <div class="accounttitle-ribbon">
     <h1 class="accounttitle">Account</h1>
     <i class="fa-solid fa-gear fa-2xl Options-Account-Info" style="color: #ffffff;"></i> <!-- Link this to have change password and other account options-->
@@ -13,7 +20,7 @@
 
     <div class="container accountbox">
         <p class="username-box"><strong>Username:</strong> {{ user.username }}</p>
-        <p class="account-type-box"><strong>Account Type:</strong> <!-- ACCOUNT TYPE INSERT --> </p>
+        <p class="account-type-box"><strong>Account Type:</strong> {{ profile.role }} </p>
     </div>
 
     <div class="container account-stats">
@@ -72,12 +79,10 @@
 
         <!-- See Hidden Section -->
         <div id="hiddenTab" class="tab-section">
-            <div class="mb-2">
-                <div class="btn-group hidden-tab-section" role="group">
-                    <button class="btn btn-outline-secondary hidden-author-button" onclick="showHiddenSection('authorsSection')">Hidden Authors</button>
-                    <button class="btn btn-outline-secondary hidden-book-button" onclick="showHiddenSection('booksSection')">Hidden Books</button>
-                    <button class="btn btn-outline-secondary hidden-topic-button" onclick="showHiddenSection('topicsSection')">Hidden Topics</button>
-                </div>
+            <div class="btn-group hidden-tab-section" role="group" id="hiddenGroup">
+                <button class="btn btn-outline-secondary hidden-author-button" onclick="showHiddenSection('authorsSection', this)">Hidden Authors</button>
+                <button class="btn btn-outline-secondary hidden-book-button" onclick="showHiddenSection('booksSection', this)">Hidden Books</button>
+                <button class="btn btn-outline-secondary hidden-topic-button" onclick="showHiddenSection('topicsSection', this)">Hidden Topics</button>
             </div>
             
             <hr class="divider-line">
@@ -89,7 +94,7 @@
                     <div class="d-flex justify-content-between border p-2 my-2">
                         <span>{{ author.name }}</span>
                         <span>{{ author.hidden_date }}</span>
-                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
+                        <i class="fa-solid fa-eye"></i> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
                     </div>
                 {% empty %}
                     <p>No hidden authors.</p>
@@ -99,18 +104,23 @@
             <!-- Hidden Books -->
             <div id="booksSection" class="hidden-section tab-section">
                 <h5>Hidden Books</h5>
-                {% for book in hidden_books %} <!-- WONT WORK UNTIL WE HAVE THE ABILITY TO HIDE BOOKS --> 
-                    <div class="d-flex justify-content-between border p-2 my-2">
-                        <div>
-                            <strong>{{ book.title }}</strong><br>
-                            <small>Author: {{ book.author }}</small>
+                {% if profile.hidden_books.all %}
+                    {% for book in profile.hidden_books.all %}
+                        <div class="d-flex justify-content-between border p-2 my-2">
+                            <div>
+                                <strong>{{ book.booktitle }}</strong><br>
+                                <small>Author: {{ book.authorname }}</small>
+                            </div>
+                            <form method="post" action="{% url 'hide_options' book.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="unhide_book" value="true">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Unhide</button>
+                            </form>
                         </div>
-                        <span>{{ book.hidden_date }}</span>
-                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
-                    </div>
-                {% empty %}
+                    {% endfor %}
+                {% else %}
                     <p>No hidden books.</p>
-                {% endfor %}
+                {% endif %}
             </div>
     
             <!-- Hidden Topics -->
@@ -120,7 +130,7 @@
                     <div class="d-flex justify-content-between border p-2 my-2">
                         <span>{{ topic.name }}</span>
                         <span>{{ topic.hidden_date }}</span>
-                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
+                        <i class="fa-solid fa-eye"></i> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
                     </div>
                 {% empty %}
                     <p>No hidden topics.</p>
@@ -131,20 +141,18 @@
         <!-- User Reviews Section -->
         <div id="reviewTab" class="tab-section">
             <h5>Your Reviews</h5>
-            {% for review in user_reviews %}
-                <div class="border p-3 mb-3">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <strong>{{ review.book_title }}</strong> — Rating: {{ review.rating }}/5
-                        </div>
-                        <small>{{ review.date }}</small>
+            {% if user_comments %}
+                {% for comment in user_comments %}
+                    <div class="border p-2 my-2">
+                        <strong>{{ comment.bookstorepage.booktitle }}</strong>
+                        <p>{{ comment.body|truncatewords:30 }}</p>
+                        <small>Posted on: {{ comment.created_on }}</small>
+                        <a href="{% url 'book_details_list' slug=comment.bookstorepage.slug %}#comment-{{ comment.id }}" class="btn btn-sm btn-outline-primary mt-2">View on Book Page</a>
                     </div>
-                    <p class="mt-2">{{ review.text|truncatechars:150 }}</p>
-                    <a href="{% url 'review_detail' review.id %}" class="btn btn-outline-primary btn-sm">Go To Review</a>
-                </div>
-            {% empty %}
-                <p>You have not written any reviews.</p>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>You haven't written any reviews yet.</p>
+            {% endif %}
         </div>
 
         
@@ -157,5 +165,5 @@
 {% endblock content %}
 
 {% block extras %}
-<script src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'js/hiddenaccount.js' %}"></script>
 {% endblock extras %}

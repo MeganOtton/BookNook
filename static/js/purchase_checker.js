@@ -16,20 +16,30 @@ window.onload = function () {
         const checkPurchasedButton = document.getElementById("checkPurchasedButton");
         checkPurchasedButton.innerText = "Checking...";
         checkPurchasedButton.disabled = true;
+        
+        // Preserve the 'purchased=true' parameter if it exists
+        if (urlParams.get('purchased') === 'true') {
+            const currentUrl = new URL(window.location.href);
+            const formAction = new URL(checkForm.action);
+            formAction.searchParams.set('purchased', 'true');
+            checkForm.action = formAction.toString();
+        }
+        
         checkForm.submit();
-
     });
 
     if (urlParams.has('purchased') && urlParams.get('purchased') === 'true') {
         checkBookPurchasedTrue();
-    } else
-        if (urlParams.has('purchased') && urlParams.get('purchased') === 'false') {
-            checkBookPurchasedFalse();
-        } else {
-            checkBookFirstLoad();
-        }
+    } else if (urlParams.has('purchased') && urlParams.get('purchased') === 'false') {
+        checkBookPurchasedFalse();
+    } else {
+        checkBookFirstLoad();
+    }
 
-
+    // Ensure 'purchased=true' stays in the URL if it's present
+    if (urlParams.get('purchased') === 'true') {
+        window.history.replaceState({}, '', `${window.location.pathname}?purchased=true${window.location.hash}`);
+    }
 };
 
 // This function will be called when the page is loaded
