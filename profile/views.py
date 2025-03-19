@@ -22,6 +22,7 @@ from .models import Profile
 from .models import CustomShelf
 
 
+
 @login_required
 def library_view(request):
     return render(request, 'profile/library.html')
@@ -91,36 +92,42 @@ class ProfileAdminDetailedView(DetailView, LoginRequiredMixin):
     def get_object(self):
         return get_object_or_404(Profile, user=self.request.user)
 
-# Add the new account view function here
-
 @login_required
 def account_view(request):
     current_user = request.user
-    print(f"Current user: {current_user.username} (ID: {current_user.id})")
+    profile = current_user.profile
     
-    # Query all comments
+    # Check if the role needs to be updated
+    old_role = profile.role
+    profile.save()  # This will trigger the save method in the Profile model
+    
+    role_updated = False
+    new_role = None
+    
+    if old_role != profile.role:
+        role_updated = True
+        new_role = profile.role
+
+    # Fetch all comments
     all_comments = Comment.objects.all()
-    print(f"Total number of comments in the database: {all_comments.count()}")
     
-    # Query comments for the current user
-    user_comments = Comment.objects.filter(author=current_user)
-    print(f"Number of comments for current user: {user_comments.count()}")
-    
-    # Print details of all comments
-    for comment in all_comments:
-        print(f"Comment ID: {comment.id}, Author ID: {comment.author.id}, Author: {comment.author.username}, Book: {comment.bookstorepage.booktitle}, Body: {comment.body[:50]}...")
-    
-    # Check if the current user has any comments
-    if user_comments.exists():
-        print("Current user has comments.")
-    else:
-        print("Current user has no comments.")
-    
+    # Fetch user's comments
+    user_comments = Comment.objects.filter(author=current_user).select_related('bookstorepage').order_by('-created_on')
+
+    # Debug information
+    print(f"Current user: {current_user.username}")
+    print(f"Total comments: {all_comments.count()}")
+    print(f"User comments: {user_comments.count()}")
+    for comment in user_comments:
+        print(f"Comment {comment.id}: Book: {comment.bookstorepage.booktitle}, Content: {comment.body[:50]}...")
+
     context = {
-        'user_comments': user_comments,
-        'profile': current_user.profile,
+        'profile': profile,
         'all_comments_count': all_comments.count(),
         'user_comments_count': user_comments.count(),
+        'user_comments': user_comments,
+        'role_updated': role_updated,
+        'new_role': new_role,
     }
     return render(request, 'profile/account.html', context)
 

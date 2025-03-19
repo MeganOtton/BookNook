@@ -19,18 +19,15 @@ class Profile(models.Model):
     wishlisted_books = models.ManyToManyField(BookStorePage, related_name='wishlisted_books', blank=True)
 
     def save(self, *args, **kwargs):
-        if self.birthdate:
+        if self.birthdate_author:
+            self.role = 'Author'
+        elif self.birthdate:
             today = datetime.date.today()
             age = today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
             if age < 18:
                 self.role = 'Child'
             else:
                 self.role = 'Adult'
-        super().save(*args, **kwargs)
-
-    def save(self, *args, **kwargs):
-        if self.birthdate_author:
-            self.role = 'Author'
         super().save(*args, **kwargs)
 
     def __str__(self):

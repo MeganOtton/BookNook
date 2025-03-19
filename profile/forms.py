@@ -2,6 +2,7 @@ from django import forms
 from allauth.account.forms import SignupForm
 from django.core.exceptions import ValidationError
 from datetime import date
+from .models import Profile
 
 class CustomSignupForm(SignupForm):
     birthdate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}),label='Birthdate', required = True)
@@ -30,4 +31,3 @@ class CustomAuthorSignupForm(SignupForm):
         user.profile.birthdate_author = self.cleaned_data['birthdate_author']
         user.profile.save()
         return user
-    

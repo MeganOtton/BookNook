@@ -256,20 +256,23 @@
         
         <div class="leave-review-form" style="display: none;">
             <div class="card-body">
-                <!-- If User is not Signed In -->
                 {% if user.is_authenticated %}
-                    <!-- If User has Purchased the book -->
-                    {% if request.GET.purchased == 'true' %}
-                        <h3>Leave a Review:</h3>
-                        <p>Posting as: {{ user.username }}</p>
-                        <form id="commentForm" method="POST" style="margin-top: 1.3em;">
-                            {{ comment_form | crispy }}
-                            {% csrf_token %}
-                            <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
-                        </form>
-                    {% endif %}
-                    {% if request.GET.purchased == 'false' %}
-                        <p>Purchase the Book to leave a Review</p>
+                    {% if not user.is_superuser and user.profile.role != 'Author' %}
+                        {% if request.GET.purchased == 'true' %}
+                            <h3>Leave a Review:</h3>
+                            <p>Posting as: {{ user.username }}</p>
+                            <form id="commentForm" method="POST" style="margin-top: 1.3em;">
+                                {{ comment_form | crispy }}
+                                {% csrf_token %}
+                                <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
+                            </form>
+                        {% elif request.GET.purchased == 'false' %}
+                            <p>Purchase the Book to leave a Review</p>
+                        {% else %}
+                            <p>You need to purchase the book before leaving a review.</p>
+                        {% endif %}
+                    {% else %}
+                        <p>As an Author or Administrator, you cannot leave reviews.</p>
                     {% endif %}
                 {% else %}
                     <p>Log in to leave a Review</p>
