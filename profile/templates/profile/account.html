@@ -4,11 +4,16 @@
 
 {% block content %}
 
+<p>Debug: Number of hidden books: {{ hidden_books|length }}</p>
+<p>Debug: Number of user comments: {{ user_comments|length }}</p>
+<p>Debug: Total comments: {{ all_comments_count }}</p>
+<p>Debug: User comments count: {{ user_comments_count }}</p>
+
 {% if role_updated %}
-<div class="alert success alert-dismissible fade show alert-updated-age" id="msg" role="alert">
-    Your role has been updated to {{ new_role }} based on your current age.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+    <div class="alert success alert-dismissible fade show alert-updated-age" id="msg" role="alert">
+        Your role has been updated to {{ new_role }} based on your current age.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 {% endif %}
 
 <div class="accounttitle-ribbon">
@@ -79,12 +84,10 @@
 
         <!-- See Hidden Section -->
         <div id="hiddenTab" class="tab-section">
-            <div class="mb-2">
-                <div class="btn-group hidden-tab-section" role="group">
-                    <button class="btn btn-outline-secondary hidden-author-button" onclick="showHiddenSection('authorsSection')">Hidden Authors</button>
-                    <button class="btn btn-outline-secondary hidden-book-button" onclick="showHiddenSection('booksSection')">Hidden Books</button>
-                    <button class="btn btn-outline-secondary hidden-topic-button" onclick="showHiddenSection('topicsSection')">Hidden Topics</button>
-                </div>
+            <div class="btn-group hidden-tab-section" role="group" id="hiddenGroup">
+                <button class="btn btn-outline-secondary hidden-author-button" onclick="showHiddenSection('authorsSection', this)">Hidden Authors</button>
+                <button class="btn btn-outline-secondary hidden-book-button" onclick="showHiddenSection('booksSection', this)">Hidden Books</button>
+                <button class="btn btn-outline-secondary hidden-topic-button" onclick="showHiddenSection('topicsSection', this)">Hidden Topics</button>
             </div>
             
             <hr class="divider-line">
@@ -96,7 +99,7 @@
                     <div class="d-flex justify-content-between border p-2 my-2">
                         <span>{{ author.name }}</span>
                         <span>{{ author.hidden_date }}</span>
-                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
+                        <i class="fa-solid fa-eye"></i> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
                     </div>
                 {% empty %}
                     <p>No hidden authors.</p>
@@ -106,18 +109,21 @@
             <!-- Hidden Books -->
             <div id="booksSection" class="hidden-section tab-section">
                 <h5>Hidden Books</h5>
-                {% for book in hidden_books %} <!-- WONT WORK UNTIL WE HAVE THE ABILITY TO HIDE BOOKS --> 
-                    <div class="d-flex justify-content-between border p-2 my-2">
-                        <div>
-                            <strong>{{ book.title }}</strong><br>
-                            <small>Author: {{ book.author }}</small>
+                {% if profile.hidden_books.all %}
+                    {% for book in profile.hidden_books.all %}
+                        <div class="d-flex justify-content-between border p-2 my-2">
+                            <div>
+                                <strong>{{ book.booktitle }}</strong><br>
+                                <small>Author: {{ book.authorname }}</small>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary unhide-book" data-book-id="{{ book.id }}">
+                                <i class="fa-solid fa-eye"></i> Unhide
+                            </button>
                         </div>
-                        <span>{{ book.hidden_date }}</span>
-                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
-                    </div>
-                {% empty %}
+                    {% endfor %}
+                {% else %}
                     <p>No hidden books.</p>
-                {% endfor %}
+                {% endif %}
             </div>
     
             <!-- Hidden Topics -->
@@ -127,7 +133,7 @@
                     <div class="d-flex justify-content-between border p-2 my-2">
                         <span>{{ topic.name }}</span>
                         <span>{{ topic.hidden_date }}</span>
-                        <span class="text-danger cursor-pointer">❤️</span> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
+                        <i class="fa-solid fa-eye"></i> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
                     </div>
                 {% empty %}
                     <p>No hidden topics.</p>
@@ -141,21 +147,26 @@
             <p>Debug: Total comments in database: {{ all_comments_count }}</p>
             <p>Debug: Comments for current user: {{ user_comments_count }}</p>
             <p>Debug: Username: {{ user.username }}</p>
-            {% for comment in user_comments %}
-                <div class="border p-3 mb-3 rounded shadow-sm">
-                    <p>Debug: Comment ID: {{ comment.id }}</p>
-                    <p>Debug: Book Title: {{ comment.bookstorepage.booktitle }}</p>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0">{{ comment.bookstorepage.booktitle }}</h6>
-                        <span class="badge bg-primary">{{ comment.rating }}/5</span>
+            {% if user_comments %}
+                {% for comment in user_comments %}
+                    <div class="border p-3 mb-3 rounded shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">{{ comment.title }}</h6>
+                            <span class="badge bg-primary">{{ comment.rating }}/5</span>
+                        </div>
+                        <small class="text-muted">Reviewed on {{ comment.created_on|date:"F d, Y" }}</small>
+                        <p class="mt-2">{{ comment.body|truncatechars:150 }}</p>
+                        {% if comment.approved %}
+                            <span class="badge bg-success">Approved</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pending Approval</span>
+                        {% endif %}
+                        <a href="{% url 'book_details_list' comment.bookstorepage_id %}" class="btn btn-outline-primary btn-sm mt-2">Go to Book</a>
                     </div>
-                    <small class="text-muted">Reviewed on {{ comment.created_on|date:"F d, Y" }}</small>
-                    <p class="mt-2">{{ comment.body|truncatechars:150 }}</p>
-                    <a href="{% url 'book_details_list' comment.bookstorepage.slug %}#comment-{{ comment.id }}" class="btn btn-outline-primary btn-sm">Go to Review</a>
-                </div>
-            {% empty %}
+                {% endfor %}
+            {% else %}
                 <p class="text-muted">You haven't written any reviews yet.</p>
-            {% endfor %}
+            {% endif %}
         </div>
 
         
@@ -168,5 +179,5 @@
 {% endblock content %}
 
 {% block extras %}
-<script src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'js/hiddenaccount.js' %}"></script>
 {% endblock extras %}

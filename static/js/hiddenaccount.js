@@ -52,18 +52,28 @@ function showTab(tabId) {
 function showHiddenSection(sectionId, clickedButton) {
     // Show selected hidden section
     document.querySelectorAll('.hidden-section').forEach(el => el.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
+    const selectedSection = document.getElementById(sectionId);
+    if (selectedSection) {
+        selectedSection.classList.add('active');
+    }
 
     // Inner hidden section buttons - highlight correct one
-    document.querySelectorAll('#hiddenGroup .btn').forEach(btn => btn.classList.remove('active'));
-    clickedButton.classList.add('active');
+    const hiddenGroup = document.getElementById('hiddenGroup');
+    if (hiddenGroup) {
+        hiddenGroup.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+    }
+    
+    if (clickedButton && clickedButton.classList) {
+        clickedButton.classList.add('active');
+    }
 
-    // ✅ Force See Hidden button to stay active too
-    document.getElementById('btnSeeHidden').classList.add('active');
-    document.getElementById('btnYourReviews').classList.remove('active');
+    // Force See Hidden button to stay active too
+    const btnSeeHidden = document.getElementById('btnSeeHidden');
+    const btnYourReviews = document.getElementById('btnYourReviews');
+    if (btnSeeHidden) {
+        btnSeeHidden.classList.add('active');
+    }
+    if (btnYourReviews) {
+        btnYourReviews.classList.remove('active');
+    }
 }
-
-// Default: show reviews tab
-window.onload = function () {
-    showTab('reviewTab');
-};

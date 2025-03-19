@@ -67,6 +67,9 @@ class BookStorePage(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     updated_on = models.DateTimeField(auto_now=True)
 
+    def is_hidden_by_user(self, user):
+        return user.profile.hidden_books.filter(id=self.id).exists()
+
     @property
     def average_rating(self):
         avg = self.comments.aggregate(Avg('rating'))['rating__avg']

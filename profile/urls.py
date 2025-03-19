@@ -1,6 +1,7 @@
 from . import views
 from django.urls import path
 
+
 urlpatterns = [
     path('', views.ProfileDetailedView.as_view(), name='profile'),
     path('author/', views.ProfileAuthorDetailedView.as_view(), name='profile_author'),
@@ -13,5 +14,7 @@ urlpatterns = [
     path('account/', views.account_view, name='account'),
     path('create_shelf/', views.create_shelf, name='create_shelf'),
     path('assign_book_to_shelf/', views.assign_book_to_shelf, name='assign_book_to_shelf'),
+    path('hide-options/<int:book_id>/', views.hide_options, name='hide_options'),
 ]
+
 

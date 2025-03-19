@@ -17,6 +17,27 @@ class BookList(generic.ListView):
     template_name = "store/index.html"
     paginate_by = 6
 
+    def get_queryset(self):
+        queryset = BookStorePage.objects.filter(status=1)
+        
+        if self.request.user.is_authenticated:
+            # Exclude hidden books for the authenticated user
+            queryset = queryset.exclude(hidden_by=self.request.user.profile)
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Add additional context for different book categories
+        context['recommended_books'] = self.get_queryset().order_by('-created_on')[:6]
+        context['romance_books'] = self.get_queryset().filter(genre__name='Romance')[:6]
+        context['fantasy_books'] = self.get_queryset().filter(genre__name='Fantasy')[:6]
+        # Add more categories as needed
+        
+        return context
+
+    @staticmethod
     def Store(request):
         return render(request, 'store/index.html')
 
@@ -55,6 +76,11 @@ def book_details(request, slug):
     comment_count = book_details_list.comments.filter(approved=True).count()
     template_name = "store/bookpage.html"
     paginate_by = 6
+
+    # Check if the book is hidden by the user
+    is_book_hidden = False
+    if request.user.is_authenticated:
+        is_book_hidden = request.user.profile.hidden_books.filter(id=book_details_list.id).exists()
    
     if request.method == "POST":
         comment_form = RatingForm(data=request.POST)
@@ -78,6 +104,7 @@ def book_details(request, slug):
         "comments": comments,
         "comment_count": comment_count,
         "comment_form": comment_form,
+        "is_book_hidden": is_book_hidden,  # Add this line
         },  
     )
 
