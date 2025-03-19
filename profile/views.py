@@ -18,7 +18,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Profile
-from .models import CustomShelf
+
 
 
 
@@ -96,6 +96,8 @@ def account_view(request):
     current_user = request.user
     profile = current_user.profile
     hidden_books = profile.hidden_books.all()
+    # all_comments = Comment.objects.all()
+    user_comments = Comment.objects.filter(author=current_user).order_by('-created_on')
     
     # Check if the role needs to be updated
     old_role = profile.role
@@ -108,22 +110,9 @@ def account_view(request):
         role_updated = True
         new_role = profile.role
 
-    # Fetch all comments
-    all_comments = Comment.objects.all()
-    
-    # Fetch user's comments
-    user_comments = Comment.objects.filter(author=current_user).order_by('-created_on')
-
-    # Debug information
-    print(f"Current user: {current_user.username}")
-    print(f"Total comments: {all_comments.count()}")
-    print(f"User comments: {user_comments.count()}")
-    for comment in user_comments:
-        print(f"Comment {comment.id}: Book: {comment.bookstorepage.booktitle}, Content: {comment.body[:50]}...")
-
     context = {
         'profile': profile,
-        'all_comments_count': all_comments.count(),
+        # 'all_comments_count': all_comments.count(),
         'user_comments_count': user_comments.count(),
         'user_comments': user_comments,
         'role_updated': role_updated,
@@ -244,39 +233,14 @@ def library_view(request):
     user_profile = Profile.objects.get(user=request.user)
     purchased_books = user_profile.purchased_books.all()
     wishlisted_books = user_profile.wishlisted_books.all()
-    user_shelves = CustomShelf.objects.filter(user=request.user)
     context = {
         'purchased_books': purchased_books,
         'wishlisted_books': wishlisted_books,
-        'user_shelves': user_shelves,
     }
     return render(request, 'profile/library.html', context)
 
 
 
-
-@require_POST
-@login_required
-def create_shelf(request):
-    if request.method == 'POST':
-        shelf_name = request.POST.get('shelf_name')
-        # Create the shelf in your database
-        new_shelf = CustomShelf.objects.create(name=shelf_name, user=request.user)
-        return JsonResponse({'success': True, 'shelf_id': new_shelf.id, 'shelf_name': new_shelf.name})
-    return JsonResponse({'success': False}, status=400)
-
-@require_POST
-@login_required
-def assign_book_to_shelf(request):
-    shelf_id = request.POST.get('shelf_id')
-    book_id = request.POST.get('book_id')
-    try:
-        shelf = CustomShelf.objects.get(id=shelf_id, user=request.user)
-        book = BookStorePage.objects.get(id=book_id)
-        shelf.books.add(book)
-        return JsonResponse({'success': True})
-    except (CustomShelf.DoesNotExist, BookStorePage.DoesNotExist):
-        return JsonResponse({'success': False, 'error': 'Shelf or book not found'})
     
 
 @login_required
@@ -284,11 +248,15 @@ def hide_options(request, book_id):
     if request.method == 'POST':
         book = BookStorePage.objects.get(id=book_id)
         user_profile = request.user.profile
-
-        if 'hide_book' in request.POST:
-            user_profile.hidden_books.add(book)
-        else:
+        
+        # Handle unhide action
+        if 'unhide_book' in request.POST:
             user_profile.hidden_books.remove(book)
+            messages.success(request, f"{book.booktitle} has been unhidden.")
+        # Handle hide action
+        elif 'hide_book' in request.POST:
+            user_profile.hidden_books.add(book)
+            messages.success(request, f"{book.booktitle} has been hidden.")
 
         hidden_topics = request.POST.getlist('hide_topics')
         for topic in book.topics.all():
@@ -299,16 +267,7 @@ def hide_options(request, book_id):
 
         user_profile.save()
 
-        if 'return_to_account' in request.POST:
-            hidden_books = user_profile.hidden_books.all()
-            context = {
-                'hidden_books': hidden_books,
-                'profile': user_profile,
-            }
-            return render(request, 'account.html', context)
-        else:
-            return redirect('book_details_list', slug=book.slug)
+    # Always redirect back to the account page
+    return redirect('account')  # Make sure 'account' is the correct name for your account view
 
-    # Handle GET requests or other cases
-    return redirect('some_default_view')
 

@@ -50,13 +50,18 @@ class BookListSearch(generic.ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        queryset = BookStorePage.objects.filter(status=1)
+
+        if self.request.user.is_authenticated:
+            # Exclude hidden books for the authenticated user
+            queryset = queryset.exclude(hidden_by=self.request.user.profile)
+
         if query:
-            return BookStorePage.objects.filter(
-                Q(status=1) &
-                (Q(booktitle__icontains=query) |
-                 Q(genre__name__icontains=query) |
-                 Q(topics__name__icontains=query) |
-                 Q(authorname__icontains=query))
+            return queryset.filter(
+                Q(booktitle__icontains=query) |
+                Q(genre__name__icontains=query) |
+                Q(topics__name__icontains=query) |
+                Q(authorname__icontains=query)
             ).distinct()
         return BookStorePage.objects.none()
 

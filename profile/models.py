@@ -46,11 +46,4 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
-class CustomShelf(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    books = models.ManyToManyField(BookStorePage)
-    def __str__(self):
-        return f"{self.user.username}'s shelf: {self.name}"
-
 

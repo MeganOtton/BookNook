@@ -3,7 +3,7 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('', views.ProfileDetailedView.as_view(), name='profile'),
+    path('account/', views.account_view, name='profile'),
     path('author/', views.ProfileAuthorDetailedView.as_view(), name='profile_author'),
     path('admin/', views.ProfileAdminDetailedView.as_view(), name='profile_admin'),
     path('move_book/<str:booktitle>', views.move_book_to_chosen, name='move_book'),
@@ -12,8 +12,6 @@ urlpatterns = [
     path('signup/author/', views.AuthorSignupView.as_view(), name='account_signup_author'),
     path('library/', views.library_view, name='library'),
     path('account/', views.account_view, name='account'),
-    path('create_shelf/', views.create_shelf, name='create_shelf'),
-    path('assign_book_to_shelf/', views.assign_book_to_shelf, name='assign_book_to_shelf'),
     path('hide-options/<int:book_id>/', views.hide_options, name='hide_options'),
 ]
 
