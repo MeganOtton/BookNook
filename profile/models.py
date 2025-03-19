@@ -35,6 +35,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.role}"
+
+    def can_access_book(self, book):
+        if self.role == 'Child' and book.age_restriction:
+            return False
+        return True
     
 
 @receiver(post_save, sender=User)

@@ -12,3 +12,11 @@ def filter_and_sort_by_rating(books):
 @register.filter
 def filter_by_genre(books, genre):
     return [book for book in books if genre in [g.name for g in book.genre.all()]]
+
+@register.filter
+def can_access_book(profile, book):
+    return profile.can_access_book(book)
+
+@register.filter
+def filter_accessible_books(books, profile):
+    return [book for book in books if profile.can_access_book(book)]

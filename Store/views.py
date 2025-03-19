@@ -165,3 +165,19 @@ def review_detail(request, id):
     # Fetch the specific review based on the ID
     review = get_object_or_404(Comment, id=id)
     return render(request, 'review_detail.html', {'review': review})
+
+
+@login_required
+def profile_view(request):
+    user_profile = request.user.profile
+    accessible_books = BookStorePage.objects.filter(status=1).exclude(
+        hidden_by=user_profile
+    ).filter(
+        age_restriction=False if user_profile.role == 'Child' else True
+    )
+
+    context = {
+        'profile': user_profile,
+        'accessible_books': accessible_books,
+    }
+    return render(request, 'profile/profile.html', context)
