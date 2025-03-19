@@ -147,6 +147,7 @@
                         <strong>{{ comment.bookstorepage.booktitle }}</strong>
                         <p>{{ comment.body|truncatewords:30 }}</p>
                         <small>Posted on: {{ comment.created_on }}</small>
+                        <a href="{% url 'book_details_list' slug=comment.bookstorepage.slug %}#comment-{{ comment.id }}" class="btn btn-sm btn-outline-primary mt-2">View on Book Page</a>
                     </div>
                 {% endfor %}
             {% else %}

@@ -20,21 +20,24 @@
         <img src="{{ book.bookcover.url }}" class="Book-Cover-Image" alt="{{ book.booktitle }}"> 
 
         <div>
-            <!-- Purchase Button  -->
-            <!-- When Clicked Will call move_game_to_chosen which will get it from the list and move it to the users purchased list -->
-            <form id="id_purchase_book" action="{%url 'move_book' book.booktitle %}" method="post">
+             <!-- Purchase Button -->
+            <form id="id_purchase_book" action="{% url 'move_book' book.booktitle %}" method="post">
                 {% csrf_token %}
-                <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">£{{ book.bookprice }}</button>
+                {% if book in user.profile.purchased_books.all %}
+                    <button id="purchasedButton" type="button" class="btn btn-primary Red_purchase_button purchase-button" disabled>Purchased</button>
+                {% else %}
+                    <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">£{{ book.bookprice }}</button>
+                {% endif %}
             </form>
 
             <!-- Check Purchase Button  -->
             <!-- When Clicked Will call check_game_purchased which will check if the game is already in the users purchased list -->
             <!-- This is not displayed and the user can not interact with this, Couldnt find an easier way to automate this so created a button 
                 that is display:none but has a script that on load will click this button automatically calling a python function -->
-            <form id="id_check_book_purchased" action="{%url 'check_book_purchased' book.booktitle %}" method="post" style="display: none;">
+            <!-- <form id="id_check_book_purchased" action="{%url 'check_book_purchased' book.booktitle %}" method="post" style="display: none;">
                 {% csrf_token %}
                 <button id="checkPurchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">Check Purchase</button>
-            </form>
+            </form> -->
         </div>
     </div>
 
@@ -257,7 +260,7 @@
             <div class="card-body">
                 {% if user.is_authenticated %}
                     {% if not user.is_superuser and user.profile.role != 'Author' %}
-                        {% if request.GET.purchased == 'true' %}
+                        {% if book in user.profile.purchased_books.all %}
                             <h3>Leave a Review:</h3>
                             <p>Posting as: {{ user.username }}</p>
                             <form id="commentForm" method="POST" style="margin-top: 1.3em;">
@@ -265,10 +268,8 @@
                                 {% csrf_token %}
                                 <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
                             </form>
-                        {% elif request.GET.purchased == 'false' %}
-                            <p>Purchase the Book to leave a Review</p>
                         {% else %}
-                            <p>You need to purchase the book before leaving a review.</p>
+                            <p>Purchase the Book to leave a Review</p>
                         {% endif %}
                     {% else %}
                         <p>As an Author or Administrator, you cannot leave reviews.</p>
@@ -285,30 +286,32 @@
         <div class="view-reviews">
             {% if user.is_authenticated %}
                 {% for comment in comments %}
-                    {% if comment.author == user %}
-                        <div class="p-2 review{% if not comment.approved %} faded{% endif %}">
-                            <div class="review-user-info">
-                                <h3 class="Review-Author">
-                                    {{ comment.author }} (You)
-                                </h3>
-                                <h3 class="User-Review-Rating">
-                                    {{ comment.rating }}/5
-                                </h3>  
-                                <h3 class="User-Review-Date">
-                                    {{ comment.created_on }}
-                                </h3>  
+                    <div id="comment-{{ comment.id }}" class="comment">
+                        {% if comment.author == user %}
+                            <div class="p-2 review{% if not comment.approved %} faded{% endif %}">
+                                <div class="review-user-info">
+                                    <h3 class="Review-Author">
+                                        {{ comment.author }} (You)
+                                    </h3>
+                                    <h3 class="User-Review-Rating">
+                                        {{ comment.rating }}/5
+                                    </h3>  
+                                    <h3 class="User-Review-Date">
+                                        {{ comment.created_on }}
+                                    </h3>  
+                                </div>
+                                <div>
+                                    <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
+                                    <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
+                                </div>
+                                {% if not comment.approved %}
+                                    <p class="approval">This Review is awaiting approval</p>
+                                {% endif %}
+                                <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
+                                <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
                             </div>
-                            <div>
-                                <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
-                                <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
-                            </div>
-                            {% if not comment.approved %}
-                                <p class="approval">This Review is awaiting approval</p>
-                            {% endif %}
-                            <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
-                            <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 {% endfor %}
             {% endif %}
 
@@ -414,5 +417,5 @@
 <script src="{% static 'js/eye.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
 <script src="{% static 'js/comments.js' %}"></script>
-<script src="{% static 'js/purchase_checker.js' %}"></script>
+<!-- <script src="{% static 'js/purchase_checker.js' %}"></script> -->
 {% endblock extras %}

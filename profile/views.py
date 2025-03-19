@@ -149,11 +149,11 @@ def move_book_to_chosen(request, booktitle):
             profile.save()
             messages.success(request, f"You have purchased the book: {booktitle}")
         
-        return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=true")
+        return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
     else:
         messages.error(request, f'Please Sign In to purchase: {booktitle}')
     
-    return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
+    return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
 
 
 # Function to check if the user owns the game
@@ -182,11 +182,11 @@ def check_book_ownership(request, booktitle):
         
 
         if post in profile.purchased_books.all():
-            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=true")
+            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
         else:
-            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
+            return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
     else:   
-        return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=false")
+        return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
 
     
 # Function to move a game to the user's purchased games
@@ -212,7 +212,7 @@ def move_book_to_wishlist(request, booktitle):
                 messages.info(request, f"{booktitle} has been removed from your wishlist as you've already purchased it.")
             else:
                 messages.info(request, f"You've already purchased {booktitle}. It can't be added to the wishlist.")
-                return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}?purchased=true")
+                return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
         elif post in profile.wishlisted_books.all():
             profile.wishlisted_books.remove(post)
             profile.save()
