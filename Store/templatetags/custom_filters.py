@@ -1,4 +1,5 @@
 from django import template
+from profile.models import Profile  
 
 register = template.Library()
 
@@ -30,3 +31,12 @@ def get_item(dictionary, key):
 @register.filter
 def exclude_hidden_topics(books, user_profile):
     return [book for book in books if not any(topic in user_profile.hidden_topics.all() for topic in book.topics.all())]
+
+@register.filter
+def exclude_purchased_books(books, user):
+    try:
+        profile = user.profile
+        user_purchased_books = profile.purchased_books.values_list('id', flat=True)
+        return [book for book in books if book.id not in user_purchased_books]
+    except Profile.DoesNotExist:
+        return books  # Return all books if the user doesn't have a profile
