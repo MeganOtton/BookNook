@@ -13,7 +13,7 @@
     </button>
 </form>
 
-{{ book_list|length }}
+<!-- {{ book_list|length }}
     {% for book in book_list %}
         {{ book.title }}
     {% endfor %}
@@ -21,13 +21,11 @@
 {{ popular_books|length }}
     {% for book in popular_books %}
         {{ book.title }}
-    {% endfor %}
+    {% endfor %} -->
 
 {% if request.GET.q %}
     <!-- Search Results -->
-    
-    
-    <div class="container mt-5 shelf-container">
+    <div class="container shelf-container">
         <div class="Search_Info">
             <h2 class="searchtext">Search Results for "{{ request.GET.q }}"</h2>
         </div>
@@ -48,6 +46,7 @@
                 </div>
             {% endfor %}
         </div>
+        
     </div>
 
     {% if is_paginated %}
@@ -75,10 +74,6 @@
                         <a href="{% url 'book_details_list' book.slug %}">
                             <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
                         </a>
-                        <div class="card-body book-title-index">
-                            <h5 class="card-title">{{ book.booktitle }}</h5>
-                            <p class="card-text">Released: {{ book.created_on|date:"F d, Y" }}</p>
-                        </div>
                     </div>
 
                     {% if forloop.counter|divisibleby:3 or forloop.last %}
@@ -107,8 +102,6 @@
     </div>
 
     <!-- Popular Authors Section, ADD FUNCTIONALITY -->
-
-    
     {% with popular_books=book_list|filter_and_sort_by_rating %}
         {% if popular_books %}
             <div class="container mt-5 shelf-container">
@@ -186,6 +179,7 @@
                         {% endfor %}
                         
                     </div>
+                    
                     <!-- Carousel Controls -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#popularBooksCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -202,9 +196,8 @@
     {% endwith %}
 
     {% if user.is_authenticated %}
-        <!-- From Authors You've Liked -->
+        <!-- From Authors You've Liked, ADD FUNCTIONALITY -->
         <div class="container mt-5 shelf-container">
-
             <div class="shelf-title-wrapper">
                 <span class="shelf-title">From Authors You've Liked</span>
             </div>
@@ -216,7 +209,7 @@
                             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                 <div class="d-flex justify-content-center">
                         {% endif %}
-
+        
                         <div class="card mx-2 Book">
                             <a href="{% url 'book_details_list' book.slug %}">
                                 <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
@@ -225,31 +218,33 @@
                                 <h5 class="card-title">{{ book.booktitle }}</h5>
                             </div>
                         </div>
-
+        
                         {% if forloop.counter|divisibleby:3 or forloop.last %}
                                 </div> <!-- .d-flex -->
                             </div> <!-- .carousel-item -->
                         {% endif %}
                     {% endfor %}
                 </div>
-                <!-- Carousel Controls -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                </button>
-
-                <button class="carousel-control-next" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                </button>
-
+                {% if recommended_books|length > 3 %}
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+        
+                    <button class="carousel-control-next" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                {% endif %}
+        
                 <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
             </div>
         </div>
 
-        <!-- Fantasy Shelf -->
+        <!-- Similar to 'Book' Shelf,  ADD FUNCTIONALITY-->
         <div class="container mt-5 shelf-container">
 
             <div class="shelf-title-wrapper">
-                <span class="shelf-title">Recommended</span>
+                <span class="shelf-title">Similar to 'Book'</span>
             </div>
             
             <div id="bookCarousel" class="carousel slide">

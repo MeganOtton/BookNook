@@ -576,6 +576,10 @@ body {
     color: var(--white);
 }
 
+.searchtext {
+    margin-bottom: 30px;
+}
+
 .search_empty_box, .Search_Info {
     display: flex;
     justify-content: center;
