@@ -69,7 +69,7 @@
 <!-- Popular Shelf -->
 {% if user.is_authenticated %}
     {% with popular_books=book_list|filter_and_sort_by_rating %}
-        {% with accessible_books=popular_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
+        {% with accessible_books=popular_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile|exclude_purchased_books:user  %}
             {% if accessible_books %}
                 <div class="container mt-5 shelf-container">
                     <div class="shelf-title-wrapper">
