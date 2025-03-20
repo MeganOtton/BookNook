@@ -126,15 +126,22 @@
             <!-- Hidden Topics -->
             <div id="topicsSection" class="hidden-section tab-section">
                 <h5>Hidden Topics</h5>
-                {% for topic in hidden_topics %} <!-- WONT WORK UNTIL WE HAVE THE ABILITY TO HIDE TOPICS --> 
-                    <div class="d-flex justify-content-between border p-2 my-2">
-                        <span>{{ topic.name }}</span>
-                        <span>{{ topic.hidden_date }}</span>
-                        <i class="fa-solid fa-eye"></i> <!-- FAV ICON CHANGE, ADD FUCTIONALITY -->
-                    </div>
-                {% empty %}
+                {% if profile.hidden_topics.all %}
+                    {% for topic in profile.hidden_topics.all %}
+                        <div class="d-flex justify-content-between border p-2 my-2">
+                            <div>
+                                <strong>{{ topic.name }}</strong>
+                            </div>
+                            <form method="post" action="{% url 'hide_options' topic.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="unhide_topic" value="true">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Unhide</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                {% else %}
                     <p>No hidden topics.</p>
-                {% endfor %}
+                {% endif %}
             </div>
         </div>
     

@@ -23,4 +23,6 @@ def filter_accessible_books(books, profile):
 
 @register.filter
 def get_item(dictionary, key):
-    return dictionary.get(key)
+    if dictionary is None:
+        return None
+    return dictionary.get(str(key), False)  # Default to False if key not found

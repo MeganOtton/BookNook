@@ -253,33 +253,52 @@ def library_view(request):
 
 
 @login_required
-def hide_options(request, book_id):
+def hide_options(request, item_id):
+    user_profile = request.user.profile
+
     if request.method == 'POST':
-        book = get_object_or_404(BookStorePage, id=book_id)
-        user_profile = request.user.profile
-        
-        # Handle book hiding/unhiding
-        hide_book = request.POST.get('hide_book') == 'on'
-        if hide_book:
-            user_profile.hidden_books.add(book)
-        else:
+        # Unhide book from account page
+        if 'unhide_book' in request.POST:
+            book = get_object_or_404(BookStorePage, id=item_id)
             user_profile.hidden_books.remove(book)
+            messages.success(request, f"'{book.booktitle}' has been unhidden.")
+            return redirect('account')  # Redirect back to the account page
 
-        # Handle topics hiding/unhiding
-        hidden_topics = request.POST.getlist('hide_topics')
-        for topic in book.topics.all():
-            if str(topic.id) in hidden_topics:
-                user_profile.hidden_topics.add(topic)
+        # Unhide topic from account page
+        elif 'unhide_topic' in request.POST:
+            topic = get_object_or_404(Topic, id=item_id)
+            user_profile.hidden_topics.remove(topic)
+            messages.success(request, f"'{topic.name}' has been unhidden.")
+            return redirect('account')  # Redirect back to the account page
+
+        # Handle hide options from book page
+        else:
+            book = get_object_or_404(BookStorePage, id=item_id)
+            
+            # Handle book hiding/unhiding
+            hide_book = request.POST.get('hide_book') == 'on'
+            if hide_book:
+                user_profile.hidden_books.add(book)
             else:
-                user_profile.hidden_topics.remove(topic)
+                user_profile.hidden_books.remove(book)
 
-        user_profile.save()
+            # Handle topics hiding/unhiding
+            hidden_topics = request.POST.getlist('hide_topics')
+            for topic in book.topics.all():
+                if str(topic.id) in hidden_topics:
+                    user_profile.hidden_topics.add(topic)
+                else:
+                    user_profile.hidden_topics.remove(topic)
 
-        messages.success(request, "Hide options updated successfully.")
-        return redirect('book_details_list', slug=book.slug)
+            user_profile.save()
+            messages.success(request, "Hide options updated successfully.")
+            return redirect('book_details_list', slug=book.slug)
 
-    # If not POST, redirect to the book page
-    return redirect('book_details_list', slug=book.slug)
+    # If not POST, redirect to the appropriate page
+    if BookStorePage.objects.filter(id=item_id).exists():
+        return redirect('book_details_list', slug=get_object_or_404(BookStorePage, id=item_id).slug)
+    else:
+        return redirect('account')
 
 
 def book_details_list(request, slug):
@@ -294,10 +313,11 @@ def book_details_list(request, slug):
 
     if profile:
         context['is_book_hidden'] = book in profile.hidden_books.all()
-        context['topic_visibility'] = {topic.id: topic in profile.hidden_topics.all() for topic in book.topics.all()}
+        context['topic_visibility'] = {str(topic.id): topic in profile.hidden_topics.all() for topic in book.topics.all()}
     else:
-        context['topic_visibility'] = {topic.id: False for topic in book.topics.all()}
+        context['topic_visibility'] = {str(topic.id): False for topic in book.topics.all()}
 
-    print("Topic Visibility:", context['topic_visibility'])  # Add this line for debugging
-
+    print("Topic Visibility:", context['topic_visibility'])
+    print("Book Topics:", [f"{topic.id}: {topic.name}" for topic in book.topics.all()])
+    
     return render(request, 'store/bookpage.html', context)

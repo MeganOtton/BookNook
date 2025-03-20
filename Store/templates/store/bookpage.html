@@ -391,11 +391,13 @@
                         <label>Hide Topics:</label>
                         {% for topic in book.topics.all %}
                             <div class="mb-3 hide-option">
-                                <input type="checkbox" name="hide_topics" value="{{ topic.id }}" class="form-check-input visually-hidden" id="hideTopic{{ topic.id }}" {% if topic_visibility and topic.id in topic_visibility and topic_visibility|get_item:topic.id %}checked{% endif %}>
+                                {% with topic_id=topic.id|stringformat:"s" %}
+                                <input type="checkbox" name="hide_topics" value="{{ topic.id }}" class="form-check-input visually-hidden" id="hideTopic{{ topic.id }}" {% if topic_visibility|get_item:topic_id %}checked{% endif %}>
                                 <label class="form-check-label d-flex align-items-center" for="hideTopic{{ topic.id }}">
                                     <span class="me-2">{{ topic.name }}</span>
                                 </label>
-                                <i class="fa-solid {% if topic_visibility and topic.id in topic_visibility and topic_visibility|get_item:topic.id %}fa-eye-slash{% else %}fa-eye{% endif %} toggle-hide" data-target="hideTopic{{ topic.id }}"></i>
+                                <i class="fa-solid {% if topic_visibility|get_item:topic_id %}fa-eye-slash{% else %}fa-eye{% endif %} toggle-hide" data-target="hideTopic{{ topic.id }}"></i>
+                                {% endwith %}
                             </div>
                         {% endfor %}
                     </div>
