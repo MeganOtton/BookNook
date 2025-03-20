@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -29,15 +30,6 @@
                     <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">£{{ book.bookprice }}</button>
                 {% endif %}
             </form>
-
-            <!-- Check Purchase Button  -->
-            <!-- When Clicked Will call check_game_purchased which will check if the game is already in the users purchased list -->
-            <!-- This is not displayed and the user can not interact with this, Couldnt find an easier way to automate this so created a button 
-                that is display:none but has a script that on load will click this button automatically calling a python function -->
-            <!-- <form id="id_check_book_purchased" action="{%url 'check_book_purchased' book.booktitle %}" method="post" style="display: none;">
-                {% csrf_token %}
-                <button id="checkPurchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">Check Purchase</button>
-            </form> -->
         </div>
     </div>
 
@@ -133,29 +125,75 @@
     </div>
 </div>
 
-<!-- Similar NOT COMPLETE -->
-<div class="container mt-5 shelf-container-nonfiction">
+<!-- Similar Books -->
+{% if similar_books %}
+    {% if user.is_authenticated %}
+        {% with accessible_similar_books=similar_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
+            {% if accessible_similar_books %}
+                <div class="container mt-5 shelf-container-similar">
+                    <div class="shelf-title-wrapper">
+                        <span class="shelf-title">Similar Books</span>
+                    </div>
 
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Similar</span>
-    </div>
+                    <div id="similarBooksCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for similar_book in accessible_similar_books %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
 
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Non-Fiction' %}
+                                <div class="card mx-2 Book">
+                                    <a href="{% url 'book_details_list' similar_book.slug %}">
+                                        <img src="{{ similar_book.bookcover.url }}" class="card-img-top" alt="{{ similar_book.booktitle }}">
+                                    </a>
+                                    <div class="card-body book-title-index">
+                                        <h5 class="card-title">{{ similar_book.booktitle }}</h5>
+                                    </div>
+                                </div>
+
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                        </div> <!-- .d-flex -->
+                                    </div> <!-- .carousel-item -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if accessible_similar_books|length > 3 %}
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                        {% endif %}
+
+                        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% else %}
+        <div class="container mt-5 shelf-container-similar">
+            <div class="shelf-title-wrapper">
+                <span class="shelf-title">Similar Books</span>
+            </div>
+
+            <div id="similarBooksCarousel" class="carousel slide">
+                <div class="carousel-inner">
+                    {% for similar_book in similar_books %}
                         {% if forloop.counter0|divisibleby:3 %}
                             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                 <div class="d-flex justify-content-center">
                         {% endif %}
 
                         <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                            <a href="{% url 'book_details_list' similar_book.slug %}">
+                                <img src="{{ similar_book.bookcover.url }}" class="card-img-top" alt="{{ similar_book.booktitle }}">
                             </a>
                             <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
+                                <h5 class="card-title">{{ similar_book.booktitle }}</h5>
                             </div>
                         </div>
 
@@ -163,22 +201,24 @@
                                 </div> <!-- .d-flex -->
                             </div> <!-- .carousel-item -->
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
+                    {% endfor %}
+                </div>
+                {% if similar_books|length > 3 %}
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                {% endif %}
+
+                <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+            </div>
         </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-
-        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div>
+    {% endif %}
+{% endif %}
 
 <!-- By Author NOT COMPLETE -->
 <div class="container mt-5 shelf-container-nonfiction">
@@ -389,11 +429,14 @@
                     <div class="mb-3">
                         <label>Hide Topics:</label>
                         {% for topic in book.topics.all %}
-                            <div class="form-check">
-                                <input type="checkbox" name="hide_topics" value="{{ topic.id }}" class="form-check-input" id="topic{{ topic.id }}">
-                                <label class="form-check-label" for="topic{{ topic.id }}">
-                                    {{ topic.name }} <i class="fa-solid fa-eye-slash"></i>
+                            <div class="mb-3 hide-option">
+                                {% with topic_id=topic.id|stringformat:"s" %}
+                                <input type="checkbox" name="hide_topics" value="{{ topic.id }}" class="form-check-input visually-hidden" id="hideTopic{{ topic.id }}" {% if topic_visibility|get_item:topic_id %}checked{% endif %}>
+                                <label class="form-check-label d-flex align-items-center" for="hideTopic{{ topic.id }}">
+                                    <span class="me-2">{{ topic.name }}</span>
                                 </label>
+                                <i class="fa-solid {% if topic_visibility|get_item:topic_id %}fa-eye-slash{% else %}fa-eye{% endif %} toggle-hide" data-target="hideTopic{{ topic.id }}"></i>
+                                {% endwith %}
                             </div>
                         {% endfor %}
                     </div>
@@ -417,5 +460,4 @@
 <script src="{% static 'js/eye.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
 <script src="{% static 'js/comments.js' %}"></script>
-<!-- <script src="{% static 'js/purchase_checker.js' %}"></script> -->
 {% endblock extras %}

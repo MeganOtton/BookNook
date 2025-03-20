@@ -2,13 +2,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('optionsModal');
     const hideOptions = document.querySelectorAll('.hide-option');
 
-    modal.addEventListener('show.bs.modal', function () {
+    function initializeIcons() {
         hideOptions.forEach(option => {
             const checkbox = option.querySelector('.form-check-input');
             const icon = option.querySelector('.toggle-hide');
             updateIconClass(icon, checkbox.checked);
         });
-    });
+    }
+
+    modal.addEventListener('show.bs.modal', initializeIcons);
     
     hideOptions.forEach(option => {
         const label = option.querySelector('.form-check-label');
@@ -32,10 +34,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isHidden) {
             icon.classList.remove('fa-eye');
             icon.classList.add('fa-eye-slash');
-
         } else {
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');
         }
     }
+
+    // Initialize icons when the page loads
+    initializeIcons();
 });

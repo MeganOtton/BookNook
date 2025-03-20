@@ -9,6 +9,11 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from profile.models import Profile
 from django.db.models import Q
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Count
+from .models import Genre
+import random
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -22,19 +27,50 @@ class BookList(generic.ListView):
         
         if self.request.user.is_authenticated:
             # Exclude hidden books for the authenticated user
-            queryset = queryset.exclude(hidden_by=self.request.user.profile)
+            queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
         
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Add additional context for different book categories
-        context['recommended_books'] = self.get_queryset().order_by('-created_on')[:6]
-        context['romance_books'] = self.get_queryset().filter(genre__name='Romance')[:6]
-        context['fantasy_books'] = self.get_queryset().filter(genre__name='Fantasy')[:6]
-        # Add more categories as needed
-        
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            purchased_books = profile.purchased_books.all()
+
+            # Count genres
+            genre_counts = Genre.objects.filter(books__in=purchased_books).annotate(
+                count=Count('books')
+            ).order_by('-count')
+
+            # Find the most common genre(s)
+            if genre_counts.exists():
+                max_count = genre_counts.first().count
+                top_genres = genre_counts.filter(count=max_count)
+                
+                if top_genres.count() == 1:
+                    favorite_genre = top_genres.first()
+                    # Update the favorite_genre in the Profile model
+                    if profile.favorite_genre != favorite_genre:
+                        profile.favorite_genre = favorite_genre
+                        profile.save()
+                else:
+                    favorite_genre = None
+            else:
+                favorite_genre = None
+
+            # If no favourite genre is found, set it to None in the Profile model
+            if favorite_genre is None and profile.favorite_genre is not None:
+                profile.favorite_genre = None
+                profile.save()
+
+            if favorite_genre:
+                recommended_books = BookStorePage.objects.filter(status=1, genre=favorite_genre)[:6]
+            else:
+                recommended_books = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
+
+            context['recommended_books'] = recommended_books
+            context['favorite_genre'] = favorite_genre
+
         return context
 
     @staticmethod
@@ -54,7 +90,7 @@ class BookListSearch(generic.ListView):
 
         if self.request.user.is_authenticated:
             # Exclude hidden books for the authenticated user
-            queryset = queryset.exclude(hidden_by=self.request.user.profile)
+            queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
 
         if query:
             return queryset.filter(
@@ -67,26 +103,84 @@ class BookListSearch(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['recommended_books'] = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
-        context['romance_books'] = BookStorePage.objects.filter(status=1, genre__name='Romance')[:6]
-        context['fantasy_books'] = BookStorePage.objects.filter(status=1, genre__name='Fantasy')[:6]
+        
+        # Get all books (or a subset if you prefer)
+        all_books = BookStorePage.objects.filter(status=1)
+
+        if self.request.user.is_authenticated:
+            user_profile = self.request.user.profile
+            # Exclude hidden books for the authenticated user
+            all_books = all_books.exclude(hidden_by_books=user_profile)
+
+            # Get all purchased books
+            purchased_books = list(user_profile.purchased_books.all())
+            
+            if purchased_books:
+                # Randomly select a purchased book
+                random_purchase = random.choice(purchased_books)
+                
+                context['random_purchase'] = random_purchase
+                
+                # Get similar books based on genres and topics, excluding purchased books
+                similar_books = all_books.filter(
+                    Q(genre__in=random_purchase.genre.all()) |
+                    Q(topics__in=random_purchase.topics.all())
+                ).exclude(
+                    id__in=[book.id for book in purchased_books]
+                ).distinct()
+                
+                context['similar_books'] = similar_books[:12]  # Limit to 12 books
+                
+                # Get all genres and topics of the random purchase
+                context['random_purchase_genres'] = random_purchase.genre.all()
+                context['random_purchase_topics'] = random_purchase.topics.all()
+
+        # Get books released in the last 5 days
+        five_days_ago = timezone.now() - timedelta(days=5)
+        new_additions = all_books.filter(created_on__gte=five_days_ago).order_by('-created_on')[:6]
+
+        # Popular books (using the custom filter)
+        from .templatetags.custom_filters import filter_and_sort_by_rating
+        popular_books = filter_and_sort_by_rating(all_books)[:12]  # Limit to 12 books
+
+        context['book_list'] = all_books  # This is needed for the custom filter in the template
+        context['popular_books'] = popular_books
+        context['recommended_books'] = all_books.order_by('-created_on')[:6]
+        context['romance_books'] = all_books.filter(genre__name='Romance')[:6]
+        context['fantasy_books'] = all_books.filter(genre__name='Fantasy')[:6]
+        context['new_additions'] = new_additions
+
         return context
 
 # Submit Comment Form View
 def book_details(request, slug):
     queryset = BookStorePage.objects.filter(status=1)
-    context_object_name = 'book_list'
     book_details_list = get_object_or_404(queryset, slug=slug)
     comments = book_details_list.comments.all().order_by("-created_on")
     comment_count = book_details_list.comments.filter(approved=True).count()
-    template_name = "store/bookpage.html"
-    paginate_by = 6
+
+    # Get similar books
+    genres = book_details_list.genre.all()
+    topics = book_details_list.topics.all()
+    similar_books = BookStorePage.objects.filter(status=1).filter(
+        Q(genre__in=genres) | Q(topics__in=topics)
+    ).exclude(id=book_details_list.id).distinct()
 
     # Check if the book is hidden by the user
     is_book_hidden = False
     if request.user.is_authenticated:
-        is_book_hidden = request.user.profile.hidden_books.filter(id=book_details_list.id).exists()
-   
+        profile = request.user.profile
+        is_book_hidden = profile.hidden_books.filter(id=book_details_list.id).exists()
+        
+        # Exclude hidden books from similar books
+        similar_books = similar_books.exclude(hidden_by_books=profile)
+        
+        # Exclude purchased books from similar books
+        similar_books = similar_books.exclude(id__in=profile.purchased_books.all())
+
+    # Apply the slice after all filters have been applied
+    similar_books = similar_books[:12]  # Limit to 12 books
+
     if request.method == "POST":
         comment_form = RatingForm(data=request.POST)
         if comment_form.is_valid():
@@ -105,11 +199,13 @@ def book_details(request, slug):
     return render(
         request,
         "store/bookpage.html",
-        {"book": book_details_list,
-        "comments": comments,
-        "comment_count": comment_count,
-        "comment_form": comment_form,
-        "is_book_hidden": is_book_hidden,  # Add this line
+        {
+            "book": book_details_list,
+            "comments": comments,
+            "comment_count": comment_count,
+            "comment_form": comment_form,
+            "is_book_hidden": is_book_hidden,
+            "similar_books": similar_books,
         },  
     )
 
@@ -171,7 +267,7 @@ def review_detail(request, id):
 def profile_view(request):
     user_profile = request.user.profile
     accessible_books = BookStorePage.objects.filter(status=1).exclude(
-        hidden_by=user_profile
+        hidden_by_books=user_profile
     ).filter(
         age_restriction=False if user_profile.role == 'Child' else True
     )

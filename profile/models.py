@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from Store.models import BookStorePage, Topic
 import datetime
+from Store.models import Genre
 
 class Profile(models.Model):
     ROLE_CHOICES = [
@@ -18,8 +19,9 @@ class Profile(models.Model):
     purchased_books = models.ManyToManyField(BookStorePage, related_name='purchased_books', blank=True)
     wishlisted_books = models.ManyToManyField(BookStorePage, related_name='wishlisted_books', blank=True)
     # hidden_authors = models.ManyToManyField('Store.Author', related_name='hidden_by_profiles', blank=True)
-    hidden_books = models.ManyToManyField(BookStorePage, related_name='hidden_by', blank=True)
-    hidden_topics = models.ManyToManyField(Topic, related_name='hidden_by_profiles', blank=True)
+    hidden_books = models.ManyToManyField(BookStorePage, related_name='hidden_by_books', blank=True)
+    hidden_topics = models.ManyToManyField(Topic, related_name='hidden_by_topics', blank=True)
+    favorite_genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.birthdate_author:

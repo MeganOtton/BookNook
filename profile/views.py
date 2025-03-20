@@ -1,26 +1,18 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView
+from django.views.generic import DetailView, FormView
 from django.contrib import messages
-from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import Profile
-from Store.models import BookStorePage, Comment, Topic
-from django.shortcuts import render
+from Store.models import BookStorePage, Comment, Topic, Genre
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .forms import CustomSignupForm, CustomAuthorSignupForm
-from django.urls import reverse_lazy
-from django.views.generic import FormView
 from datetime import date
-from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import Profile
-
-
-
+from django.db.models import Count
 
 @login_required
 def library_view(request):
@@ -96,7 +88,7 @@ def account_view(request):
     current_user = request.user
     profile = current_user.profile
     hidden_books = profile.hidden_books.all()
-    # all_comments = Comment.objects.all()
+    purchased_books = profile.purchased_books.all()
     user_comments = Comment.objects.filter(author=current_user).order_by('-created_on')
     
     # Check if the role needs to be updated
@@ -110,14 +102,41 @@ def account_view(request):
         role_updated = True
         new_role = profile.role
 
+    # Count genres
+    genre_counts = Genre.objects.filter(books__in=purchased_books).annotate(
+        count=Count('books')
+    ).order_by('-count')
+
+    # Find the most common genre(s)
+    if genre_counts.exists():
+        max_count = genre_counts.first().count
+        top_genres = genre_counts.filter(count=max_count)
+        
+        if top_genres.count() == 1:
+            favourite_genre = top_genres.first()
+            # Update the favorite_genre in the Profile model
+            if profile.favorite_genre != favourite_genre:
+                profile.favorite_genre = favourite_genre
+                profile.save()
+        else:
+            favourite_genre = None
+    else:
+        favourite_genre = None
+
+    # If no favourite genre is found, set it to None in the Profile model
+    if favourite_genre is None and profile.favorite_genre is not None:
+        profile.favorite_genre = None
+        profile.save()
+
+    # Update the context to use the Genre object instead of just the name
     context = {
         'profile': profile,
-        # 'all_comments_count': all_comments.count(),
         'user_comments_count': user_comments.count(),
         'user_comments': user_comments,
         'role_updated': role_updated,
         'new_role': new_role,
         'hidden_books': profile.hidden_books.all(),
+        'favourite_genre': favourite_genre.name if favourite_genre else "No Favourite Genre Found",
     }
     return render(request, 'profile/account.html', context)
 
@@ -240,34 +259,72 @@ def library_view(request):
     return render(request, 'profile/library.html', context)
 
 
-
-    
-
 @login_required
-def hide_options(request, book_id):
+def hide_options(request, item_id):
+    user_profile = request.user.profile
+
     if request.method == 'POST':
-        book = BookStorePage.objects.get(id=book_id)
-        user_profile = request.user.profile
-        
-        # Handle unhide action
+        # Unhide book from account page
         if 'unhide_book' in request.POST:
+            book = get_object_or_404(BookStorePage, id=item_id)
             user_profile.hidden_books.remove(book)
-            messages.success(request, f"{book.booktitle} has been unhidden.")
-        # Handle hide action
-        elif 'hide_book' in request.POST:
-            user_profile.hidden_books.add(book)
-            messages.success(request, f"{book.booktitle} has been hidden.")
+            messages.success(request, f"'{book.booktitle}' has been unhidden.")
+            return redirect('account')  # Redirect back to the account page
 
-        hidden_topics = request.POST.getlist('hide_topics')
-        for topic in book.topics.all():
-            if str(topic.id) in hidden_topics:
-                user_profile.hidden_topics.add(topic)
+        # Unhide topic from account page
+        elif 'unhide_topic' in request.POST:
+            topic = get_object_or_404(Topic, id=item_id)
+            user_profile.hidden_topics.remove(topic)
+            messages.success(request, f"'{topic.name}' has been unhidden.")
+            return redirect('account')  # Redirect back to the account page
+
+        # Handle hide options from book page
+        else:
+            book = get_object_or_404(BookStorePage, id=item_id)
+            
+            # Handle book hiding/unhiding
+            hide_book = request.POST.get('hide_book') == 'on'
+            if hide_book:
+                user_profile.hidden_books.add(book)
             else:
-                user_profile.hidden_topics.remove(topic)
+                user_profile.hidden_books.remove(book)
 
-        user_profile.save()
+            # Handle topics hiding/unhiding
+            hidden_topics = request.POST.getlist('hide_topics')
+            for topic in book.topics.all():
+                if str(topic.id) in hidden_topics:
+                    user_profile.hidden_topics.add(topic)
+                else:
+                    user_profile.hidden_topics.remove(topic)
 
-    # Always redirect back to the account page
-    return redirect('account')  # Make sure 'account' is the correct name for your account view
+            user_profile.save()
+            messages.success(request, "Hide options updated successfully.")
+            return redirect('book_details_list', slug=book.slug)
+
+    # If not POST, redirect to the appropriate page
+    if BookStorePage.objects.filter(id=item_id).exists():
+        return redirect('book_details_list', slug=get_object_or_404(BookStorePage, id=item_id).slug)
+    else:
+        return redirect('account')
 
 
+def book_details_list(request, slug):
+    book = get_object_or_404(BookStorePage, slug=slug)
+    profile = request.user.profile if request.user.is_authenticated else None
+
+    context = {
+        'book': book,
+        'is_book_hidden': False,
+        'topic_visibility': {},
+    }
+
+    if profile:
+        context['is_book_hidden'] = book in profile.hidden_books.all()
+        context['topic_visibility'] = {str(topic.id): topic in profile.hidden_topics.all() for topic in book.topics.all()}
+    else:
+        context['topic_visibility'] = {str(topic.id): False for topic in book.topics.all()}
+
+    print("Topic Visibility:", context['topic_visibility'])
+    print("Book Topics:", [f"{topic.id}: {topic.name}" for topic in book.topics.all()])
+    
+    return render(request, 'store/bookpage.html', context)

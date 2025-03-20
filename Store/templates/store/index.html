@@ -10,13 +10,19 @@
 
 
 <!-- Reccommended Shelf -->
-<!-- FIX THIS Recommended =  Already Read / Favourite Genre - hidden topics and authors FIX THIS-->
+<!-- FIX THIS Recommended = hidden authors FIX THIS-->
 {% if user.is_authenticated %}
-    {% with recommended_books=book_list|filter_accessible_books:user.profile %}
-        {% if recommended_books %}
+    {% with recommended_books=recommended_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile|exclude_purchased_books:user %}
+        {% if recommended_books and favorite_genre %}
             <div class="container mt-5 shelf-container">
                 <div class="shelf-title-wrapper">
-                    <span class="shelf-title">Recommended</span>
+                    <span class="shelf-title">
+                        {% if user.profile.favorite_genre %}
+                            Recommended
+                        {% else %}
+                            Recommended Books
+                        {% endif %}
+                    </span>
                 </div>
                 
                 <div id="recommendedCarousel" class="carousel slide">
@@ -42,14 +48,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                    {% if recommended_books|length > 3 %}
                     <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
 
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
@@ -59,39 +67,39 @@
 {% endif %}
 
 <!-- Popular Shelf -->
-{% with popular_books=book_list|filter_and_sort_by_rating %}
-    {% if popular_books %}
-        {% if user.is_authenticated %}
-            {% with accessible_books=popular_books|filter_accessible_books:user.profile %}
-                {% if accessible_books %}
-                    <div class="container mt-5 shelf-container">
-                        <div class="shelf-title-wrapper">
-                            <span class="shelf-title">Popular</span>
-                        </div>
-                        
-                        <div id="popularCarousel" class="carousel slide">
-                            <div class="carousel-inner">
-                                {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:3 %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
-                                    {% endif %}
+{% if user.is_authenticated %}
+    {% with popular_books=book_list|filter_and_sort_by_rating %}
+        {% with accessible_books=popular_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
+            {% if accessible_books %}
+                <div class="container mt-5 shelf-container">
+                    <div class="shelf-title-wrapper">
+                        <span class="shelf-title">Popular</span>
+                    </div>
+                    
+                    <div id="popularCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for book in accessible_books %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
 
-                                    <div class="card mx-2 Book">
-                                        <a href="{% url 'book_details_list' book.slug %}">
-                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                                        </a>
-                                        <div class="card-body book-title-index">
-                                            <h5 class="card-title">{{ book.booktitle }}</h5>
-                                        </div>
+                                <div class="card mx-2 Book">
+                                    <a href="{% url 'book_details_list' book.slug %}">
+                                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                    </a>
+                                    <div class="card-body book-title-index">
+                                        <h5 class="card-title">{{ book.booktitle }}</h5>
                                     </div>
+                                </div>
 
-                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                            </div> <!-- .d-flex -->
-                                        </div> <!-- .carousel-item -->
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                        </div> <!-- .d-flex -->
+                                    </div> <!-- .carousel-item -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if accessible_books|length > 3 %}
                             <!-- Carousel Controls -->
                             <button class="carousel-control-prev" type="button" data-bs-target="#popularCarousel" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -100,21 +108,21 @@
                             <button class="carousel-control-next" type="button" data-bs-target="#popularCarousel" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             </button>
+                        {% endif %}
 
-                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-                        </div>
+                        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                     </div>
-                {% endif %}
-            {% endwith %}
-        {% endif %}
-    {% endif %}
-{% endwith %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% endwith %}
+{% endif %}
 
 <!-- Romance Shelf -->
 {% with romance_books=book_list|filter_by_genre:"Romance" %}
     {% if romance_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=romance_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=romance_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -144,14 +152,16 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
+                            {% if accessible_books|length > 3 %}
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
 
-                            <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
 
                             <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                         </div>
@@ -187,14 +197,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
+                    {% if romance_books|length > 3 %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
 
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
@@ -207,7 +219,7 @@
 {% with fantasy_books=book_list|filter_by_genre:"Fantasy" %}
     {% if fantasy_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=fantasy_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=fantasy_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -237,14 +249,16 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
+                            {% if accessible_books|length > 3 %}
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
 
-                            <button class="carousel-control-next" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
 
                             <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                         </div>
@@ -280,14 +294,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
+                    {% if fantasy_books|length > 3 %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#fantasyCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
 
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
@@ -300,7 +316,7 @@
 {% with mystery_books=book_list|filter_by_genre:"Mystery" %}
     {% if mystery_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=mystery_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=mystery_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -330,15 +346,16 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
-                            <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
+                            {% if accessible_books|length > 3 %}
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
 
-                            <button class="carousel-control-next" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
-
+                                <button class="carousel-control-next" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
                             <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                         </div>
                     </div>
@@ -373,15 +390,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
+                    {% if mystery_books|length > 3 %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-
+                        <button class="carousel-control-next" type="button" data-bs-target="#mysteryCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
             </div>
@@ -393,7 +411,7 @@
 {% with thriller_books=book_list|filter_by_genre:"Thriller" %}
     {% if thriller_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=thriller_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=thriller_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -423,15 +441,16 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
+                            {% if accessible_books|length > 3 %}
                             <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
 
-                            <button class="carousel-control-next" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
-
+                                <button class="carousel-control-next" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
                             <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                         </div>
                     </div>
@@ -466,14 +485,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
+                    {% if thriller_books|length > 3 %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#thrillerCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
 
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
@@ -486,7 +507,7 @@
 {% with scifi_books=book_list|filter_by_genre:"Science Fiction" %}
     {% if scifi_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=scifi_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=scifi_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -516,15 +537,16 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
+                            {% if accessible_books|length > 3 %}
                             <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#scifiCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#scifiCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
 
-                            <button class="carousel-control-next" type="button" data-bs-target="#scifiCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
-
+                                <button class="carousel-control-next" type="button" data-bs-target="#scifiCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
                             <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                         </div>
                     </div>
@@ -559,15 +581,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                    {% if scifi_books|length > 3 %}
                     <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#scifiCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#scifiCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#scifiCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-
+                        <button class="carousel-control-next" type="button" data-bs-target="#scifiCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
             </div>
@@ -579,7 +602,7 @@
 {% with nonfiction_books=book_list|filter_by_genre:"Non-Fiction" %}
     {% if nonfiction_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=nonfiction_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=nonfiction_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container-nonfiction">
                         <div class="shelf-title-wrapper">
@@ -609,13 +632,15 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
+                            {% if accessible_books|length > 3 %}
                             <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
                             <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                         </div>
                     </div>
@@ -650,13 +675,15 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
+                    {% if nonfiction_books|length > 3 %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#nonfictionCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
             </div>
