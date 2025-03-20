@@ -26,3 +26,7 @@ def get_item(dictionary, key):
     if dictionary is None:
         return None
     return dictionary.get(str(key), False)  # Default to False if key not found
+
+@register.filter
+def exclude_hidden_topics(books, user_profile):
+    return [book for book in books if not any(topic in user_profile.hidden_topics.all() for topic in book.topics.all())]

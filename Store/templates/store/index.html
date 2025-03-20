@@ -10,9 +10,9 @@
 
 
 <!-- Reccommended Shelf -->
-<!-- FIX THIS Recommended =  Already Read / Favourite Genre - hidden topics and authors FIX THIS-->
+<!-- FIX THIS Recommended =  Already Read / Favourite Genre  hidden authors FIX THIS-->
 {% if user.is_authenticated %}
-    {% with recommended_books=book_list|filter_accessible_books:user.profile %}
+    {% with recommended_books=book_list|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
         {% if recommended_books %}
             <div class="container mt-5 shelf-container">
                 <div class="shelf-title-wrapper">
@@ -59,62 +59,60 @@
 {% endif %}
 
 <!-- Popular Shelf -->
-{% with popular_books=book_list|filter_and_sort_by_rating %}
-    {% if popular_books %}
-        {% if user.is_authenticated %}
-            {% with accessible_books=popular_books|filter_accessible_books:user.profile %}
-                {% if accessible_books %}
-                    <div class="container mt-5 shelf-container">
-                        <div class="shelf-title-wrapper">
-                            <span class="shelf-title">Popular</span>
-                        </div>
-                        
-                        <div id="popularCarousel" class="carousel slide">
-                            <div class="carousel-inner">
-                                {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:3 %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
-                                    {% endif %}
-
-                                    <div class="card mx-2 Book">
-                                        <a href="{% url 'book_details_list' book.slug %}">
-                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                                        </a>
-                                        <div class="card-body book-title-index">
-                                            <h5 class="card-title">{{ book.booktitle }}</h5>
-                                        </div>
-                                    </div>
-
-                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                            </div> <!-- .d-flex -->
-                                        </div> <!-- .carousel-item -->
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <!-- Carousel Controls -->
-                            <button class="carousel-control-prev" type="button" data-bs-target="#popularCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
-
-                            <button class="carousel-control-next" type="button" data-bs-target="#popularCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
-
-                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-                        </div>
+{% if user.is_authenticated %}
+    {% with popular_books=book_list|filter_and_sort_by_rating %}
+        {% with accessible_books=popular_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
+            {% if accessible_books %}
+                <div class="container mt-5 shelf-container">
+                    <div class="shelf-title-wrapper">
+                        <span class="shelf-title">Popular</span>
                     </div>
-                {% endif %}
-            {% endwith %}
-        {% endif %}
-    {% endif %}
-{% endwith %}
+                    
+                    <div id="popularCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for book in accessible_books %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+
+                                <div class="card mx-2 Book">
+                                    <a href="{% url 'book_details_list' book.slug %}">
+                                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                    </a>
+                                    <div class="card-body book-title-index">
+                                        <h5 class="card-title">{{ book.booktitle }}</h5>
+                                    </div>
+                                </div>
+
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                        </div> <!-- .d-flex -->
+                                    </div> <!-- .carousel-item -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#popularCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#popularCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+
+                        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% endwith %}
+{% endif %}
 
 <!-- Romance Shelf -->
 {% with romance_books=book_list|filter_by_genre:"Romance" %}
     {% if romance_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=romance_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=romance_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -207,7 +205,7 @@
 {% with fantasy_books=book_list|filter_by_genre:"Fantasy" %}
     {% if fantasy_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=fantasy_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=fantasy_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -300,7 +298,7 @@
 {% with mystery_books=book_list|filter_by_genre:"Mystery" %}
     {% if mystery_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=mystery_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=mystery_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -393,7 +391,7 @@
 {% with thriller_books=book_list|filter_by_genre:"Thriller" %}
     {% if thriller_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=thriller_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=thriller_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -486,7 +484,7 @@
 {% with scifi_books=book_list|filter_by_genre:"Science Fiction" %}
     {% if scifi_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=scifi_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=scifi_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container">
                         <div class="shelf-title-wrapper">
@@ -579,7 +577,7 @@
 {% with nonfiction_books=book_list|filter_by_genre:"Non-Fiction" %}
     {% if nonfiction_books %}
         {% if user.is_authenticated %}
-            {% with accessible_books=nonfiction_books|filter_accessible_books:user.profile %}
+            {% with accessible_books=nonfiction_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
                     <div class="container mt-5 shelf-container-nonfiction">
                         <div class="shelf-title-wrapper">
