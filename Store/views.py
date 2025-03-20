@@ -13,6 +13,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Count
 from .models import Genre
+import random
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -107,8 +108,32 @@ class BookListSearch(generic.ListView):
         all_books = BookStorePage.objects.filter(status=1)
 
         if self.request.user.is_authenticated:
+            user_profile = self.request.user.profile
             # Exclude hidden books for the authenticated user
-            all_books = all_books.exclude(hidden_by_books=self.request.user.profile)
+            all_books = all_books.exclude(hidden_by_books=user_profile)
+
+            # Get all purchased books
+            purchased_books = list(user_profile.purchased_books.all())
+            
+            if purchased_books:
+                # Randomly select a purchased book
+                random_purchase = random.choice(purchased_books)
+                
+                context['random_purchase'] = random_purchase
+                
+                # Get similar books based on genres and topics, excluding purchased books
+                similar_books = all_books.filter(
+                    Q(genre__in=random_purchase.genre.all()) |
+                    Q(topics__in=random_purchase.topics.all())
+                ).exclude(
+                    id__in=[book.id for book in purchased_books]
+                ).distinct()
+                
+                context['similar_books'] = similar_books[:12]  # Limit to 12 books
+                
+                # Get all genres and topics of the random purchase
+                context['random_purchase_genres'] = random_purchase.genre.all()
+                context['random_purchase_topics'] = random_purchase.topics.all()
 
         # Get books released in the last 5 days
         five_days_ago = timezone.now() - timedelta(days=5)
