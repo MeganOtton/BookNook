@@ -9,6 +9,8 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from profile.models import Profile
 from django.db.models import Q
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -67,9 +69,18 @@ class BookListSearch(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        # Get books released in the last 5 days
+        five_days_ago = timezone.now() - timedelta(days=5)
+        new_additions = BookStorePage.objects.filter(
+            status=1,
+            created_on__gte=five_days_ago
+        ).order_by('-created_on')
+
         context['recommended_books'] = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
         context['romance_books'] = BookStorePage.objects.filter(status=1, genre__name='Romance')[:6]
         context['fantasy_books'] = BookStorePage.objects.filter(status=1, genre__name='Fantasy')[:6]
+        context['new_additions'] = new_additions[:6]  # Limit to 6 books
         return context
 
 # Submit Comment Form View
