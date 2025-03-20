@@ -134,48 +134,47 @@
     </div>
 </div>
 
-<!-- Similar NOT COMPLETE -->
-<div class="container mt-5 shelf-container-nonfiction">
-
+<!-- Similar Books -->
+<div class="container mt-5 shelf-container-similar">
     <div class="shelf-title-wrapper">
-        <span class="shelf-title">Similar</span>
+        <span class="shelf-title">Similar Books</span>
     </div>
 
-    <div id="nonFictionCarousel" class="carousel slide">
+    <div id="similarBooksCarousel" class="carousel slide">
         <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Non-Fiction' %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
+            {% for similar_book in similar_books %}
+                {% if forloop.counter0|divisibleby:3 %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="d-flex justify-content-center">
+                {% endif %}
 
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
-                        </div>
+                <div class="card mx-2 Book">
+                    <a href="{% url 'book_details_list' similar_book.slug %}">
+                        <img src="{{ similar_book.bookcover.url }}" class="card-img-top" alt="{{ similar_book.booktitle }}">
+                    </a>
+                    <div class="card-body book-title-index">
+                        <h5 class="card-title">{{ similar_book.booktitle }}</h5>
+                    </div>
+                </div>
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
+                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                        </div> <!-- .d-flex -->
+                    </div> <!-- .carousel-item -->
+                {% endif %}
+            {% empty %}
+                <p>No similar books found.</p>
             {% endfor %}
         </div>
-        <!-- Carousel Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
+        {% if similar_books|length > 3 %}
+            <!-- Carousel Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        {% endif %}
 
         <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
     </div>

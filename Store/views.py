@@ -155,18 +155,32 @@ class BookListSearch(generic.ListView):
 # Submit Comment Form View
 def book_details(request, slug):
     queryset = BookStorePage.objects.filter(status=1)
-    context_object_name = 'book_list'
     book_details_list = get_object_or_404(queryset, slug=slug)
     comments = book_details_list.comments.all().order_by("-created_on")
     comment_count = book_details_list.comments.filter(approved=True).count()
-    template_name = "store/bookpage.html"
-    paginate_by = 6
+
+    # Get similar books
+    genres = book_details_list.genre.all()
+    topics = book_details_list.topics.all()
+    similar_books = BookStorePage.objects.filter(status=1).filter(
+        Q(genre__in=genres) | Q(topics__in=topics)
+    ).exclude(id=book_details_list.id).distinct()
 
     # Check if the book is hidden by the user
     is_book_hidden = False
     if request.user.is_authenticated:
-        is_book_hidden = request.user.profile.hidden_books.filter(id=book_details_list.id).exists()
-   
+        profile = request.user.profile
+        is_book_hidden = profile.hidden_books.filter(id=book_details_list.id).exists()
+        
+        # Exclude hidden books from similar books
+        similar_books = similar_books.exclude(hidden_by_books=profile)
+        
+        # Exclude purchased books from similar books
+        similar_books = similar_books.exclude(id__in=profile.purchased_books.all())
+
+    # Apply the slice after all filters have been applied
+    similar_books = similar_books[:12]  # Limit to 12 books
+
     if request.method == "POST":
         comment_form = RatingForm(data=request.POST)
         if comment_form.is_valid():
@@ -185,11 +199,13 @@ def book_details(request, slug):
     return render(
         request,
         "store/bookpage.html",
-        {"book": book_details_list,
-        "comments": comments,
-        "comment_count": comment_count,
-        "comment_form": comment_form,
-        "is_book_hidden": is_book_hidden,  # Add this line
+        {
+            "book": book_details_list,
+            "comments": comments,
+            "comment_count": comment_count,
+            "comment_form": comment_form,
+            "is_book_hidden": is_book_hidden,
+            "similar_books": similar_books,
         },  
     )
 

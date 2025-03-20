@@ -1,5 +1,7 @@
 from django import template
 from profile.models import Profile  
+from django.db.models import Q
+from Store.models import BookStorePage
 
 register = template.Library()
 
@@ -46,3 +48,18 @@ def exclude_purchased_books(books, user):
         return [book for book in books if book.id not in user_purchased_books]
     except Profile.DoesNotExist:
         return books  # Return all books if the user doesn't have a profile
+
+@register.filter
+def filter_by_genres_and_topics(books, current_book):
+    # If books is a string (book_list), get all books
+    if isinstance(books, str):
+        books = BookStorePage.objects.all()
+    
+    genres = current_book.genre.all()
+    topics = current_book.topics.all()
+    
+    similar_books = books.filter(
+        Q(genre__in=genres) | Q(topics__in=topics)
+    ).distinct().exclude(id=current_book.id)
+    
+    return similar_books
