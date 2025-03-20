@@ -289,16 +289,13 @@ def book_details_list(request, slug):
     context = {
         'book': book,
         'is_book_hidden': False,
-        'hidden_topics': [],
         'topic_visibility': {},
     }
 
     if profile:
-        context['is_book_hidden'] = profile.hidden_books.filter(id=book.id).exists()
-        context['hidden_topics'] = profile.hidden_topics.all()
+        context['is_book_hidden'] = book in profile.hidden_books.all()
         context['topic_visibility'] = {topic.id: topic in profile.hidden_topics.all() for topic in book.topics.all()}
     else:
-        # If there's no profile, set all topics as visible
         context['topic_visibility'] = {topic.id: False for topic in book.topics.all()}
 
     print("Topic Visibility:", context['topic_visibility'])  # Add this line for debugging

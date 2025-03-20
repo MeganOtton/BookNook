@@ -395,7 +395,7 @@
                                 <label class="form-check-label d-flex align-items-center" for="hideTopic{{ topic.id }}">
                                     <span class="me-2">{{ topic.name }}</span>
                                 </label>
-                                <i class="fa-solid {% if topic_visibility and topic.id in topic_visibility and topic_visibility|get_item:topic.id %}fa-eye{% else %}fa-eye-slash{% endif %} toggle-hide" data-target="hideTopic{{ topic.id }}"></i>
+                                <i class="fa-solid {% if topic_visibility and topic.id in topic_visibility and topic_visibility|get_item:topic.id %}fa-eye-slash{% else %}fa-eye{% endif %} toggle-hide" data-target="hideTopic{{ topic.id }}"></i>
                             </div>
                         {% endfor %}
                     </div>

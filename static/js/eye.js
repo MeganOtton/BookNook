@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hideOptions.forEach(option => {
             const checkbox = option.querySelector('.form-check-input');
             const icon = option.querySelector('.toggle-hide');
-            updateIconClass(icon, checkbox.checked);
+            updateIconClass(icon, checkbox.checked, checkbox.id === 'hideBook');
         });
     });
     
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         function toggleOption(e) {
             e.preventDefault();
             checkbox.checked = !checkbox.checked;
-            updateIconClass(icon, checkbox.checked);
+            updateIconClass(icon, checkbox.checked, checkbox.id === 'hideBook');
         }
 
         // Make the label clickable
@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
         icon.addEventListener('click', toggleOption);
     });
 
-    function updateIconClass(icon, isHidden) {
-        if (isHidden) {
+    function updateIconClass(icon, isChecked, isBook) {
+        if (isChecked) {
             icon.classList.remove('fa-eye');
             icon.classList.add('fa-eye-slash');
         } else {

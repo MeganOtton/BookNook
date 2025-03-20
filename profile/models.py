@@ -19,7 +19,7 @@ class Profile(models.Model):
     wishlisted_books = models.ManyToManyField(BookStorePage, related_name='wishlisted_books', blank=True)
     # hidden_authors = models.ManyToManyField('Store.Author', related_name='hidden_by_profiles', blank=True)
     hidden_books = models.ManyToManyField(BookStorePage, related_name='hidden_by_books', blank=True)
-    hidden_topics = models.ManyToManyField(Topic, related_name='hidden_by_profiles', blank=True)
+    hidden_topics = models.ManyToManyField(Topic, related_name='hidden_by_topics', blank=True)
 
     def save(self, *args, **kwargs):
         if self.birthdate_author:
