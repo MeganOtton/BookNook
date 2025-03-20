@@ -103,17 +103,28 @@ class BookListSearch(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
+        # Get all books (or a subset if you prefer)
+        all_books = BookStorePage.objects.filter(status=1)
+
+        if self.request.user.is_authenticated:
+            # Exclude hidden books for the authenticated user
+            all_books = all_books.exclude(hidden_by_books=self.request.user.profile)
+
         # Get books released in the last 5 days
         five_days_ago = timezone.now() - timedelta(days=5)
-        new_additions = BookStorePage.objects.filter(
-            status=1,
-            created_on__gte=five_days_ago
-        ).order_by('-created_on')
+        new_additions = all_books.filter(created_on__gte=five_days_ago).order_by('-created_on')[:6]
 
-        context['recommended_books'] = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
-        context['romance_books'] = BookStorePage.objects.filter(status=1, genre__name='Romance')[:6]
-        context['fantasy_books'] = BookStorePage.objects.filter(status=1, genre__name='Fantasy')[:6]
-        context['new_additions'] = new_additions[:6]  # Limit to 6 books
+        # Popular books (using the custom filter)
+        from .templatetags.custom_filters import filter_and_sort_by_rating
+        popular_books = filter_and_sort_by_rating(all_books)[:12]  # Limit to 12 books
+
+        context['book_list'] = all_books  # This is needed for the custom filter in the template
+        context['popular_books'] = popular_books
+        context['recommended_books'] = all_books.order_by('-created_on')[:6]
+        context['romance_books'] = all_books.filter(genre__name='Romance')[:6]
+        context['fantasy_books'] = all_books.filter(genre__name='Fantasy')[:6]
+        context['new_additions'] = new_additions
+
         return context
 
 # Submit Comment Form View

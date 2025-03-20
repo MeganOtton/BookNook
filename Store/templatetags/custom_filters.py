@@ -7,7 +7,13 @@ register = template.Library()
 def filter_and_sort_by_rating(books):
     # Filter books with average rating >= 4 and sort them in descending order
     filtered_books = [book for book in books if book.average_rating >= 4]
-    return sorted(filtered_books, key=lambda x: x.average_rating, reverse=True)
+    
+    # If no books have a rating of 4 or higher, use all books
+    if not filtered_books:
+        filtered_books = books
+    
+    # Sort the books by average rating in descending order
+    return sorted(filtered_books, key=lambda x: x.average_rating or 0, reverse=True)
 
 
 @register.filter
