@@ -11,6 +11,8 @@ from profile.models import Profile
 from django.db.models import Q
 from django.utils import timezone
 from datetime import timedelta
+from django.db.models import Count
+from .models import Genre
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -30,13 +32,15 @@ class BookList(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Add additional context for different book categories
-        context['recommended_books'] = self.get_queryset().order_by('-created_on')[:6]
-        context['romance_books'] = self.get_queryset().filter(genre__name='Romance')[:6]
-        context['fantasy_books'] = self.get_queryset().filter(genre__name='Fantasy')[:6]
-        # Add more categories as needed
-        
+        if self.request.user.is_authenticated:
+            profile = self.request.user.profile
+            favorite_genre = profile.favorite_genre
+            if favorite_genre:
+                recommended_books = BookStorePage.objects.filter(status=1, genre=favorite_genre)[:6]
+            else:
+                recommended_books = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
+            context['recommended_books'] = recommended_books
+            context['favorite_genre'] = favorite_genre
         return context
 
     @staticmethod

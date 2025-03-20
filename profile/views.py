@@ -89,7 +89,6 @@ def account_view(request):
     profile = current_user.profile
     hidden_books = profile.hidden_books.all()
     purchased_books = profile.purchased_books.all()
-    # all_comments = Comment.objects.all()
     user_comments = Comment.objects.filter(author=current_user).order_by('-created_on')
     
     # Check if the role needs to be updated
@@ -108,28 +107,36 @@ def account_view(request):
         count=Count('books')
     ).order_by('-count')
 
-    #Find the most common genre(s)
+    # Find the most common genre(s)
     if genre_counts.exists():
         max_count = genre_counts.first().count
         top_genres = genre_counts.filter(count=max_count)
         
         if top_genres.count() == 1:
-            favourite_genre = top_genres.first().name
+            favourite_genre = top_genres.first()
+            # Update the favorite_genre in the Profile model
+            if profile.favorite_genre != favourite_genre:
+                profile.favorite_genre = favourite_genre
+                profile.save()
         else:
-            favourite_genre = "No Favourite Genre Found"
+            favourite_genre = None
     else:
-        favourite_genre = "No purchases yet"
+        favourite_genre = None
 
+    # If no favourite genre is found, set it to None in the Profile model
+    if favourite_genre is None and profile.favorite_genre is not None:
+        profile.favorite_genre = None
+        profile.save()
 
+    # Update the context to use the Genre object instead of just the name
     context = {
         'profile': profile,
-        # 'all_comments_count': all_comments.count(),
         'user_comments_count': user_comments.count(),
         'user_comments': user_comments,
         'role_updated': role_updated,
         'new_role': new_role,
         'hidden_books': profile.hidden_books.all(),
-        'favourite_genre': favourite_genre,
+        'favourite_genre': favourite_genre.name if favourite_genre else "No Favourite Genre Found",
     }
     return render(request, 'profile/account.html', context)
 
