@@ -126,8 +126,55 @@
 </div>
 
 <!-- Similar Books -->
-{% with accessible_similar_books=similar_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
-    {% if accessible_similar_books %}
+{% if similar_books %}
+    {% if user.is_authenticated %}
+        {% with accessible_similar_books=similar_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
+            {% if accessible_similar_books %}
+                <div class="container mt-5 shelf-container-similar">
+                    <div class="shelf-title-wrapper">
+                        <span class="shelf-title">Similar Books</span>
+                    </div>
+
+                    <div id="similarBooksCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for similar_book in accessible_similar_books %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+
+                                <div class="card mx-2 Book">
+                                    <a href="{% url 'book_details_list' similar_book.slug %}">
+                                        <img src="{{ similar_book.bookcover.url }}" class="card-img-top" alt="{{ similar_book.booktitle }}">
+                                    </a>
+                                    <div class="card-body book-title-index">
+                                        <h5 class="card-title">{{ similar_book.booktitle }}</h5>
+                                    </div>
+                                </div>
+
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                        </div> <!-- .d-flex -->
+                                    </div> <!-- .carousel-item -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if accessible_similar_books|length > 3 %}
+                            <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                        {% endif %}
+
+                        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% else %}
         <div class="container mt-5 shelf-container-similar">
             <div class="shelf-title-wrapper">
                 <span class="shelf-title">Similar Books</span>
@@ -135,7 +182,7 @@
 
             <div id="similarBooksCarousel" class="carousel slide">
                 <div class="carousel-inner">
-                    {% for similar_book in accessible_similar_books %}
+                    {% for similar_book in similar_books %}
                         {% if forloop.counter0|divisibleby:3 %}
                             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                 <div class="d-flex justify-content-center">
@@ -156,7 +203,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                {% if accessible_similar_books|length > 3 %}
+                {% if similar_books|length > 3 %}
                     <!-- Carousel Controls -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -171,7 +218,7 @@
             </div>
         </div>
     {% endif %}
-{% endwith %}
+{% endif %}
 
 <!-- By Author NOT COMPLETE -->
 <div class="container mt-5 shelf-container-nonfiction">
