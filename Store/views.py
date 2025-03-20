@@ -24,7 +24,7 @@ class BookList(generic.ListView):
         
         if self.request.user.is_authenticated:
             # Exclude hidden books for the authenticated user
-            queryset = queryset.exclude(hidden_by=self.request.user.profile)
+            queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
         
         return queryset
 
@@ -56,7 +56,7 @@ class BookListSearch(generic.ListView):
 
         if self.request.user.is_authenticated:
             # Exclude hidden books for the authenticated user
-            queryset = queryset.exclude(hidden_by=self.request.user.profile)
+            queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
 
         if query:
             return queryset.filter(
@@ -182,7 +182,7 @@ def review_detail(request, id):
 def profile_view(request):
     user_profile = request.user.profile
     accessible_books = BookStorePage.objects.filter(status=1).exclude(
-        hidden_by=user_profile
+        hidden_by_books=user_profile
     ).filter(
         age_restriction=False if user_profile.role == 'Child' else True
     )

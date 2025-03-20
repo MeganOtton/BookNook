@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isHidden) {
             icon.classList.remove('fa-eye');
             icon.classList.add('fa-eye-slash');
-
         } else {
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');

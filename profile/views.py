@@ -1,29 +1,18 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView
+from django.views.generic import DetailView, FormView
 from django.contrib import messages
-from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import Profile
 from Store.models import BookStorePage, Comment, Topic, Genre
-from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .forms import CustomSignupForm, CustomAuthorSignupForm
-from django.urls import reverse_lazy
-from django.views.generic import FormView
 from datetime import date
-from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import Profile
 from django.db.models import Count
-
-
-
-
-
 
 @login_required
 def library_view(request):
@@ -266,17 +255,15 @@ def library_view(request):
 @login_required
 def hide_options(request, book_id):
     if request.method == 'POST':
-        book = BookStorePage.objects.get(id=book_id)
+        book = get_object_or_404(BookStorePage, id=book_id)
         user_profile = request.user.profile
         
-        # Handle unhide action
-        if 'unhide_book' in request.POST:
-            user_profile.hidden_books.remove(book)
-            messages.success(request, f"{book.booktitle} has been unhidden.")
-        # Handle hide action
-        elif 'hide_book' in request.POST:
+        if 'hide_book' in request.POST:
             user_profile.hidden_books.add(book)
             messages.success(request, f"{book.booktitle} has been hidden.")
+        else:
+            user_profile.hidden_books.remove(book)
+            messages.success(request, f"{book.booktitle} has been unhidden.")
 
         hidden_topics = request.POST.getlist('hide_topics')
         for topic in book.topics.all():
@@ -287,7 +274,10 @@ def hide_options(request, book_id):
 
         user_profile.save()
 
-    # Always redirect back to the account page
-    return redirect('account')  # Make sure 'account' is the correct name for your account view
+        # Redirect back to the book page
+        return redirect('book_details_list', slug=book.slug)
+
+    # If not POST, redirect to the book page
+    return redirect('book_details_list', slug=book.slug)
 
 
