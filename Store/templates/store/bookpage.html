@@ -30,15 +30,6 @@
                     <button id="purchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">£{{ book.bookprice }}</button>
                 {% endif %}
             </form>
-
-            <!-- Check Purchase Button  -->
-            <!-- When Clicked Will call check_game_purchased which will check if the game is already in the users purchased list -->
-            <!-- This is not displayed and the user can not interact with this, Couldnt find an easier way to automate this so created a button 
-                that is display:none but has a script that on load will click this button automatically calling a python function -->
-            <!-- <form id="id_check_book_purchased" action="{%url 'check_book_purchased' book.booktitle %}" method="post" style="display: none;">
-                {% csrf_token %}
-                <button id="checkPurchasedButton" type="submit" class="btn btn-primary Red_purchase_button purchase-button">Check Purchase</button>
-            </form> -->
         </div>
     </div>
 
@@ -420,5 +411,4 @@
 <script src="{% static 'js/eye.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
 <script src="{% static 'js/comments.js' %}"></script>
-<!-- <script src="{% static 'js/purchase_checker.js' %}"></script> -->
 {% endblock extras %}

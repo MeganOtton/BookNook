@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
         hideOptions.forEach(option => {
             const checkbox = option.querySelector('.form-check-input');
             const icon = option.querySelector('.toggle-hide');
-            console.log('Initial state:', checkbox.id, 'Checked:', checkbox.checked);
             updateIconClass(icon, checkbox.checked);
         });
     }
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             checkbox.checked = !checkbox.checked;
             updateIconClass(icon, checkbox.checked);
-            console.log('Toggled:', checkbox.id, 'New state:', checkbox.checked);
         }
 
         // Make the label clickable
@@ -40,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');
         }
-        console.log('Updated icon:', icon, 'Is hidden:', isHidden);
     }
 
     // Initialize icons when the page loads
