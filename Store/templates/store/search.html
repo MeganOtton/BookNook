@@ -84,16 +84,15 @@
                     <p>No new books in the last 5 days.</p>
                 {% endfor %}
             </div>
-            {% if forloop.counter > 3 %}
-            <!-- Carousel Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#newadditionsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
+            {% if new_additions|length > 3 %}
+                <!-- Carousel Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#newadditionsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
 
-            <button class="carousel-control-next" type="button" data-bs-target="#newadditionsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
-
+                <button class="carousel-control-next" type="button" data-bs-target="#newadditionsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
             {% endif %}
 
             <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
@@ -132,14 +131,16 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#popularauthorsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
+                    {% if popular_books|length > 3 %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#popularauthorsCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
 
-                    <button class="carousel-control-next" type="button" data-bs-target="#popularauthorsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#popularauthorsCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
 
                     <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
                 </div>
@@ -270,14 +271,16 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <!-- Carousel Controls -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                </button>
+                {% if recommended_books|length > 3 %}
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
 
-                <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                {% endif %}
 
                 <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
             </div>

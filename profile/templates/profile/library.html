@@ -38,7 +38,7 @@
                 {% endif %}
             {% endfor %}
         </div>
-        {% if popular_books|length > 3 %}
+        {% if wishlisted_books|length > 3 %}
         <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#wishlistCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -90,7 +90,7 @@
             {% endfor %}
         </div>
 
-        {% if popular_books|length > 3 %}
+        {% if purchased_books|length > 3 %}
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -142,7 +142,7 @@
             {% endfor %}
         </div>
 
-        {% if purchased_books %}
+        {% if purchased_books|length > 3 %}
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -193,7 +193,7 @@
             {% endfor %}
         </div>
 
-        {% if purchased_books %}
+        {% if purchased_books|length > 3 %}
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -208,6 +208,8 @@
     </div>
 </div>
 
+<div class="fix-footer">
+</div>
 {% endblock content%}
 
 {% block extras %}
