@@ -11,10 +11,9 @@
 
 <!-- Reccommended Shelf -->
 <!-- FIX THIS Recommended = hidden authors FIX THIS-->
-<!-- Recommended Shelf -->
 {% if user.is_authenticated %}
     {% with recommended_books=recommended_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile|exclude_purchased_books:user %}
-        {% if recommended_books and user.profile.favorite_genre %}
+        {% if recommended_books and favorite_genre %}
             <div class="container mt-5 shelf-container">
                 <div class="shelf-title-wrapper">
                     <span class="shelf-title">

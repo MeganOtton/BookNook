@@ -34,13 +34,42 @@ class BookList(generic.ListView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
-            favorite_genre = profile.favorite_genre
+            purchased_books = profile.purchased_books.all()
+
+            # Count genres
+            genre_counts = Genre.objects.filter(books__in=purchased_books).annotate(
+                count=Count('books')
+            ).order_by('-count')
+
+            # Find the most common genre(s)
+            if genre_counts.exists():
+                max_count = genre_counts.first().count
+                top_genres = genre_counts.filter(count=max_count)
+                
+                if top_genres.count() == 1:
+                    favorite_genre = top_genres.first()
+                    # Update the favorite_genre in the Profile model
+                    if profile.favorite_genre != favorite_genre:
+                        profile.favorite_genre = favorite_genre
+                        profile.save()
+                else:
+                    favorite_genre = None
+            else:
+                favorite_genre = None
+
+            # If no favourite genre is found, set it to None in the Profile model
+            if favorite_genre is None and profile.favorite_genre is not None:
+                profile.favorite_genre = None
+                profile.save()
+
             if favorite_genre:
                 recommended_books = BookStorePage.objects.filter(status=1, genre=favorite_genre)[:6]
             else:
                 recommended_books = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
+
             context['recommended_books'] = recommended_books
             context['favorite_genre'] = favorite_genre
+
         return context
 
     @staticmethod
