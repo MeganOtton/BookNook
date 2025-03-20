@@ -13,6 +13,7 @@ urlpatterns = [
     path('library/', views.library_view, name='library'),
     path('account/', views.account_view, name='account'),
     path('hide-options/<int:book_id>/', views.hide_options, name='hide_options'),
+    path('book/<slug:slug>/', views.book_details_list, name='book_details_list'),
 ]
 
 

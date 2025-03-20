@@ -258,13 +258,14 @@ def hide_options(request, book_id):
         book = get_object_or_404(BookStorePage, id=book_id)
         user_profile = request.user.profile
         
-        if 'hide_book' in request.POST:
+        # Handle book hiding/unhiding
+        hide_book = request.POST.get('hide_book') == 'on'
+        if hide_book:
             user_profile.hidden_books.add(book)
-            messages.success(request, f"{book.booktitle} has been hidden.")
         else:
             user_profile.hidden_books.remove(book)
-            messages.success(request, f"{book.booktitle} has been unhidden.")
 
+        # Handle topics hiding/unhiding
         hidden_topics = request.POST.getlist('hide_topics')
         for topic in book.topics.all():
             if str(topic.id) in hidden_topics:
@@ -274,10 +275,32 @@ def hide_options(request, book_id):
 
         user_profile.save()
 
-        # Redirect back to the book page
+        messages.success(request, "Hide options updated successfully.")
         return redirect('book_details_list', slug=book.slug)
 
     # If not POST, redirect to the book page
     return redirect('book_details_list', slug=book.slug)
 
 
+def book_details_list(request, slug):
+    book = get_object_or_404(BookStorePage, slug=slug)
+    profile = request.user.profile if request.user.is_authenticated else None
+
+    context = {
+        'book': book,
+        'is_book_hidden': False,
+        'hidden_topics': [],
+        'topic_visibility': {},
+    }
+
+    if profile:
+        context['is_book_hidden'] = profile.hidden_books.filter(id=book.id).exists()
+        context['hidden_topics'] = profile.hidden_topics.all()
+        context['topic_visibility'] = {topic.id: topic in profile.hidden_topics.all() for topic in book.topics.all()}
+    else:
+        # If there's no profile, set all topics as visible
+        context['topic_visibility'] = {topic.id: False for topic in book.topics.all()}
+
+    print("Topic Visibility:", context['topic_visibility'])  # Add this line for debugging
+
+    return render(request, 'store/bookpage.html', context)

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -389,11 +390,12 @@
                     <div class="mb-3">
                         <label>Hide Topics:</label>
                         {% for topic in book.topics.all %}
-                            <div class="form-check">
-                                <input type="checkbox" name="hide_topics" value="{{ topic.id }}" class="form-check-input" id="topic{{ topic.id }}">
-                                <label class="form-check-label" for="topic{{ topic.id }}">
-                                    {{ topic.name }} <i class="fa-solid fa-eye-slash"></i>
+                            <div class="mb-3 hide-option">
+                                <input type="checkbox" name="hide_topics" value="{{ topic.id }}" class="form-check-input visually-hidden" id="hideTopic{{ topic.id }}" {% if topic_visibility and topic.id in topic_visibility and topic_visibility|get_item:topic.id %}checked{% endif %}>
+                                <label class="form-check-label d-flex align-items-center" for="hideTopic{{ topic.id }}">
+                                    <span class="me-2">{{ topic.name }}</span>
                                 </label>
+                                <i class="fa-solid {% if topic_visibility and topic.id in topic_visibility and topic_visibility|get_item:topic.id %}fa-eye{% else %}fa-eye-slash{% endif %} toggle-hide" data-target="hideTopic{{ topic.id }}"></i>
                             </div>
                         {% endfor %}
                     </div>

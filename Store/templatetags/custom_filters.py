@@ -20,3 +20,7 @@ def can_access_book(profile, book):
 @register.filter
 def filter_accessible_books(books, profile):
     return [book for book in books if profile.can_access_book(book)]
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

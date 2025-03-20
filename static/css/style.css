@@ -501,8 +501,12 @@ body {
 
 .tab-section {
     margin-top: 0.5rem;
+    margin-bottom: 0.5rem !important;
 }
 
+.hidden-tab-section {
+    margin-bottom: 0.5rem !important;
+}
 
 .review-tab {
     font-weight: 600;
