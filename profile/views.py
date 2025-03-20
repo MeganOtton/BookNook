@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import Profile
-from Store.models import BookStorePage, Comment, Topic
+from Store.models import BookStorePage, Comment, Topic, Genre
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
@@ -18,6 +18,9 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Profile
+from django.db.models import Count
+
+
 
 
 
@@ -96,6 +99,7 @@ def account_view(request):
     current_user = request.user
     profile = current_user.profile
     hidden_books = profile.hidden_books.all()
+    purchased_books = profile.purchased_books.all()
     # all_comments = Comment.objects.all()
     user_comments = Comment.objects.filter(author=current_user).order_by('-created_on')
     
@@ -110,6 +114,24 @@ def account_view(request):
         role_updated = True
         new_role = profile.role
 
+    # Count genres
+    genre_counts = Genre.objects.filter(books__in=purchased_books).annotate(
+        count=Count('books')
+    ).order_by('-count')
+
+    #Find the most common genre(s)
+    if genre_counts.exists():
+        max_count = genre_counts.first().count
+        top_genres = genre_counts.filter(count=max_count)
+        
+        if top_genres.count() == 1:
+            favourite_genre = top_genres.first().name
+        else:
+            favourite_genre = "No Favourite Genre Found"
+    else:
+        favourite_genre = "No purchases yet"
+
+
     context = {
         'profile': profile,
         # 'all_comments_count': all_comments.count(),
@@ -118,6 +140,7 @@ def account_view(request):
         'role_updated': role_updated,
         'new_role': new_role,
         'hidden_books': profile.hidden_books.all(),
+        'favourite_genre': favourite_genre,
     }
     return render(request, 'profile/account.html', context)
 
@@ -239,9 +262,6 @@ def library_view(request):
     }
     return render(request, 'profile/library.html', context)
 
-
-
-    
 
 @login_required
 def hide_options(request, book_id):
