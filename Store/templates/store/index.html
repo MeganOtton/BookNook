@@ -8,13 +8,12 @@
 <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf-hero" alt="Wood Shelf">
 
 
-
 <!-- Reccommended Shelf -->
 <!-- FIX THIS Recommended = hidden authors FIX THIS-->
 {% if user.is_authenticated %}
     {% with recommended_books=recommended_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile|exclude_purchased_books:user %}
         {% if recommended_books and favorite_genre %}
-            <div class="container mt-5 shelf-container">
+            <div class="container mt-5 shelf-container-recommended">
                 <div class="shelf-title-wrapper">
                     <span class="shelf-title">
                         {% if user.profile.favorite_genre %}
@@ -71,7 +70,7 @@
     {% with popular_books=book_list|filter_and_sort_by_rating %}
         {% with accessible_books=popular_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile|exclude_purchased_books:user  %}
             {% if accessible_books %}
-                <div class="container mt-5 shelf-container">
+                <div class="container mt-5 shelf-container-popular">
                     <div class="shelf-title-wrapper">
                         <span class="shelf-title">Popular</span>
                     </div>
@@ -124,7 +123,103 @@
         {% if user.is_authenticated %}
             {% with accessible_books=romance_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
-                    <div class="container mt-5 shelf-container">
+                    <div class="container mt-5 shelf-container-romance">
+                        <div class="shelf-title-wrapper">
+                            <span class="shelf-title">Romance</span>
+                        </div>
+                        
+                        <div id="romanceCarousel" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% for book in accessible_books %}
+                                    {% if forloop.counter0|divisibleby:device_type %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
+
+                                    <div class="card mx-2 Book">
+                                        <a href="{% url 'book_details_list' book.slug %}">
+                                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                        </a>
+                                        <div class="card-body book-title-index">
+                                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                                        </div>
+                                    </div>
+
+                                    {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                                            </div> <!-- .d-flex -->
+                                        </div> <!-- .carousel-item -->
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if accessible_books|length > device_type %}
+                                <!-- Carousel Controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+
+                                <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            {% endif %}
+
+                            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% else %}
+            <div class="container mt-5 shelf-container-romance">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">Romance</span>
+                </div>
+                
+                <div id="romanceCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in romance_books %}
+                            {% if forloop.counter0|divisibleby:device_type %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
+
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if romance_books|length > device_type %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#romanceCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#romanceCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
+
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
+
+{% with romance_books=book_list|filter_by_genre:"Romance" %}
+    {% if romance_books %}
+        {% if user.is_authenticated %}
+            {% with accessible_books=romance_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
+                {% if accessible_books %}
+                    <div class="container mt-5 shelf-container-romance">
                         <div class="shelf-title-wrapper">
                             <span class="shelf-title">Romance</span>
                         </div>
@@ -169,7 +264,7 @@
                 {% endif %}
             {% endwith %}
         {% else %}
-            <div class="container mt-5 shelf-container">
+            <div class="container mt-5 shelf-container-romance">
                 <div class="shelf-title-wrapper">
                     <span class="shelf-title">Romance</span>
                 </div>
@@ -221,7 +316,7 @@
         {% if user.is_authenticated %}
             {% with accessible_books=fantasy_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
-                    <div class="container mt-5 shelf-container">
+                    <div class="container mt-5 shelf-container-fantasy">
                         <div class="shelf-title-wrapper">
                             <span class="shelf-title">Fantasy</span>
                         </div>
@@ -266,7 +361,7 @@
                 {% endif %}
             {% endwith %}
         {% else %}
-            <div class="container mt-5 shelf-container">
+            <div class="container mt-5 shelf-container-fantasy">
                 <div class="shelf-title-wrapper">
                     <span class="shelf-title">Fantasy</span>
                 </div>
@@ -318,7 +413,7 @@
         {% if user.is_authenticated %}
             {% with accessible_books=mystery_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
-                    <div class="container mt-5 shelf-container">
+                    <div class="container mt-5 shelf-container-mystery">
                         <div class="shelf-title-wrapper">
                             <span class="shelf-title">Mystery</span>
                         </div>
@@ -362,7 +457,7 @@
                 {% endif %}
             {% endwith %}
         {% else %}
-            <div class="container mt-5 shelf-container">
+            <div class="container mt-5 shelf-container-mystery">
                 <div class="shelf-title-wrapper">
                     <span class="shelf-title">Mystery</span>
                 </div>
@@ -413,7 +508,7 @@
         {% if user.is_authenticated %}
             {% with accessible_books=thriller_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
-                    <div class="container mt-5 shelf-container">
+                    <div class="container mt-5 shelf-container-thriller">
                         <div class="shelf-title-wrapper">
                             <span class="shelf-title">Thriller</span>
                         </div>
@@ -457,7 +552,7 @@
                 {% endif %}
             {% endwith %}
         {% else %}
-            <div class="container mt-5 shelf-container">
+            <div class="container mt-5 shelf-container-thriller">
                 <div class="shelf-title-wrapper">
                     <span class="shelf-title">Thriller</span>
                 </div>
@@ -509,7 +604,7 @@
         {% if user.is_authenticated %}
             {% with accessible_books=scifi_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile %}
                 {% if accessible_books %}
-                    <div class="container mt-5 shelf-container">
+                    <div class="container mt-5 shelf-container-scifi">
                         <div class="shelf-title-wrapper">
                             <span class="shelf-title">Science Fiction</span>
                         </div>
@@ -553,7 +648,7 @@
                 {% endif %}
             {% endwith %}
         {% else %}
-            <div class="container mt-5 shelf-container">
+            <div class="container mt-5 shelf-container-scifi">
                 <div class="shelf-title-wrapper">
                     <span class="shelf-title">Science Fiction</span>
                 </div>
@@ -698,4 +793,5 @@
 
 
 {% block extras %}
+
 {% endblock %}

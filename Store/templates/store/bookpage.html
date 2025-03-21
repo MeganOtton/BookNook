@@ -408,7 +408,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <p>This allows you to hide Authors, Books or Topics you dont want to see again. This prevents them from appearing under searches or on your home page. To unhide the selected choice go to your account and select the eye next to the hidden catagory. </p>
+            <p class="modal-text">This allows you to hide Authors, Books or Topics you dont want to see again. This prevents them from appearing under searches or on your home page. To unhide the selected choice go to your account and select the eye next to the hidden catagory. </p>
 
             <div class="modal-body">
                 <form id="hideOptionsForm" method="POST" action="{% url 'hide_options' book.id %}">
@@ -440,7 +440,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary modal-button-hide">Save Changes</button>
                 </form>
             </div>
         </div>

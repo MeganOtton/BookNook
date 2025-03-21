@@ -9,4 +9,5 @@ urlpatterns = [
     path('review/<int:id>/', views.review_detail, name='review_detail'),
     path('<slug:slug>/edit_comment/<int:comment_id>', views.comment_edit, name='comment_edit'),
     path('<slug:slug>/delete_comment/<int:comment_id>', views.comment_delete, name='comment_delete'),
+    path('api/save-device-type/', views.save_device_type, name='save_device_type'),
 ]
