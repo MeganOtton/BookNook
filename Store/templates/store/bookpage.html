@@ -8,12 +8,16 @@
 <!-- Book Page content starts here -->
 
 <form id="wishlist_form" action="{% url 'move_wishlist_book' book.booktitle %}" method="post" class="booktitle-ribbon">
+    {% if user.is_authenticated %}
+        <button type="submit" class="wishlist-toggle" style="background: none; border: none; padding: 0;">
+            <i class="fa-solid fa-heart fa-2xl Save-Book-Info wishlist-icon {% if book in user.profile.wishlisted_books.all %}active{% endif %}"></i>
+        </button>
+    {% endif %}
     <h3 class="booktitle">{{ book.booktitle }}</h3>
     {% csrf_token %}
-    <button type="submit" class="wishlist-toggle" style="background: none; border: none; padding: 0;">
-        <i class="fa-solid fa-heart fa-2xl Save-Book-Info wishlist-icon {% if book in user.profile.wishlisted_books.all %}active{% endif %}"></i>
-    </button>
-    <i class="fa-solid fa-gear fa-2xl Options-Book-Info" style="color: #ffffff; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#optionsModal"></i>
+    {% if user.is_authenticated %}
+        <i class="fa-solid fa-gear fa-2xl Options-Book-Info" style="color: #ffffff; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#optionsModal"></i>
+    {% endif %}
 </form>
 
 <section class="main_purchase_info">
@@ -90,7 +94,7 @@
             {% for book in book_list %}
                 {% for genre in book.genre.all %}
                     {% if genre.name == 'Non-Fiction' %}
-                        {% if forloop.counter0|divisibleby:3 %}
+                        {% if forloop.counter0|divisibleby:device_type %}
                             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                 <div class="d-flex justify-content-center">
                         {% endif %}
@@ -104,7 +108,7 @@
                             </div>
                         </div>
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                        {% if forloop.counter|divisibleby:device_type or forloop.last %}
                                 </div> <!-- .d-flex -->
                             </div> <!-- .carousel-item -->
                         {% endif %}
@@ -138,7 +142,7 @@
                     <div id="similarBooksCarousel" class="carousel slide">
                         <div class="carousel-inner">
                             {% for similar_book in accessible_similar_books %}
-                                {% if forloop.counter0|divisibleby:3 %}
+                                {% if forloop.counter0|divisibleby:device_type %}
                                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                         <div class="d-flex justify-content-center">
                                 {% endif %}
@@ -152,13 +156,13 @@
                                     </div>
                                 </div>
 
-                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                {% if forloop.counter|divisibleby:device_type or forloop.last %}
                                         </div> <!-- .d-flex -->
                                     </div> <!-- .carousel-item -->
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        {% if accessible_similar_books|length > 3 %}
+                        {% if accessible_similar_books|length > device_type %}
                             <!-- Carousel Controls -->
                             <button class="carousel-control-prev" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -183,7 +187,7 @@
             <div id="similarBooksCarousel" class="carousel slide">
                 <div class="carousel-inner">
                     {% for similar_book in similar_books %}
-                        {% if forloop.counter0|divisibleby:3 %}
+                        {% if forloop.counter0|divisibleby:device_type %}
                             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                 <div class="d-flex justify-content-center">
                         {% endif %}
@@ -197,13 +201,13 @@
                             </div>
                         </div>
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                        {% if forloop.counter|divisibleby:device_type or forloop.last %}
                                 </div> <!-- .d-flex -->
                             </div> <!-- .carousel-item -->
                         {% endif %}
                     {% endfor %}
                 </div>
-                {% if similar_books|length > 3 %}
+                {% if similar_books|length > device_type %}
                     <!-- Carousel Controls -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#similarBooksCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -232,7 +236,7 @@
             {% for book in book_list %}
                 {% for genre in book.genre.all %}
                     {% if genre.name == 'Non-Fiction' %}
-                        {% if forloop.counter0|divisibleby:3 %}
+                        {% if forloop.counter0|divisibleby:device_type %}
                             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                 <div class="d-flex justify-content-center">
                         {% endif %}
@@ -246,7 +250,7 @@
                             </div>
                         </div>
 
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
+                        {% if forloop.counter|divisibleby:device_type or forloop.last %}
                                 </div> <!-- .d-flex -->
                             </div> <!-- .carousel-item -->
                         {% endif %}

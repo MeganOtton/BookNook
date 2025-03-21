@@ -18,7 +18,7 @@
     <div id="wishlistCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in wishlisted_books %}
-                {% if forloop.counter0|divisibleby:3 %}
+                {% if forloop.counter0|divisibleby:device_type %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="d-flex justify-content-center">
                 {% endif %}
@@ -32,13 +32,13 @@
                     </div>
                 </div>
             
-                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                {% if forloop.counter|divisibleby:device_type or forloop.last %}
                         </div> <!-- .d-flex -->
                     </div> <!-- .carousel-item -->
                 {% endif %}
             {% endfor %}
         </div>
-        {% if wishlisted_books|length > 3 %}
+        {% if wishlisted_books|length > device_type %}
         <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#wishlistCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -63,7 +63,7 @@
     <div id="purchasedBooksCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in purchased_books %}
-                {% if forloop.counter0|divisibleby:3 %}
+                {% if forloop.counter0|divisibleby:device_type %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="d-flex justify-content-center">
                 {% endif %}
@@ -77,7 +77,7 @@
                     </div>
                 </div>
             
-                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                {% if forloop.counter|divisibleby:device_type or forloop.last %}
                         </div> <!-- .d-flex -->
                     </div> <!-- .carousel-item -->
                 {% endif %}
@@ -90,7 +90,7 @@
             {% endfor %}
         </div>
 
-        {% if purchased_books|length > 3 %}
+        {% if purchased_books|length > device_type %}
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -115,7 +115,7 @@
     <div id="purchasedBooksCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in purchased_books %}
-                {% if forloop.counter0|divisibleby:3 %}
+                {% if forloop.counter0|divisibleby:device_type %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="d-flex justify-content-center">
                 {% endif %}
@@ -129,7 +129,7 @@
                     </div>
                 </div>
             
-                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                {% if forloop.counter|divisibleby:device_type or forloop.last %}
                         </div> <!-- .d-flex -->
                     </div> <!-- .carousel-item -->
                 {% endif %}
@@ -142,7 +142,7 @@
             {% endfor %}
         </div>
 
-        {% if purchased_books|length > 3 %}
+        {% if purchased_books|length > device_type %}
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -166,7 +166,7 @@
     <div id="purchasedBooksCarousel" class="carousel slide">
         <div class="carousel-inner">
             {% for book in purchased_books %}
-                {% if forloop.counter0|divisibleby:3 %}
+                {% if forloop.counter0|divisibleby:device_type %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="d-flex justify-content-center">
                 {% endif %}
@@ -180,7 +180,7 @@
                     </div>
                 </div>
             
-                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                {% if forloop.counter|divisibleby:device_type or forloop.last %}
                         </div> <!-- .d-flex -->
                     </div> <!-- .carousel-item -->
                 {% endif %}
@@ -193,7 +193,7 @@
             {% endfor %}
         </div>
 
-        {% if purchased_books|length > 3 %}
+        {% if purchased_books|length > device_type %}
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

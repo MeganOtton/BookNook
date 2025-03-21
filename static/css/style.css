@@ -208,7 +208,6 @@ body {
     margin: 0 auto;
     text-align: center;
     color: white;
-    margin-right: 60px;
 }
 
 .Save-Book-Info,
@@ -243,14 +242,16 @@ body {
     border: 1px solid white;
     border-radius: 5px;
 
+    height: fit-content;
     margin-right: 10px;
     width: 8rem;
 }
 
 .book-info-top {
     margin-bottom: 10px;
-    height: 15rem;
     padding: 5px;
+    height: fit-content;
+    
 }
 
 .book-info-bottom-tablet {
@@ -765,7 +766,7 @@ li {
     font-size: 12px;
 }
 
-@media screen and (max-width: 425px) {
+@media only screen and (max-width: 600px) {
     /* Adjust hero image */
     .hero_image {
         height: auto;
@@ -792,17 +793,26 @@ li {
     .shelf-title {
         font-size: 1rem;
         padding: 8px 15px;
-    }
-
-    /* Adjust carousel controls */
-    .carousel-control-prev,
-    .carousel-control-next {
-        top: -10px;
+        position: sticky;
+        left: 0;
     }
 
     /* Adjust footer */
+
+    .fix-footer {
+        padding-top: 60px !important;
+    }
+
     .footer {
-        padding-top: 10px !important;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
     }
 
     /* Adjust navbar */
@@ -815,10 +825,11 @@ li {
         padding-left: 10px;
         padding-right: 10px;
     }
+    
 }
 
 /* Media query for tablet devices */
-@media screen and (min-width: 426px) and (max-width: 1023px) {
+@media only screen and (min-width: 600px) {
     /* Adjust hero image */
     .hero_image {
         height: 4rem;
@@ -848,7 +859,7 @@ li {
     }
 
     .Book {
-        width: 5rem;
+        width: 6rem;
     }
 
     .shelf-title {
@@ -865,16 +876,21 @@ li {
 
     /* Adjust footer */
     .footer {
-        padding-top: 15px !important;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
     }
 
     .fix-footer {
-        padding-top: 75px !important;
+        padding-top: 80px !important;
     }
 
-    .fix-footer-index {
-        height: 90px;
-    }
 
     /* Adjust navbar */
     .nav-item {
@@ -884,19 +900,237 @@ li {
 
     /* Adjust wood shelf */
     .wood-shelf {
+        height: 1.2rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Search.html */
+
+}
+
+/* Media query for Laptop devices */
+@media only screen and (min-width: 768px) {
+    /* Hero image adjustments */
+    .hero_image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .wood-shelf-hero {
+        height: 1rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+    .shelf-title-wrapper {
+        top: -25px;
+        left: -50px;
+    }
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+
+    /* Adjust wood shelf */
+    .wood-shelf {
         height: 1.5rem;
         object-fit: cover;
         object-position: center;
     }
 
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
+
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
 }
 
-/* Media query for Laptop devices */
-@media screen and (min-width: 1024px) and (max-width: 1440px) {
-    
+/* Media query for large Laptop devices */
+@media only screen and (min-width: 992px) {
+    /* Hero image adjustments */
+    .hero_image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .wood-shelf-hero {
+        height: 1rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+    .shelf-title-wrapper {
+        top: -25px;
+        left: -80px;
+    }
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+        position: sticky;
+        left: 0;
+    }
+
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
+
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
 }
 
 /* Media query for Desktop devices */
-@media screen and (min-width: 1441px) and (max-width: 2561px) {
-   
+@media only screen and (min-width: 1200px) {
+   /* Hero image adjustments */
+   .hero_image {
+    height: 5rem;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.wood-shelf-hero {
+    height: 1.2rem;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Book shelf adjustments */
+.shelf-container-recommended {
+    margin-top: 3rem !important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.shelf-title-wrapper {
+    top: -25px;
+    left: -80px;
+}
+
+.Book {
+    width: 6rem;
+}
+
+.shelf-title {
+    font-size: 16px;
+    padding: 12px 24px;
+    position: sticky;
+    left: 0;
+}
+
+/* Adjust wood shelf */
+.wood-shelf {
+    height: 1.5rem;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Footer adjustments */
+.footer {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+
+.footer-icons {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+
+.fix-footer {
+    padding-top: 80px !important;
+}
+
+/* Navbar adjustments */
+.nav-item {
+    font-size: 16px;
+}
+
+/* Adjust spacing between shelves */
+.shelf-container {
+    margin-bottom: 3rem;
+}
 }
