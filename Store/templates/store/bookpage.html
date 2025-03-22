@@ -41,23 +41,39 @@
 
     <div class="book-info">
         <div class="book-info-top">
-            <h5>{{ book.authorname }}</h5>
-            <h5>Genres: </h5>
-            <p>
+            <h5 class="bookpage-author-name">{{ book.authorname }}</h5>
+            <p class="bookpage-genre">
                 {% for genre in book.genre.all %}
                     {{ genre }}{% if not forloop.last %}, {% endif %}
                 {% empty %}
                     No genres available
                 {% endfor %}
             </p>
-            <h5>{{ book.chapter }} Chapters</h5>
-            <h5>{{ book.bookrating }}</h5>
+            <h5 class="bookpage-chapter-count">{{ book.chapter }} Chapters</h5>
+
+            <div class="rating-number">
+                <p class="rating-number-text">Rating {{ book.average_rating }}</p>
+            </div> 
+
+            <div class="rating-stars">
+                {% with total=book.average_rating|default:0 %}
+                    {% for i in "12345" %}
+                        {% if total >= i|add:"0" %}
+                            <span>★</span>
+                        {% else %}
+                            <span>☆</span>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </div>   
+
+            
         </div>
 
         <div class="book-info-bottom-tablet">
-            <h5>About:</h5>
-            <h5>{{ book.bookdescription }}</h5>
-            <h5>Topics</h5>
+            <span class="bookpage-about">About:</span>
+            <p>{{ book.bookdescription }}</p>
+            <h5 class="bookpage-topics">Topics</h5>
             <p>
                 {% for topics in book.topics.all %}
                     {{ topics }}{% if not forloop.last %}, {% endif %}
@@ -70,9 +86,9 @@
 </section>
 
 <div class="book-info-bottom">
-    <h5>About:</h5>
+    <span class="bookpage-about">About:</span>
     <p>{{ book.bookdescription }}</p>
-    <h5>Topics</h5>
+    <h5 class="bookpage-topics">Topics</h5>
     <p>
         {% for topics in book.topics.all %}
             {{ topics }}{% if not forloop.last %}, {% endif %}
@@ -83,7 +99,7 @@
 </div>
 
 <!-- Series NOT COMPLETE -->
-<div class="container mt-5 shelf-container-nonfiction">
+<!-- <div class="container mt-5 shelf-container-nonfiction">
 
     <div class="shelf-title-wrapper">
         <span class="shelf-title">Series</span>
@@ -109,14 +125,14 @@
                         </div>
 
                         {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
+                                </div> 
+                            </div> 
                         {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endfor %}
         </div>
-        <!-- Carousel Controls -->
+        
         <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         </button>
@@ -127,7 +143,7 @@
 
         <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
     </div>
-</div>
+</div> -->
 
 <!-- Similar Books -->
 {% if similar_books %}
@@ -225,7 +241,7 @@
 {% endif %}
 
 <!-- By Author NOT COMPLETE -->
-<div class="container mt-5 shelf-container-nonfiction">
+<!-- <div class="container mt-5 shelf-container-nonfiction">
 
     <div class="shelf-title-wrapper">
         <span class="shelf-title">By Author</span>
@@ -251,14 +267,14 @@
                         </div>
 
                         {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
+                                </div> 
+                            </div> 
                         {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endfor %}
         </div>
-        <!-- Carousel Controls -->
+    
         <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         </button>
@@ -269,7 +285,7 @@
 
         <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
     </div>
-</div>
+</div> -->
 
 <!-- Review Section -->
 <div class="review-box">

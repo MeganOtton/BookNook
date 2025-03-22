@@ -144,7 +144,7 @@ body {
 .shelf-title-wrapper {
     position: relative;
     top: -20px;
-    left: -20px;
+    left: -80px;
     z-index: 1;
     max-width: 100%; 
 }
@@ -167,9 +167,12 @@ body {
     padding: 10px 20px;
     border-radius: 0 8px 8px 0; /* Rounded right corners */
 
+    position: sticky;
+    left: 0;
+
     color: white;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1rem;
     max-width: calc(100% - 40px); /* Ensure shelf title does not exceed viewport width */
 }
 
@@ -225,7 +228,7 @@ body {
 /* Purchase Info */
 .main_purchase_info {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     align-items: flex-start
 }
@@ -248,10 +251,58 @@ body {
 }
 
 .book-info-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    height: 240px;
     margin-bottom: 10px;
     padding: 5px;
-    height: fit-content;
-    
+}
+
+.bookpage-author-name {
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 2px;
+    margin-bottom: 10px;
+}
+
+.bookpage-genre {
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 2px;
+    margin-bottom: 10px;
+}
+
+.bookpage-chapter-count{
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 2px;
+    margin-bottom: 10px;
+}
+
+.rating-number {
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 2px;
+    margin-bottom: 10px;
+}
+
+.rating-number-text {
+    margin-bottom: 0px;
+}
+
+.rating-stars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 25px;
 }
 
 .book-info-bottom-tablet {
@@ -268,7 +319,19 @@ body {
 
     margin-right: 10px;
     margin-left: 10px;
-    margin-top: 10px;
+    margin-bottom: 35px;
+
+    font-size: 14px;
+}
+
+.bookpage-about {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.bookpage-topics{
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .purchase-button {
@@ -766,7 +829,9 @@ li {
     font-size: 12px;
 }
 
-@media only screen and (max-width: 600px) {
+
+
+@media only screen and (min-width: 375px) and (max-width: 425px) {
     /* Adjust hero image */
     .hero_image {
         height: auto;
@@ -783,7 +848,7 @@ li {
 
     .shelf-title-wrapper {
         top: -15px;
-        left: -10px;
+        left: -50px;
     }
 
     .Book {
@@ -826,10 +891,153 @@ li {
         padding-right: 10px;
     }
     
+    /* BOOKPAGE.HTML */
+    /*  */
+
+    .book-info-top {
+        width: 11rem;
+    }
+
+    .book-info-bottom {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 426px) and (max-width: 576px) {
+    /* Adjust hero image */
+    .hero_image {
+        height: auto;
+    }
+
+    /* Adjust book shelf */
+    .shelf-container-recommended {
+        margin-top: 1rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 1.8rem !important;
+    }
+
+    .shelf-title-wrapper {
+        top: -15px;
+        left: -50px;
+    }
+
+    .Book {
+        width: 4rem;
+    }
+
+    .shelf-title {
+        font-size: 1rem;
+        padding: 8px 15px;
+        position: sticky;
+    }
+
+    /* Adjust footer */
+
+    .fix-footer {
+        padding-top: 60px !important;
+    }
+
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    /* Adjust navbar */
+    .nav-item {
+        font-size: 14px;
+    }
+
+    /* Adjust general spacing */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .book-info {
+        display: flex;
+    }
+
+    .book-info-top {
+        width: 11rem;
+    }
+
+    
+}
+
+@media only screen and (min-width: 577px) and (max-width: 600px) {
+    /* Adjust hero image */
+    .hero_image {
+        height: auto;
+    }
+
+    /* Adjust book shelf */
+    .shelf-container-recommended {
+        margin-top: 1rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 1.8rem !important;
+    }
+
+    .shelf-title-wrapper {
+        top: -15px;
+        left: -50px;
+    }
+
+    .Book {
+        width: 4rem;
+    }
+
+    .shelf-title {
+        font-size: 1rem;
+        padding: 8px 15px;
+        position: sticky;
+        left: 0;
+    }
+
+    /* Adjust footer */
+
+    .fix-footer {
+        padding-top: 60px !important;
+    }
+
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    /* Adjust navbar */
+    .nav-item {
+        font-size: 14px;
+    }
+
+    /* Adjust general spacing */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    
 }
 
 /* Media query for tablet devices */
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 601px) and (max-width: 768px){
     /* Adjust hero image */
     .hero_image {
         height: 4rem;
@@ -854,8 +1062,8 @@ li {
     }
 
     .shelf-title-wrapper {
-        top: -18px;
-        left: -40px;
+        top: -15px;
+        left: -200px;
     }
 
     .Book {
@@ -910,7 +1118,7 @@ li {
 }
 
 /* Media query for Laptop devices */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 768px) and (max-width: 800px) {
     /* Hero image adjustments */
     .hero_image {
         height: 5rem;
@@ -923,6 +1131,11 @@ li {
         height: 1rem;
         object-fit: cover;
         object-position: center;
+    }
+
+    .shelf-title-wrapper {
+        top: -15px;
+        left: -500px;
     }
 
     /* Book shelf adjustments */
@@ -981,10 +1194,260 @@ li {
     .shelf-container {
         margin-bottom: 3rem;
     }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .book-info-top {
+        height: 9.5rem;
+        width: 100%;
+    }
+
+    .book-info-bottom {
+        display: none;
+
+    }
+
+    .book-info-bottom-tablet {
+        display: block;
+        height: 9.5rem;
+        width: 100%;
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 20rem;
+    }
+}
+
+/* Media query for Laptop devices */
+@media only screen and (min-width: 801px) and (max-width: 991px) {
+    /* Hero image adjustments */
+    .hero_image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .wood-shelf-hero {
+        height: 1rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .shelf-title-wrapper {
+        top: -25px;
+        left: -500px;
+    }
+
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
+
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
+}
+
+/* Media query for Laptop devices */
+@media only screen and (min-width: 992px) and (max-width: 1000px) {
+    /* Hero image adjustments */
+    .hero_image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .wood-shelf-hero {
+        height: 1rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .shelf-title-wrapper {
+        top: -35px;
+        left: -5000px;
+    }
+
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
+
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
+}
+
+/* Media query for Laptop devices */
+@media only screen and (min-width: 1001px) and (max-width: 1200px) {
+    /* Hero image adjustments */
+    .hero_image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .wood-shelf-hero {
+        height: 1rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .shelf-title-wrapper {
+        top: -25px;
+        left: -500px;
+    }
+
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
+
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
 }
 
 /* Media query for large Laptop devices */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1201px) and (max-width: 1400px){
     /* Hero image adjustments */
     .hero_image {
         height: 5rem;
@@ -1000,6 +1463,11 @@ li {
     }
 
     /* Book shelf adjustments */
+    .shelf-title-wrapper {
+        top: -25px;
+        left: -500px;
+    }
+
     .shelf-container-recommended {
         margin-top: 3rem !important;
     }
@@ -1009,8 +1477,8 @@ li {
     }
 
     .shelf-title-wrapper {
-        top: -25px;
-        left: -80px;
+        top: -15px;
+        left: -500px;
     }
 
     .Book {
@@ -1060,7 +1528,7 @@ li {
 }
 
 /* Media query for Desktop devices */
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1400px) and (max-width: 2559px) {
    /* Hero image adjustments */
    .hero_image {
     height: 5rem;
@@ -1086,7 +1554,7 @@ li {
 
 .shelf-title-wrapper {
     top: -25px;
-    left: -80px;
+    left: 0px;
 }
 
 .Book {
@@ -1133,4 +1601,80 @@ li {
 .shelf-container {
     margin-bottom: 3rem;
 }
+}
+
+/* Media query for Desktop devices */
+@media only screen and (min-width: 2560px) {
+    /* Hero image adjustments */
+    .hero_image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .wood-shelf-hero {
+        height: 1.2rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+    .shelf-title-wrapper {
+        top: -25px;
+        left: 0px;
+    }
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+        position: sticky;
+        left: 0;
+    }
+
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
+
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
 }
