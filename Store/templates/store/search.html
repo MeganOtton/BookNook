@@ -146,7 +146,8 @@
     {% endif %}
 
     <!-- Popular Authors Section, ADD FUNCTIONALITY -->
-    {% with popular_books=book_list|filter_and_sort_by_rating %}
+    <div style="display: none;">
+        {% with popular_books=book_list|filter_and_sort_by_rating %}
         {% if popular_books %}
             <div class="container mt-5 shelf-container">
                 <div class="shelf-title-wrapper">
@@ -192,6 +193,8 @@
             </div>
         {% endif %}
     {% endwith %}
+    </div>
+    
 
     <!-- Popular Books Section -->
     {% if book_list %}
@@ -294,48 +297,51 @@
 
     {% if user.is_authenticated %}
         <!-- From Authors You've Liked, ADD FUNCTIONALITY -->
-        <div class="container mt-5 shelf-container">
-            <div class="shelf-title-wrapper">
-                <span class="shelf-title">From Authors You've Liked</span>
-            </div>
-            
-            <div id="likedauthorsCarousel" class="carousel slide">
-                <div class="carousel-inner">
-                    {% for book in recommended_books %}
-                        {% if forloop.counter0|divisibleby:device_type %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-        
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
-                        </div>
-        
-                        {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                                </div> <!-- .d-flex -->
-                            </div> <!-- .carousel-item -->
-                        {% endif %}
-                    {% endfor %}
+        <div style="display: none;">
+            <div class="container mt-5 shelf-container">
+                <div class="shelf-title-wrapper">
+                    <span class="shelf-title">From Authors You've Liked</span>
                 </div>
-                {% if recommended_books|length > 3 %}
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-        
-                    <button class="carousel-control-next" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-                {% endif %}
-        
-                <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                
+                <div id="likedauthorsCarousel" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for book in recommended_books %}
+                            {% if forloop.counter0|divisibleby:device_type %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center">
+                            {% endif %}
+            
+                            <div class="card mx-2 Book">
+                                <a href="{% url 'book_details_list' book.slug %}">
+                                    <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                </a>
+                                <div class="card-body book-title-index">
+                                    <h5 class="card-title">{{ book.booktitle }}</h5>
+                                </div>
+                            </div>
+            
+                            {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                                    </div> <!-- .d-flex -->
+                                </div> <!-- .carousel-item -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if recommended_books|length > 3 %}
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+            
+                        <button class="carousel-control-next" type="button" data-bs-target="#likedauthorsCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    {% endif %}
+            
+                    <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                </div>
             </div>
         </div>
+        
 
         {% if user.is_authenticated and random_purchase %}
             <!-- Similar to Random Purchased Book Shelf -->
@@ -386,7 +392,70 @@
                 {% endif %}
             {% endwith %}
         {% endif %}
-    {% endif %}  
+    {% endif %}
+    
+    <!--Reccomended-->
+    {% if user.is_authenticated %}
+        {% with recommended_books=recommended_books|filter_accessible_books:user.profile|exclude_hidden_topics:user.profile|exclude_purchased_books:user %}
+            {% if recommended_books and favorite_genre %}
+                <div class="container mt-5 shelf-container-recommended">
+                    <div class="shelf-title-wrapper">
+                        <span class="shelf-title">
+                            {% if user.profile.favorite_genre %}
+                                Recommended
+                            {% else %}
+                                Recommended Books
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div id="recommendedCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for book in recommended_books %}
+                                {% if device_type is not None %}
+                                    {% if forloop.counter0|divisibleby:device_type %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
+                                {% else %}
+                                    {% if forloop.counter0|divisibleby:1 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
+                                {% endif %}
+
+                                <div class="card mx-2 Book">
+                                    <a href="{% url 'book_details_list' book.slug %}">
+                                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                                    </a>
+                                    <div class="card-body book-title-index">
+                                        <h5 class="card-title">{{ book.booktitle }}</h5>
+                                    </div>
+                                </div>
+
+                                {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                                        </div> <!-- .d-flex -->
+                                    </div> <!-- .carousel-item -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if recommended_books|length > device_type %}
+                        <!-- Carousel Controls -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#recommendedCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                        {% endif %}
+
+                        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% endif %}
 {% endif %}  
 
 <div class="fix-footer">

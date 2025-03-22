@@ -47,11 +47,11 @@ class BookStorePage(models.Model):
         verbose_name="Age Restriction (18+)"
     )
 
-    chapter = models.IntegerField(default=0, verbose_name="Amount Of Chapters")
+    pages = models.IntegerField(default=0, verbose_name="Amount Of Pages")
 
     bookcover = CloudinaryField('image', default='placeholder')
 
-    bookdescription = models.TextField(verbose_name="Book Description")
+    bookdescription = models.CharField(max_length=490, verbose_name="Book Description")
 
     bookprice = models.DecimalField(max_digits=6, decimal_places=2, default=0.00, verbose_name="Book Price")
 

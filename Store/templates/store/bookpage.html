@@ -40,33 +40,41 @@
 
 
     <div class="book-info">
+        
         <div class="book-info-top">
-            <h5 class="bookpage-author-name">{{ book.authorname }}</h5>
-            <p class="bookpage-genre">
-                {% for genre in book.genre.all %}
-                    {{ genre }}{% if not forloop.last %}, {% endif %}
-                {% empty %}
-                    No genres available
-                {% endfor %}
-            </p>
-            <h5 class="bookpage-chapter-count">{{ book.chapter }} Chapters</h5>
+            <div class="author-name-flex">
+                <h5 class="bookpage-author-name">{{ book.authorname }}</h5>
+            </div>
 
-            <div class="rating-number">
-                <p class="rating-number-text">Rating {{ book.average_rating }}</p>
-            </div> 
-
-            <div class="rating-stars">
-                {% with total=book.average_rating|default:0 %}
-                    {% for i in "12345" %}
-                        {% if total >= i|add:"0" %}
-                            <span>★</span>
-                        {% else %}
-                            <span>☆</span>
-                        {% endif %}
+            <div class="genre-chapter-flex">
+                <p class="bookpage-genre">
+                    {% for genre in book.genre.all %}
+                        {{ genre }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        No Genre
                     {% endfor %}
-                {% endwith %}
-            </div>   
+                </p>
 
+                <p class="bookpage-chapter-count">{{ book.chapter }} Pages</p>
+            </div>
+
+            <div class="rating-box-flex">
+                <div class="rating-number">
+                    <p class="rating-number-text">Rating {{ book.average_rating }}</p>
+                </div> 
+
+                <div class="rating-stars">
+                    {% with total=book.average_rating|default:0 %}
+                        {% for i in "12345" %}
+                            {% if total >= i|add:"0" %}
+                                <span>★</span>
+                            {% else %}
+                                <span>☆</span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </div> 
+            </div>
             
         </div>
 
