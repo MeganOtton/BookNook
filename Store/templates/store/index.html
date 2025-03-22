@@ -27,9 +27,16 @@
                 <div id="recommendedCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% for book in recommended_books %}
-                            {% if forloop.counter0|divisibleby:device_type %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="d-flex justify-content-center">
+                            {% if device_type is not None %}
+                                {% if forloop.counter0|divisibleby:device_type %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+                            {% else %}
+                                {% if forloop.counter0|divisibleby:1 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
                             {% endif %}
 
                             <div class="card mx-2 Book">
@@ -78,9 +85,16 @@
                     <div id="popularCarousel" class="carousel slide">
                         <div class="carousel-inner">
                             {% for book in accessible_books %}
-                                {% if forloop.counter0|divisibleby:device_type %}
-                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                        <div class="d-flex justify-content-center">
+                                {% if device_type is not None %}
+                                    {% if forloop.counter0|divisibleby:device_type %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
+                                {% else %}
+                                    {% if forloop.counter0|divisibleby:1 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="d-flex justify-content-center">
+                                    {% endif %}
                                 {% endif %}
 
                                 <div class="card mx-2 Book">
@@ -131,9 +145,16 @@
                         <div id="romanceCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:device_type %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
+                                    {% if device_type is not None %}
+                                        {% if forloop.counter0|divisibleby:device_type %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if forloop.counter0|divisibleby:1 %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
                                     {% endif %}
 
                                     <div class="card mx-2 Book">
@@ -176,9 +197,16 @@
                 <div id="romanceCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% for book in romance_books %}
-                            {% if forloop.counter0|divisibleby:device_type %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="d-flex justify-content-center">
+                            {% if device_type is not None %}
+                                {% if forloop.counter0|divisibleby:device_type %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+                            {% else %}
+                                {% if forloop.counter0|divisibleby:1 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
                             {% endif %}
 
                             <div class="card mx-2 Book">
@@ -228,9 +256,16 @@
                         <div id="fantasyCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:device_type %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
+                                    {% if device_type is not None %}
+                                        {% if forloop.counter0|divisibleby:device_type %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if forloop.counter0|divisibleby:1 %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
                                     {% endif %}
 
                                     <div class="card mx-2 Book">
@@ -273,11 +308,17 @@
                 <div id="fantasyCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% for book in fantasy_books %}
-                            {% if forloop.counter0|divisibleby:device_type %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="d-flex justify-content-center">
+                            {% if device_type is not None %}
+                                {% if forloop.counter0|divisibleby:device_type %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+                            {% else %}
+                                {% if forloop.counter0|divisibleby:1 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
                             {% endif %}
-
                             <div class="card mx-2 Book">
                                 <a href="{% url 'book_details_list' book.slug %}">
                                     <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
@@ -325,9 +366,16 @@
                         <div id="mysteryCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:device_type %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
+                                    {% if device_type is not None %}
+                                        {% if forloop.counter0|divisibleby:device_type %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if forloop.counter0|divisibleby:1 %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
                                     {% endif %}
 
                                     <div class="card mx-2 Book">
@@ -369,9 +417,16 @@
                 <div id="mysteryCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% for book in mystery_books %}
-                            {% if forloop.counter0|divisibleby:device_type %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="d-flex justify-content-center">
+                            {% if device_type is not None %}
+                                {% if forloop.counter0|divisibleby:device_type %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+                            {% else %}
+                                {% if forloop.counter0|divisibleby:1 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
                             {% endif %}
 
                             <div class="card mx-2 Book">
@@ -420,9 +475,16 @@
                         <div id="thrillerCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:device_type %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
+                                    {% if device_type is not None %}
+                                        {% if forloop.counter0|divisibleby:device_type %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if forloop.counter0|divisibleby:1 %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
                                     {% endif %}
 
                                     <div class="card mx-2 Book">
@@ -464,9 +526,16 @@
                 <div id="thrillerCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% for book in thriller_books %}
-                            {% if forloop.counter0|divisibleby:device_type %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="d-flex justify-content-center">
+                            {% if device_type is not None %}
+                                {% if forloop.counter0|divisibleby:device_type %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+                            {% else %}
+                                {% if forloop.counter0|divisibleby:1 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
                             {% endif %}
 
                             <div class="card mx-2 Book">
@@ -516,9 +585,16 @@
                         <div id="scifiCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:device_type %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
+                                    {% if device_type is not None %}
+                                        {% if forloop.counter0|divisibleby:device_type %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if forloop.counter0|divisibleby:1 %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
                                     {% endif %}
 
                                     <div class="card mx-2 Book">
@@ -560,9 +636,16 @@
                 <div id="scifiCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% for book in scifi_books %}
-                            {% if forloop.counter0|divisibleby:device_type %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="d-flex justify-content-center">
+                            {% if device_type is not None %}
+                                {% if forloop.counter0|divisibleby:device_type %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+                            {% else %}
+                                {% if forloop.counter0|divisibleby:1 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
                             {% endif %}
 
                             <div class="card mx-2 Book">
@@ -611,9 +694,16 @@
                         <div id="nonfictionCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 {% for book in accessible_books %}
-                                    {% if forloop.counter0|divisibleby:device_type %}
-                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                            <div class="d-flex justify-content-center">
+                                    {% if device_type is not None %}
+                                        {% if forloop.counter0|divisibleby:device_type %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if forloop.counter0|divisibleby:1 %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="d-flex justify-content-center">
+                                        {% endif %}
                                     {% endif %}
 
                                     <div class="card mx-2 Book">
@@ -654,9 +744,16 @@
                 <div id="nonfictionCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% for book in nonfiction_books %}
-                            {% if forloop.counter0|divisibleby:device_type %}
-                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <div class="d-flex justify-content-center">
+                            {% if device_type is not None %}
+                                {% if forloop.counter0|divisibleby:device_type %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
+                            {% else %}
+                                {% if forloop.counter0|divisibleby:1 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="d-flex justify-content-center">
+                                {% endif %}
                             {% endif %}
 
                             <div class="card mx-2 Book">
