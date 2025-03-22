@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Loading...</h1>
+    <p>Please wait while we optimize your experience.</p>
+</div>
+
+<script src="{% static 'js/device_detection.js' %}"></script>
+<script>
+    window.addEventListener("load", () => {
+        let deviceType = getDeviceType();
+        fetch('/api/save-device-type/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ device_type: deviceType })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            window.location.href = "{% url 'index' %}";
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}
