@@ -8,203 +8,216 @@
     <h1 class="accounttitle">My Library</h1>
 </div>
 
+{% if wishlisted_books|length == 0 %}
+    {% if purchased_books|length == 0 %}
+        <div class="No-library">
+            <h3>This Looks a bit Empty..</h3>
+            <p>Looks like you haven't added any books to your library yet.</p>
+            <p>Head over to the Home Page or Search to find your next read.</p>
+        </div>
+    {% endif %}
+{% endif %}
+
+
 <!-- Wishlist Shelf -->
 {% if wishlisted_books %}
-<div class="container mt-5 shelf-container">
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Wishlist</span>
-    </div>
-    
-    <div id="wishlistCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in wishlisted_books %}
-                {% if forloop.counter0|divisibleby:device_type %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                {% endif %}
-
-                <div class="card mx-2 Book">
-                    <a href="{% url 'book_details_list' book.slug %}">
-                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                    </a>
-                    <div class="card-body book-title-index">
-                        <h5 class="card-title">{{ book.booktitle }}</h5>
-                    </div>
-                </div>
-            
-                {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                        </div> <!-- .d-flex -->
-                    </div> <!-- .carousel-item -->
-                {% endif %}
-            {% endfor %}
+    <div class="container mt-5 shelf-container">
+        <div class="shelf-title-wrapper">
+            <span class="shelf-title">Wishlist</span>
         </div>
-        {% if wishlisted_books|length > device_type %}
-        <!-- Carousel Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#wishlistCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
+        
+        <div id="wishlistCarousel" class="carousel slide">
+            <div class="carousel-inner">
+                {% for book in wishlisted_books %}
+                    {% if forloop.counter0|divisibleby:device_type %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="d-flex justify-content-center">
+                    {% endif %}
 
-            <button class="carousel-control-next" type="button" data-bs-target="#wishlistCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
-        {% endif %}
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+                    <div class="card mx-2 Book">
+                        <a href="{% url 'book_details_list' book.slug %}">
+                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                        </a>
+                        <div class="card-body book-title-index">
+                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                        </div>
+                    </div>
+                
+                    {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                            </div> <!-- .d-flex -->
+                        </div> <!-- .carousel-item -->
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% if wishlisted_books|length > device_type %}
+            <!-- Carousel Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#wishlistCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#wishlistCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            {% endif %}
+            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
+        </div>
     </div>
-</div>
 {% endif %}
 
 <!-- Purchased Books -->
 {% if purchased_books %}
-<div class="container mt-5 shelf-container">
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Purchased Books</span>
-    </div>
-    
-    <div id="purchasedBooksCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in purchased_books %}
-                {% if forloop.counter0|divisibleby:device_type %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                {% endif %}
+    <div class="container mt-5 shelf-container">
+        <div class="shelf-title-wrapper">
+            <span class="shelf-title">Purchased Books</span>
+        </div>
+        
+        <div id="purchasedBooksCarousel" class="carousel slide">
+            <div class="carousel-inner">
+                {% for book in purchased_books %}
+                    {% if forloop.counter0|divisibleby:device_type %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="d-flex justify-content-center">
+                    {% endif %}
 
-                <div class="card mx-2 Book">
-                    <a href="{% url 'book_details_list' book.slug %}">
-                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                    </a>
-                    <div class="card-body book-title-index">
-                        <h5 class="card-title">{{ book.booktitle }}</h5>
+                    <div class="card mx-2 Book">
+                        <a href="{% url 'book_details_list' book.slug %}">
+                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                        </a>
+                        <div class="card-body book-title-index">
+                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                        </div>
+                    </div>
+                
+                    {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                            </div> <!-- .d-flex -->
+                        </div> <!-- .carousel-item -->
+                    {% endif %}
+                {% empty %}
+                <div class="carousel-item active">
+                    <div class="d-flex justify-content-center">
+                        <p>You haven't purchased any books yet.</p>
                     </div>
                 </div>
-            
-                {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                        </div> <!-- .d-flex -->
-                    </div> <!-- .carousel-item -->
-                {% endif %}
-            {% empty %}
-            <div class="carousel-item active">
-                <div class="d-flex justify-content-center">
-                    <p>You haven't purchased any books yet.</p>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+
+            {% if purchased_books|length > device_type %}
+                <!-- Carousel Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            {% endif %}
+
+            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
         </div>
-
-        {% if purchased_books|length > device_type %}
-            <!-- Carousel Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
-
-            <button class="carousel-control-next" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
-        {% endif %}
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
     </div>
-</div>
 {% endif %}
 
-<!-- Currently Reading, NOT WORKING ADD FUNCTIONALITY -->
-<div class="container mt-5 shelf-container">
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Currently Reading</span>
-    </div>
-    
-    <div id="purchasedBooksCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in purchased_books %}
-                {% if forloop.counter0|divisibleby:device_type %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                {% endif %}
+<div style="display: none;">
+    <!-- Currently Reading, NOT WORKING ADD FUNCTIONALITY -->
+    <div class="container mt-5 shelf-container">
+        <div class="shelf-title-wrapper">
+            <span class="shelf-title">Currently Reading</span>
+        </div>
+        
+        <div id="purchasedBooksCarousel" class="carousel slide">
+            <div class="carousel-inner">
+                {% for book in purchased_books %}
+                    {% if forloop.counter0|divisibleby:device_type %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="d-flex justify-content-center">
+                    {% endif %}
 
-                <div class="card mx-2 Book">
-                    <a href="{% url 'book_details_list' book.slug %}">
-                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                    </a>
-                    <div class="card-body book-title-index">
-                        <h5 class="card-title">{{ book.booktitle }}</h5>
+                    <div class="card mx-2 Book">
+                        <a href="{% url 'book_details_list' book.slug %}">
+                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                        </a>
+                        <div class="card-body book-title-index">
+                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                        </div>
+                    </div>
+                
+                    {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                            </div> <!-- .d-flex -->
+                        </div> <!-- .carousel-item -->
+                    {% endif %}
+                {% empty %}
+                <div class="carousel-item active">
+                    <div class="d-flex justify-content-center">
+                        <p>You haven't purchased any books yet.</p>
                     </div>
                 </div>
-            
-                {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                        </div> <!-- .d-flex -->
-                    </div> <!-- .carousel-item -->
-                {% endif %}
-            {% empty %}
-            <div class="carousel-item active">
-                <div class="d-flex justify-content-center">
-                    <p>You haven't purchased any books yet.</p>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+
+            {% if purchased_books|length > device_type %}
+                <!-- Carousel Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            {% endif %}
+
+            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
         </div>
-
-        {% if purchased_books|length > device_type %}
-            <!-- Carousel Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
-
-            <button class="carousel-control-next" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
-        {% endif %}
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
     </div>
-</div>
 
-<!-- Finished Books, NOT WORKING ADD FUNCTIONALITY -->
-<div class="container mt-5 shelf-container">
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Finished Books</span>
-    </div>
-    
-    <div id="purchasedBooksCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in purchased_books %}
-                {% if forloop.counter0|divisibleby:device_type %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                {% endif %}
+    <!-- Finished Books, NOT WORKING ADD FUNCTIONALITY -->
+    <div class="container mt-5 shelf-container">
+        <div class="shelf-title-wrapper">
+            <span class="shelf-title">Finished Books</span>
+        </div>
+        
+        <div id="purchasedBooksCarousel" class="carousel slide">
+            <div class="carousel-inner">
+                {% for book in purchased_books %}
+                    {% if forloop.counter0|divisibleby:device_type %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="d-flex justify-content-center">
+                    {% endif %}
 
-                <div class="card mx-2 Book">
-                    <a href="{% url 'book_details_list' book.slug %}">
-                        <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                    </a>
-                    <div class="card-body book-title-index">
-                        <h5 class="card-title">{{ book.booktitle }}</h5>
+                    <div class="card mx-2 Book">
+                        <a href="{% url 'book_details_list' book.slug %}">
+                            <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
+                        </a>
+                        <div class="card-body book-title-index">
+                            <h5 class="card-title">{{ book.booktitle }}</h5>
+                        </div>
+                    </div>
+                
+                    {% if forloop.counter|divisibleby:device_type or forloop.last %}
+                            </div> <!-- .d-flex -->
+                        </div> <!-- .carousel-item -->
+                    {% endif %}
+                {% empty %}
+                <div class="carousel-item active">
+                    <div class="d-flex justify-content-center">
+                        <p>You haven't purchased any books yet.</p>
                     </div>
                 </div>
-            
-                {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                        </div> <!-- .d-flex -->
-                    </div> <!-- .carousel-item -->
-                {% endif %}
-            {% empty %}
-            <div class="carousel-item active">
-                <div class="d-flex justify-content-center">
-                    <p>You haven't purchased any books yet.</p>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+
+            {% if purchased_books|length > device_type %}
+                <!-- Carousel Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            {% endif %}
+
+            <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
         </div>
-
-        {% if purchased_books|length > device_type %}
-            <!-- Carousel Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </button>
-
-            <button class="carousel-control-next" type="button" data-bs-target="#purchasedBooksCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </button>
-        {% endif %}
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
     </div>
 </div>
 

@@ -91,8 +91,13 @@ body {
     width: 100%; /* Ensure footer does not exceed viewport width */
     z-index: 99;
     box-shadow: 0 -4px 6px var(--shadow-color);
+
     margin-top: 200px !important;
-    padding-top: 20px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
 }
 
 
@@ -100,6 +105,8 @@ body {
     padding : 5px;
     color: var(--white);
     text-decoration: none;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
 }
 
 .fix-footer {
@@ -205,19 +212,21 @@ body {
 
     padding-top: 10px;
     padding-bottom: 10px;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .booktitle {
     margin: 0 auto;
     text-align: center;
     color: white;
+    font-size: 18px;
 }
 
 .Save-Book-Info,
 .Options-Book-Info {
     display: flex;
     justify-content: flex-end;
-    padding: 3px;
+    padding: 1rem;
 }
 
 .modal-text {
@@ -230,7 +239,8 @@ body {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    align-items: flex-start
+    align-items: flex-start;
+    margin-bottom: .5rem;
 }
 
 .Book-Cover-Image {
@@ -238,6 +248,7 @@ body {
     height: 15rem;
 
     margin-left: 10px;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .book-info-top, .book-info-bottom-tablet  {
@@ -248,17 +259,18 @@ body {
     height: fit-content;
     margin-right: 10px;
     width: 8rem;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .book-info-top {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     flex-wrap: wrap;
 
-    height: 240px;
+    height: fit-content;
     margin-bottom: 10px;
     padding: 5px;
+    margin-left: .4rem;
 }
 
 .bookpage-author-name {
@@ -322,6 +334,7 @@ body {
     margin-bottom: 35px;
 
     font-size: 14px;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .bookpage-about {
@@ -345,6 +358,7 @@ body {
     border-color: var(--ribbon-red) !important;
     padding: 5px 15px; /* Adjust padding as needed */
     font-size: 0.9rem; /* Adjust font size as needed */
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .bookcover-purchase {
@@ -361,6 +375,7 @@ body {
     margin-left: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .reviews-info {
@@ -829,6 +844,17 @@ li {
     font-size: 12px;
 }
 
+.No-library {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    color: var(--white);
+}
 
 
 @media only screen and (min-width: 375px) and (max-width: 425px) {
@@ -892,15 +918,24 @@ li {
     }
     
     /* BOOKPAGE.HTML */
-    /*  */
+
+    .main_purchase_info {
+        justify-content: center;
+        margin-bottom: .8rem;
+    }
+
+    .book-info {
+        display: flex;
+        justify-content: normal;
+        margin-left: 0.5rem;
+
+    }
 
     .book-info-top {
         width: 11rem;
+        justify-content: normal;
     }
 
-    .book-info-bottom {
-        display: block;
-    }
 }
 
 @media only screen and (min-width: 426px) and (max-width: 576px) {
@@ -962,12 +997,20 @@ li {
         padding-right: 10px;
     }
 
+    .main_purchase_info {
+        justify-content: center
+    }
+
     .book-info {
         display: flex;
+        justify-content: normal;
+        margin-left: 0.5rem;
+
     }
 
     .book-info-top {
         width: 11rem;
+        justify-content: normal;
     }
 
     
@@ -1033,11 +1076,32 @@ li {
         padding-right: 10px;
     }
     
+    .login-info-box {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+
+    .book-info-top {
+        width: 100%;
+        height: fit-content;
+        margin-left: 1rem;
+        justify-content: normal;
+    }
+
+    .main_purchase_info {
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 21rem; 
+    }
     
 }
 
 /* Media query for tablet devices */
-@media only screen and (min-width: 601px) and (max-width: 768px){
+@media only screen and (min-width: 601px) and (max-width: 650px){
     /* Adjust hero image */
     .hero_image {
         height: 4rem;
@@ -1113,12 +1177,145 @@ li {
         object-position: center;
     }
 
-    /* Search.html */
+    .register-box {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+
+    .login-info-box {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+
+    .book-info-top {
+        width: 100%;
+        height: fit-content;
+        margin-left: 1rem;
+        justify-content: normal;
+    }
+
+    .main_purchase_info {
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 21rem; 
+    }
+
+
+}
+
+/* Media query for tablet devices */
+@media only screen and (min-width: 651px) and (max-width: 768px){
+    /* Adjust hero image */
+    .hero_image {
+        height: 4rem;
+        width: 100%;
+        background-repeat: repeat;
+        background-size: auto;
+    }
+
+    .wood-shelf-hero {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Adjust book shelf */
+    .shelf-container-recommended {
+        margin-top: 1.5rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 2.2rem !important;
+    }
+
+    .shelf-title-wrapper {
+        top: -15px;
+        left: -200px;
+    }
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 1.1rem;
+        padding: 9px 18px;
+        font-size: 15px;
+    }
+
+    /* Adjust carousel controls */
+    .carousel-control-prev,
+    .carousel-control-next {
+        top: -12px;
+    }
+
+    /* Adjust footer */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+
+    /* Adjust navbar */
+    .nav-item {
+        font-size: 16px;
+    }
+
+
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.2rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .register-box {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+
+    .login-info-box {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+
+    .book-info-top {
+        width: 100%;
+        height: fit-content;
+        margin-left: 1rem;
+        justify-content: normal;
+    }
+
+    .main_purchase_info {
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 21rem; 
+    }
+
 
 }
 
 /* Media query for Laptop devices */
-@media only screen and (min-width: 768px) and (max-width: 800px) {
+@media only screen and (min-width: 769px) and (max-width: 800px) {
     /* Hero image adjustments */
     .hero_image {
         height: 5rem;
@@ -1198,28 +1395,69 @@ li {
     .book-info {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
     }
 
     .book-info-top {
-        height: 9.5rem;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
         width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
     }
 
     .book-info-bottom {
         display: none;
-
     }
 
-    .book-info-bottom-tablet {
-        display: block;
-        height: 9.5rem;
-        width: 100%;
+    .main_purchase_info {
+        justify-content: center
     }
 
     .Book-Cover-Image {
         width: 100%;
-        height: 20rem;
+        height: 31.3rem; 
     }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
+
 }
 
 /* Media query for Laptop devices */
@@ -1295,6 +1533,77 @@ li {
     .shelf-container {
         margin-bottom: 3rem;
     }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .book-info-top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
+        width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
+    }
+
+    .book-info-bottom {
+        display: none;
+    }
+
+    .main_purchase_info {
+        justify-content: center
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 31.3rem; 
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
 }
 
 /* Media query for Laptop devices */
@@ -1369,6 +1678,77 @@ li {
     .shelf-container {
         margin-bottom: 3rem;
     }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .book-info-top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
+        width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
+    }
+
+    .book-info-bottom {
+        display: none;
+    }
+
+    .main_purchase_info {
+        justify-content: center
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 31.3rem; 
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
 }
 
 /* Media query for Laptop devices */
@@ -1444,6 +1824,77 @@ li {
     .shelf-container {
         margin-bottom: 3rem;
     }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .book-info-top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
+        width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
+    }
+
+    .book-info-bottom {
+        display: none;
+    }
+
+    .main_purchase_info {
+        justify-content: center
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 31.3rem; 
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
 }
 
 /* Media query for large Laptop devices */
@@ -1525,82 +1976,223 @@ li {
     .shelf-container {
         margin-bottom: 3rem;
     }
+
+    .register-box, .login-info-box {
+        margin-left: 20rem;
+        margin-right: 20rem;
+    }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .book-info-top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
+        width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
+    }
+
+    .book-info-bottom {
+        display: none;
+    }
+
+    .main_purchase_info {
+        justify-content: center
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 31.3rem; 
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
 }
 
 /* Media query for Desktop devices */
-@media only screen and (min-width: 1400px) and (max-width: 2559px) {
+@media only screen and (min-width: 1401px) and (max-width: 1900px) {
    /* Hero image adjustments */
    .hero_image {
     height: 5rem;
     width: 100%;
     object-fit: cover;
     object-position: center;
-}
+    }
 
-.wood-shelf-hero {
-    height: 1.2rem;
-    object-fit: cover;
-    object-position: center;
-}
+    .wood-shelf-hero {
+        height: 1.2rem;
+        object-fit: cover;
+        object-position: center;
+    }
 
-/* Book shelf adjustments */
-.shelf-container-recommended {
-    margin-top: 3rem !important;
-}
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
 
-.mt-5 {
-    margin-top: 3rem !important;
-}
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
 
-.shelf-title-wrapper {
-    top: -25px;
-    left: 0px;
-}
+    .shelf-title-wrapper {
+        top: -25px;
+        left: 0px;
+    }
 
-.Book {
-    width: 6rem;
-}
+    .Book {
+        width: 6rem;
+    }
 
-.shelf-title {
-    font-size: 16px;
-    padding: 12px 24px;
-    position: sticky;
-    left: 0;
-}
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+        position: sticky;
+        left: 0;
+    }
 
-/* Adjust wood shelf */
-.wood-shelf {
-    height: 1.5rem;
-    object-fit: cover;
-    object-position: center;
-}
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
 
-/* Footer adjustments */
-.footer {
-    padding-top: 5px !important;
-    padding-bottom: 5px !important;
-    margin-right: 0px !important;
-    margin-left: 0px !important;
-}
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
 
-.footer-icons {
-    margin-right: 0px !important;
-    margin-left: 0px !important;
-}
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
 
-.fix-footer {
-    padding-top: 80px !important;
-}
+    .fix-footer {
+        padding-top: 80px !important;
+    }
 
-/* Navbar adjustments */
-.nav-item {
-    font-size: 16px;
-}
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
 
-/* Adjust spacing between shelves */
-.shelf-container {
-    margin-bottom: 3rem;
-}
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 20rem;
+        margin-right: 20rem;
+    }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .book-info-top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
+        width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
+    }
+
+    .book-info-bottom {
+        display: none;
+    }
+
+    .main_purchase_info {
+        justify-content: center
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 31.3rem; 
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
 }
 
 /* Media query for Desktop devices */
@@ -1676,5 +2268,75 @@ li {
     /* Adjust spacing between shelves */
     .shelf-container {
         margin-bottom: 3rem;
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 30rem;
+        margin-right: 30rem;
+    }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .book-info-top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
+        width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
+    }
+
+    .book-info-bottom {
+        display: none;
+    }
+
+    .main_purchase_info {
+        justify-content: center
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 31.3rem; 
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
     }
 }
