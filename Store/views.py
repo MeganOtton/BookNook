@@ -294,13 +294,27 @@ def save_device_type(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            print (data, data.get('device_type'))
-            request.session['device_type'] = data.get('device_type')  # Store in session
-            return JsonResponse({'message': 'Data saved successfully'})
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
-    else:
-        return JsonResponse({'message': request.session.get('device_type')})
+            new_device_type = int(data.get('device_type'))
+            current_device_type = request.session.get('device_type')
+            
+            if new_device_type != current_device_type:
+                request.session['device_type'] = new_device_type
+                return JsonResponse({
+                    'message': 'Device type updated',
+                    'device_type': new_device_type,
+                    'refresh': True
+                })
+            else:
+                return JsonResponse({
+                    'message': 'Device type unchanged',
+                    'device_type': new_device_type,
+                    'refresh': False
+                })
+        except (json.JSONDecodeError, ValueError):
+            return JsonResponse({'error': 'Invalid data'}, status=400)
+    elif request.method == 'GET':
+        device_type = request.session.get('device_type')
+        return JsonResponse({'message': device_type})
     return JsonResponse({'error': 'Invalid request'}, status=400)
     
 

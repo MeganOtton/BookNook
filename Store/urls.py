@@ -1,10 +1,9 @@
 from . import views
 from django.urls import path
-from .views import device_detection_view, BookList
+from .views import BookList
 
 urlpatterns = [
-    path('', device_detection_view, name='device_detection'),
-    path('index/', BookList.as_view(), name='index'),  # Assuming BookList is your index view
+    path('', BookList.as_view(), name='index'),  # Assuming BookList is your index view
     path('search/', views.BookListSearch.as_view(), name='book_search'),
     path('<slug:slug>/', views.book_details, name='book_details_list'),
     # path('<slug:slug>/', views.book_details, name='book_wishlist_list'),
