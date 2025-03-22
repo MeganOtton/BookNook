@@ -1,6 +1,5 @@
 {% load static %}
 
-{% url 'home' as home_url %}
 {% url 'account' as account_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
@@ -37,9 +36,9 @@
         <div class="container-fluid">
             <!-- Brand Name -->
             <div>
-                <a class="fa-solid fa-book-bookmark fa-2xl NavIcon" href="{{ home_url }}"></a>
+                <a class="fa-solid fa-book-bookmark fa-2xl NavIcon" href="{% url 'index' %}"></a>
                 
-                <a class="navbar-brand" href="{{ home_url }}">The Book Nook</a>
+                <a class="navbar-brand" href="{% url 'index' %}">The Book Nook</a>
             </div>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +49,7 @@
                 <ul class="navbar-nav">
                     <!-- Home -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ home_url }}">Home</a>
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
                     </li>
 
                     <!-- Search -->
