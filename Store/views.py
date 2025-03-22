@@ -14,6 +14,8 @@ from datetime import timedelta
 from django.db.models import Count
 from .models import Genre
 import random
+import json
+
 
 # Create your views here.
 class BookList(generic.ListView):
@@ -277,3 +279,18 @@ def profile_view(request):
         'accessible_books': accessible_books,
     }
     return render(request, 'profile/profile.html', context)
+
+def save_device_type(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print (data, data.get('device_type'))
+            request.session['device_type'] = data.get('device_type')  # Store in session
+            return JsonResponse({'message': 'Data saved successfully'})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    else:
+        return JsonResponse({'message': request.session.get('device_type')})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+    
+
