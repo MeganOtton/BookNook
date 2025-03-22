@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -16,6 +16,16 @@ from .models import Genre
 import random
 import json
 
+# Device detection view
+def device_detection_view(request):
+    if 'device_type' in request.session:
+        return redirect('index')
+    return render(request, 'store/device_detection.html')
+
+
+# Testing Device Detection
+# def device_detection_view(request):
+#     return render(request, 'store/device_detection.html')
 
 # Create your views here.
 class BookList(generic.ListView):
