@@ -53,3 +53,13 @@ def filter_by_favorite_genre(books, user):
 
     favorite_genre = user.profile.favorite_genre
     return [book for book in books if favorite_genre in book.genre.all()]
+
+
+@register.filter
+def filter_status(books, status):
+    if hasattr(books, 'filter'):
+        # It's a QuerySet
+        return books.filter(status=status)
+    else:
+        # It's likely a list
+        return [book for book in books if book.status == status]

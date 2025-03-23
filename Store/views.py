@@ -35,17 +35,20 @@ class BookList(generic.ListView):
         if self.request.user.is_authenticated:
             # Exclude hidden books for the authenticated user
             queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
-        
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
+        # Get device_type from session, default to 1 if not set
+        context['device_type'] = self.request.session.get('device_type', 1)
+
+        # Always start with all books
+        all_books = BookStorePage.objects.filter(status=1)
+
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
             all_books = profile.visible_books.all()
-        else:
-            all_books = self.get_queryset()
 
         # Add new additions (books added in the last 5 days)
         five_days_ago = timezone.now() - timedelta(days=5)
