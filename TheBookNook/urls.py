@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-import debug_toolbar
 
 urlpatterns = [
     path("profile/", include("profile.urls"), name="profile-urls"),  
