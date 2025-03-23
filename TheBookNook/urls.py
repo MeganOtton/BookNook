@@ -19,7 +19,6 @@ from django.urls import path, include
 import debug_toolbar
 
 urlpatterns = [
-    path('__debug__/', include(debug_toolbar.urls)),
     path("profile/", include("profile.urls"), name="profile-urls"),  
     path("accounts/", include("allauth.urls")),
     path('summernote/', include('django_summernote.urls')),
