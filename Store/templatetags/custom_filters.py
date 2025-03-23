@@ -9,17 +9,22 @@ from collections import OrderedDict
 
 register = template.Library()
 
+from django.db.models import Avg, F, Q
+
 @register.filter
 def filter_and_sort_by_rating(books):
-    # Filter books with average rating >= 4 and sort them in descending order
-    filtered_books = [book for book in books if book.average_rating >= 4]
-    
+    # Annotate books with their average rating
+    books_with_ratings = books.annotate(avg_rating=Avg('comments__rating'))
+
+    # Filter books with average rating >= 4
+    filtered_books = books_with_ratings.filter(Q(avg_rating__gte=4) | Q(avg_rating__isnull=True))
+
     # If no books have a rating of 4 or higher, use all books
-    if not filtered_books:
-        filtered_books = books
-    
-    # Sort the books by average rating in descending order
-    return sorted(filtered_books, key=lambda x: x.average_rating or 0, reverse=True)
+    if not filtered_books.exists():
+        filtered_books = books_with_ratings
+
+    # Order the books by average rating in descending order
+    return filtered_books.order_by(F('avg_rating').desc(nulls_last=True))
 
 @register.filter
 def get_item(dictionary, key):
