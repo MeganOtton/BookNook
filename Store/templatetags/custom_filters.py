@@ -106,9 +106,9 @@ def filter_and_sort_by_rating_not_auth(books=None):
 
 
 @register.filter
-def group_by_genre(books):
-    # Define the order of genres you want, including "Popular" at the beginning
-    genre_order = ['Popular', 'Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+def group_by_genre(books, user=None):
+    # Define the order of genres you want, including "Recommended" and "Popular" at the beginning
+    genre_order = ['Recommended', 'Popular', 'Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
     
     # Use an OrderedDict to maintain the order
     genre_groups = OrderedDict((genre, []) for genre in genre_order)
@@ -122,7 +122,7 @@ def group_by_genre(books):
     # Add popular books to the "Popular" category
     genre_groups['Popular'] = popular_books
     
-    # Other genres will be added at the end in the order they appear
+    # Group books by genre
     for book in books:
         for genre in book.genre.all():
             if genre.name not in genre_groups:
@@ -131,7 +131,17 @@ def group_by_genre(books):
                 genre_groups[genre.name].append(book)
     
     # Remove any empty genre groups
-    return OrderedDict((k, v) for k, v in genre_groups.items() if v)
+    genre_groups = OrderedDict((k, v) for k, v in genre_groups.items() if v)
+    
+    # Add user's favorite genre as "Recommended" if authenticated and has a favorite genre
+    # if user and user.is_authenticated and user.profile.favorite_genre:
+    #     favorite_genre = user.profile.favorite_genre
+    #     recommended_books = [book for book in books if favorite_genre in book.genre.all()]
+    #     if recommended_books:
+    #         recommended_books = sorted(recommended_books, key=lambda x: x.average_rating or 0, reverse=True)[:10]
+    #         genre_groups = OrderedDict([('Recommended', recommended_books)] + list(genre_groups.items()))
+    
+    return genre_groups
 
 
 @register.filter
