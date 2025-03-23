@@ -15,6 +15,10 @@ from django.db.models import Count
 from .models import Genre
 import random
 import json
+from django.core.cache import cache
+from django.conf import settings
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 
 # Device detection view
 def device_detection_view(request):
@@ -22,58 +26,63 @@ def device_detection_view(request):
         return redirect('index')
     return render(request, 'store/device_detection.html')
 
-# Create your views here.
 class BookList(generic.ListView):
-    queryset = BookStorePage.objects.filter(status=1)
     context_object_name = 'book_list'
     template_name = "store/index.html"
     paginate_by = 6
 
     def get_queryset(self):
-        queryset = BookStorePage.objects.filter(status=1)
-        
         if self.request.user.is_authenticated:
-            # Exclude hidden books for the authenticated user
-            queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
+            cache_key = f'book_list_user_{self.request.user.id}'
+        else:
+            cache_key = 'book_list_anonymous'
+
+        queryset = cache.get(cache_key)
+        if queryset is None:
+            queryset = BookStorePage.objects.filter(status=1)
+            if self.request.user.is_authenticated:
+                queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
+            cache.set(cache_key, queryset, 60 * 15)  # Cache for 15 minutes
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Get device_type from session, default to 1 if not set
         context['device_type'] = self.request.session.get('device_type', 1)
 
-        # Always start with all books
-        all_books = BookStorePage.objects.filter(status=1)
-
         if self.request.user.is_authenticated:
-            profile = self.request.user.profile
-            all_books = profile.visible_books.all()
+            cache_key = f'context_data_user_{self.request.user.id}'
+        else:
+            cache_key = 'context_data_anonymous'
 
-        # Add new additions (books added in the last 5 days)
+        cached_context = cache.get(cache_key)
+        if cached_context:
+            context.update(cached_context)
+            return context
+
+        all_books = self.get_queryset()
+
         five_days_ago = timezone.now() - timedelta(days=5)
         context['new_additions'] = all_books.filter(created_on__gte=five_days_ago).order_by('-created_on')[:6]
 
-        # Add popular books
         from .templatetags.custom_filters import filter_and_sort_by_rating
         context['popular_books'] = filter_and_sort_by_rating(all_books)[:12]
 
         if self.request.user.is_authenticated:
+            profile = self.request.user.profile
             purchased_books = profile.purchased_books.all()
 
-            # Count genres of purchased books
             genre_counts = Genre.objects.filter(books__in=purchased_books).annotate(
                 count=Count('books')
             ).order_by('-count')
 
-            # Find the most common genre(s)
             if genre_counts.exists():
                 max_count = genre_counts.first().count
                 top_genres = genre_counts.filter(count=max_count)
                 
                 if top_genres.count() == 1:
                     favorite_genre = top_genres.first()
-                    # Update the favorite_genre in the Profile model
                     if profile.favorite_genre != favorite_genre:
                         profile.favorite_genre = favorite_genre
                         profile.save()
@@ -82,7 +91,6 @@ class BookList(generic.ListView):
             else:
                 favorite_genre = None
 
-            # If no favourite genre is found, set it to None in the Profile model
             if favorite_genre is None and profile.favorite_genre is not None:
                 profile.favorite_genre = None
                 profile.save()
@@ -95,8 +103,14 @@ class BookList(generic.ListView):
             context['recommended_books'] = recommended_books
             context['favorite_genre'] = favorite_genre
 
+        cache.set(cache_key, {
+            'new_additions': context['new_additions'],
+            'popular_books': context['popular_books'],
+            'recommended_books': context.get('recommended_books'),
+            'favorite_genre': context.get('favorite_genre')
+        }, 60 * 15)  # Cache for 15 minutes
+
         return context
-        
 
     @staticmethod
     def Store(request):
@@ -331,3 +345,10 @@ def save_device_type(request):
     return JsonResponse({'error': 'Invalid request'}, status=400)
     
 
+@receiver([post_save, post_delete], sender=BookStorePage)
+def invalidate_book_cache(sender, instance, **kwargs):
+    cache.delete('book_list_anonymous')
+    for user in Profile.objects.all():
+        cache.delete(f'book_list_user_{user.user.id}')
+        cache.delete(f'context_data_user_{user.user.id}')
+    cache.delete('context_data_anonymous')

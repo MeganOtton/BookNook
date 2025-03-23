@@ -5,6 +5,7 @@ from Store.models import BookStorePage, Genre
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Avg
+from collections import OrderedDict
 
 register = template.Library()
 
@@ -97,3 +98,22 @@ def filter_and_sort_by_rating_not_auth(books=None):
 
     # Order the books by average rating in descending order
     return filtered_books.order_by('-avg_rating')
+
+
+@register.filter
+def group_by_genre(books):
+    # Define the order of genres you want
+    genre_order = ['Fantasy','Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+    
+    # Use an OrderedDict to maintain the order
+    genre_groups = OrderedDict((genre, []) for genre in genre_order)
+    
+    # Other genres will be added at the end in the order they appear
+    for book in books:
+        for genre in book.genre.all():
+            if genre.name not in genre_groups:
+                genre_groups[genre.name] = []
+            genre_groups[genre.name].append(book)
+    
+    # Remove any empty genre groups
+    return OrderedDict((k, v) for k, v in genre_groups.items() if v)
