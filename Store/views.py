@@ -22,11 +22,6 @@ def device_detection_view(request):
         return redirect('index')
     return render(request, 'store/device_detection.html')
 
-
-# Testing Device Detection
-# def device_detection_view(request):
-#     return render(request, 'store/device_detection.html')
-
 # Create your views here.
 class BookList(generic.ListView):
     queryset = BookStorePage.objects.filter(status=1)
@@ -40,16 +35,33 @@ class BookList(generic.ListView):
         if self.request.user.is_authenticated:
             # Exclude hidden books for the authenticated user
             queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
-        
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        # Get device_type from session, default to 1 if not set
+        context['device_type'] = self.request.session.get('device_type', 1)
+
+        # Always start with all books
+        all_books = BookStorePage.objects.filter(status=1)
+
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
+            all_books = profile.visible_books.all()
+
+        # Add new additions (books added in the last 5 days)
+        five_days_ago = timezone.now() - timedelta(days=5)
+        context['new_additions'] = all_books.filter(created_on__gte=five_days_ago).order_by('-created_on')[:6]
+
+        # Add popular books
+        from .templatetags.custom_filters import filter_and_sort_by_rating
+        context['popular_books'] = filter_and_sort_by_rating(all_books)[:12]
+
+        if self.request.user.is_authenticated:
             purchased_books = profile.purchased_books.all()
 
-            # Count genres
+            # Count genres of purchased books
             genre_counts = Genre.objects.filter(books__in=purchased_books).annotate(
                 count=Count('books')
             ).order_by('-count')
@@ -76,14 +88,15 @@ class BookList(generic.ListView):
                 profile.save()
 
             if favorite_genre:
-                recommended_books = BookStorePage.objects.filter(status=1, genre=favorite_genre)[:6]
+                recommended_books = all_books.filter(genre=favorite_genre).exclude(id__in=purchased_books)[:6]
             else:
-                recommended_books = BookStorePage.objects.filter(status=1).order_by('-created_on')[:6]
+                recommended_books = all_books.order_by('-created_on').exclude(id__in=purchased_books)[:6]
 
             context['recommended_books'] = recommended_books
             context['favorite_genre'] = favorite_genre
 
         return context
+        
 
     @staticmethod
     def Store(request):
@@ -158,8 +171,8 @@ class BookListSearch(generic.ListView):
         context['book_list'] = all_books  # This is needed for the custom filter in the template
         context['popular_books'] = popular_books
         context['recommended_books'] = all_books.order_by('-created_on')[:6]
-        context['romance_books'] = all_books.filter(genre__name='Romance')[:6]
-        context['fantasy_books'] = all_books.filter(genre__name='Fantasy')[:6]
+        # context['romance_books'] = all_books.filter(genre__name='Romance')[:6]
+        # context['fantasy_books'] = all_books.filter(genre__name='Fantasy')[:6]
         context['new_additions'] = new_additions
 
         return context

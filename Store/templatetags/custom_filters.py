@@ -1,7 +1,10 @@
 from django import template
 from profile.models import Profile  
 from django.db.models import Q
-from Store.models import BookStorePage
+from Store.models import BookStorePage, Genre
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Avg
 
 register = template.Library()
 
@@ -17,19 +20,6 @@ def filter_and_sort_by_rating(books):
     # Sort the books by average rating in descending order
     return sorted(filtered_books, key=lambda x: x.average_rating or 0, reverse=True)
 
-
-@register.filter
-def filter_by_genre(books, genre):
-    return [book for book in books if genre in [g.name for g in book.genre.all()]]
-
-@register.filter
-def can_access_book(profile, book):
-    return profile.can_access_book(book)
-
-@register.filter
-def filter_accessible_books(books, profile):
-    return [book for book in books if profile.can_access_book(book)]
-
 @register.filter
 def get_item(dictionary, key):
     if dictionary is None:
@@ -37,29 +27,73 @@ def get_item(dictionary, key):
     return dictionary.get(str(key), False)  # Default to False if key not found
 
 @register.filter
-def exclude_hidden_topics(books, user_profile):
-    return [book for book in books if not any(topic in user_profile.hidden_topics.all() for topic in book.topics.all())]
-
-@register.filter
-def exclude_purchased_books(books, user):
-    try:
-        profile = user.profile
-        user_purchased_books = profile.purchased_books.values_list('id', flat=True)
-        return [book for book in books if book.id not in user_purchased_books]
-    except Profile.DoesNotExist:
-        return books  # Return all books if the user doesn't have a profile
-
-@register.filter
-def filter_by_genres_and_topics(books, current_book):
+def filter_by_genre(books, genre_or_book):
     # If books is a string (book_list), get all books
     if isinstance(books, str):
         books = BookStorePage.objects.all()
     
-    genres = current_book.genre.all()
-    topics = current_book.topics.all()
+    # Convert QuerySet to list if it's not already a list
+    if not isinstance(books, list):
+        books = list(books)
     
-    similar_books = books.filter(
-        Q(genre__in=genres) | Q(topics__in=topics)
-    ).distinct().exclude(id=current_book.id)
+    # Check if genre_or_book is a string (genre name) or a Book object
+    if isinstance(genre_or_book, str):
+        # It's a genre name
+        return [book for book in books if genre_or_book in [g.name for g in book.genre.all()]]
+    elif isinstance(genre_or_book, BookStorePage):
+        # It's a book object
+        genres = genre_or_book.genre.all()
+        return [book for book in books if book.id != genre_or_book.id and any(g in genres for g in book.genre.all())]
+    else:
+        # Invalid input
+        return []
     
-    return similar_books
+
+@register.filter
+def filter_by_favorite_genre(books, user):
+    if not user.is_authenticated or not user.profile.favorite_genre:
+        return []
+
+    favorite_genre = user.profile.favorite_genre
+    return [book for book in books if favorite_genre in book.genre.all()]
+
+
+@register.filter
+def filter_status(books, status):
+    if hasattr(books, 'filter'):
+        # It's a QuerySet
+        return books.filter(status=status)
+    else:
+        # It's likely a list
+        return [book for book in books if book.status == status]
+    
+
+@register.filter
+def filter_new_additions(books):
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    return [book for book in books if book.created_on >= seven_days_ago]
+
+
+@register.filter
+def filter_new_additions_not_auth(books=None):
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    return BookStorePage.objects.filter(created_on__gte=seven_days_ago, status=1)
+
+
+@register.filter
+def filter_and_sort_by_rating_not_auth(books=None):
+    # Fetch all BookStorePages with status=1 (assuming 1 means published)
+    all_books = BookStorePage.objects.filter(status=1)
+
+    # Annotate each book with its average rating
+    books_with_ratings = all_books.annotate(avg_rating=Avg('comments__rating'))
+
+    # Filter books with average rating >= 4
+    filtered_books = books_with_ratings.filter(avg_rating__gte=4)
+
+    # If no books have a rating of 4 or higher, use all books
+    if not filtered_books.exists():
+        filtered_books = books_with_ratings
+
+    # Order the books by average rating in descending order
+    return filtered_books.order_by('-avg_rating')

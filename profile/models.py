@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from Store.models import BookStorePage, Topic
 import datetime
@@ -18,10 +18,12 @@ class Profile(models.Model):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Adult')
     purchased_books = models.ManyToManyField(BookStorePage, related_name='purchased_books', blank=True)
     wishlisted_books = models.ManyToManyField(BookStorePage, related_name='wishlisted_books', blank=True)
-    # hidden_authors = models.ManyToManyField('Store.Author', related_name='hidden_by_profiles', blank=True)
     hidden_books = models.ManyToManyField(BookStorePage, related_name='hidden_by_books', blank=True)
     hidden_topics = models.ManyToManyField(Topic, related_name='hidden_by_topics', blank=True)
     favorite_genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, blank=True)
+
+    # New field
+    visible_books = models.ManyToManyField(BookStorePage, related_name='visible_to', blank=True)
 
     def save(self, *args, **kwargs):
         if self.birthdate_author:
@@ -43,6 +45,16 @@ class Profile(models.Model):
             return False
         return True
     
+    def update_visible_books(self):
+        all_books = BookStorePage.objects.filter(status=1)
+        visible_books = all_books.exclude(
+            models.Q(id__in=self.hidden_books.all()) |
+            models.Q(topics__in=self.hidden_topics.all())
+        )
+        if self.role == 'Child':
+            visible_books = visible_books.filter(age_restriction=False)
+        self.visible_books.set(visible_books)
+    
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -54,3 +66,8 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
+@receiver(m2m_changed, sender=Profile.hidden_books.through)
+@receiver(m2m_changed, sender=Profile.hidden_topics.through)
+def update_visible_books_on_change(sender, instance, action, **kwargs):
+    if action in ["post_add", "post_remove", "post_clear"]:
+        instance.update_visible_books()

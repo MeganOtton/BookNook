@@ -13,6 +13,7 @@ from datetime import date
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from .tasks import update_user_visible_books
 
 @login_required
 def library_view(request):
@@ -26,6 +27,10 @@ class AuthorSignupView(FormView):
     def form_valid(self, form):
         user = form.save(self.request)
         login(self.request, user)
+
+        # Update the visible books for the new user
+        update_user_visible_books(user.profile)
+
         return super().form_valid(form)
 
 # Profile detailed view
@@ -57,6 +62,9 @@ class ProfileDetailedView(DetailView, LoginRequiredMixin):
                 self.object.role = new_role
                 self.object.save()
                 role_updated = True
+
+                # Update visible books when role changes
+                update_user_visible_books(self.object)
 
         if role_updated:
             messages.info(request, f"Your role has been updated to {new_role} based on your current age.")
