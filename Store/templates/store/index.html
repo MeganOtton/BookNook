@@ -24,7 +24,7 @@
 
                     <div id="recommendedCarousel" class="carousel slide">
                         <div class="carousel-inner">
-                            {% for book in recommended_books %}
+                            {% for book in recommended_books|filter_status:1 %}
                                 {% if forloop.counter0|divisibleby:device_type %}
                                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                         <div class="d-flex justify-content-center">
@@ -72,7 +72,7 @@
                 <div id="popularCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% with accessible_books=user.profile.visible_books.all|filter_and_sort_by_rating %}
-                            {% for book in accessible_books %}
+                            {% for book in accessible_books|filter_status:1 %}
                                 {% if forloop.counter0|divisibleby:device_type %}
                                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                         <div class="d-flex justify-content-center">
@@ -119,7 +119,7 @@
                 <div id="romanceCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% with accessible_books=user.profile.visible_books.all|filter_by_genre:"Romance" %}
-                            {% for book in accessible_books %}
+                            {% for book in accessible_books|filter_status:1 %}
                                 {% if forloop.counter0|divisibleby:device_type %}
                                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                         <div class="d-flex justify-content-center">
@@ -166,7 +166,7 @@
                 <div id="fantasyCarousel" class="carousel slide">
                     <div class="carousel-inner">
                         {% with accessible_books=user.profile.visible_books.all|filter_by_genre:"Fantasy" %}
-                            {% for book in accessible_books %}
+                            {% for book in accessible_books|filter_status:1 %}
                                 {% if forloop.counter0|divisibleby:device_type %}
                                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                         <div class="d-flex justify-content-center">
@@ -214,7 +214,7 @@
                     <div id="mysteryCarousel" class="carousel slide">
                         <div class="carousel-inner">
                             {% with accessible_books=user.profile.visible_books.all|filter_by_genre:"Mystery" %}
-                                {% for book in accessible_books %}
+                                {% for book in accessible_books|filter_status:1 %}
                                     {% if forloop.counter0|divisibleby:device_type %}
                                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                             <div class="d-flex justify-content-center">
@@ -263,7 +263,7 @@
                     <div id="thrillerCarousel" class="carousel slide">
                         <div class="carousel-inner">
                             {% with accessible_books=user.profile.visible_books.all|filter_by_genre:"Thriller" %}
-                                {% for book in accessible_books %}
+                                {% for book in accessible_books|filter_status:1 %}
                                     {% if forloop.counter0|divisibleby:device_type %}
                                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                             <div class="d-flex justify-content-center">
@@ -313,7 +313,7 @@
                     <div id="scifiCarousel" class="carousel slide">
                         <div class="carousel-inner">
                             {% with accessible_books=user.profile.visible_books.all|filter_by_genre:"Science Fiction" %}
-                                {% for book in accessible_books %}
+                                {% for book in accessible_books|filter_status:1 %}
                                     {% if forloop.counter0|divisibleby:device_type %}
                                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                             <div class="d-flex justify-content-center">
@@ -363,7 +363,7 @@
                     <div id="nonfictionCarousel" class="carousel slide">
                         <div class="carousel-inner">
                             {% with accessible_books=user.profile.visible_books.all|filter_by_genre:"Non-Fiction" %}
-                                {% for book in accessible_books %}
+                                {% for book in accessible_books|filter_status:1 %}
                                     {% if forloop.counter0|divisibleby:device_type %}
                                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
                                             <div class="d-flex justify-content-center">
