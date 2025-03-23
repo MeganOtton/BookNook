@@ -168,14 +168,14 @@ DEBUG_TOOLBAR_PANELS = [
 # ]
 
 # Cache timeout in seconds (e.g., 15 minutes)
-CACHE_TIMEOUT = 60 * 15
+# CACHE_TIMEOUT = 60 * 15
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'unique-snowflake',
+#     }
+# }
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
