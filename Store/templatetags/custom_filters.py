@@ -4,22 +4,27 @@ from django.db.models import Q
 from Store.models import BookStorePage, Genre
 from django.utils import timezone
 from datetime import timedelta
-from django.db.models import Avg
+from django.db.models import Avg, Prefetch
 from collections import OrderedDict
 
 register = template.Library()
 
+from django.db.models import Avg, F, Q
+
 @register.filter
 def filter_and_sort_by_rating(books):
-    # Filter books with average rating >= 4 and sort them in descending order
-    filtered_books = [book for book in books if book.average_rating >= 4]
-    
+    # Annotate books with their average rating
+    books_with_ratings = books.annotate(avg_rating=Avg('comments__rating'))
+
+    # Filter books with average rating >= 4
+    filtered_books = books_with_ratings.filter(Q(avg_rating__gte=4) | Q(avg_rating__isnull=True))
+
     # If no books have a rating of 4 or higher, use all books
-    if not filtered_books:
-        filtered_books = books
-    
-    # Sort the books by average rating in descending order
-    return sorted(filtered_books, key=lambda x: x.average_rating or 0, reverse=True)
+    if not filtered_books.exists():
+        filtered_books = books_with_ratings
+
+    # Order the books by average rating in descending order
+    return filtered_books.order_by(F('avg_rating').desc(nulls_last=True))
 
 @register.filter
 def get_item(dictionary, key):
@@ -100,33 +105,53 @@ def filter_and_sort_by_rating_not_auth(books=None):
     return filtered_books.order_by('-avg_rating')
 
 
+from django.db.models import Avg, Prefetch
+from collections import OrderedDict
+from django.db.models.functions import Coalesce
+
 @register.filter
-def group_by_genre(books):
+def group_by_genre(books, user=None):
     # Define the order of genres you want, including "Popular" at the beginning
     genre_order = ['Popular', 'Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+    
+    # Annotate books with average rating and prefetch genres
+    books = books.annotate(
+        avg_rating=Coalesce(Avg('comments__rating'), 0.0)
+    ).prefetch_related(
+        Prefetch('genre', queryset=Genre.objects.only('name'))
+    )
     
     # Use an OrderedDict to maintain the order
     genre_groups = OrderedDict((genre, []) for genre in genre_order)
     
-    # Filter and sort popular books
-    popular_books = [book for book in books if book.average_rating >= 4]
-    if not popular_books:
-        popular_books = books
-    popular_books = sorted(popular_books, key=lambda x: x.average_rating or 0, reverse=True)[:10]  # Limit to top 10
+    # Add "Other" category for genres not in the predefined list
+    genre_groups['Other'] = []
     
-    # Add popular books to the "Popular" category
+    # Populate genre groups
+    for book in books:
+        book_genres = book.genre.all()
+        if not book_genres:
+            genre_groups['Other'].append(book)
+        else:
+            for genre in book_genres:
+                if genre.name in genre_groups:
+                    genre_groups[genre.name].append(book)
+                else:
+                    genre_groups['Other'].append(book)
+    
+    # Sort books in each genre by average rating
+    for genre in genre_groups:
+        genre_groups[genre] = sorted(genre_groups[genre], key=lambda x: x.avg_rating, reverse=True)
+    
+    # Populate "Popular" category with top-rated books (4 stars or higher) across all genres
+    all_books = [book for books in genre_groups.values() for book in books]
+    popular_books = sorted([book for book in all_books if book.avg_rating >= 4], key=lambda x: x.avg_rating, reverse=True)[:20]
     genre_groups['Popular'] = popular_books
     
-    # Other genres will be added at the end in the order they appear
-    for book in books:
-        for genre in book.genre.all():
-            if genre.name not in genre_groups:
-                genre_groups[genre.name] = []
-            if book not in genre_groups[genre.name]:  # Avoid duplicates
-                genre_groups[genre.name].append(book)
+    # Remove empty genres
+    genre_groups = OrderedDict((k, v) for k, v in genre_groups.items() if v)
     
-    # Remove any empty genre groups
-    return OrderedDict((k, v) for k, v in genre_groups.items() if v)
+    return genre_groups
 
 
 @register.filter

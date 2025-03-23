@@ -19,6 +19,8 @@ from django.core.cache import cache
 from django.conf import settings
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.db.models import Avg, F, Q, Count
+from django.core.cache import cache
 
 # Device detection view
 def device_detection_view(request):
@@ -32,23 +34,13 @@ class BookList(generic.ListView):
     paginate_by = 6
 
     def get_queryset(self):
+        queryset = BookStorePage.objects.filter(status=1).prefetch_related('genre')
         if self.request.user.is_authenticated:
-            cache_key = f'book_list_user_{self.request.user.id}'
-        else:
-            cache_key = 'book_list_anonymous'
-
-        queryset = cache.get(cache_key)
-        if queryset is None:
-            queryset = BookStorePage.objects.filter(status=1)
-            if self.request.user.is_authenticated:
-                queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
-            cache.set(cache_key, queryset, 60 * 15)  # Cache for 15 minutes
-
+            queryset = queryset.exclude(hidden_by_books=self.request.user.profile)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['BookStorePage'] = BookStorePage.objects.filter(status=1)
         context['device_type'] = self.request.session.get('device_type', 1)
 
         if self.request.user.is_authenticated:
@@ -62,16 +54,25 @@ class BookList(generic.ListView):
             print("Using cached context")
             return context
 
-        all_books = self.get_queryset()
+        all_books = self.get_queryset().annotate(avg_rating=Avg('comments__rating'))
         print(f"Total books in queryset: {all_books.count()}")
 
         five_days_ago = timezone.now() - timedelta(days=5)
         context['new_additions'] = all_books.filter(created_on__gte=five_days_ago).order_by('-created_on')[:6]
         print(f"New additions: {context['new_additions'].count()}")
 
-        from .templatetags.custom_filters import filter_and_sort_by_rating
-        context['popular_books'] = filter_and_sort_by_rating(all_books)[:12]
+        context['popular_books'] = all_books.filter(Q(avg_rating__gte=4) | Q(avg_rating__isnull=True)).order_by(F('avg_rating').desc(nulls_last=True))[:12]
         print(f"Popular books: {len(context['popular_books'])}")
+
+        # Group books by genre
+        books_by_genre = {}
+        for book in all_books:
+            for genre in book.genre.all():
+                if genre.name not in books_by_genre:
+                    books_by_genre[genre.name] = []
+                books_by_genre[genre.name].append(book)
+        
+        context['books_by_genre'] = books_by_genre
 
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
@@ -116,7 +117,8 @@ class BookList(generic.ListView):
             'new_additions': context['new_additions'],
             'popular_books': context['popular_books'],
             'recommended_books': context.get('recommended_books'),
-            'favorite_genre': context.get('favorite_genre')
+            'favorite_genre': context.get('favorite_genre'),
+            'books_by_genre': books_by_genre
         }, 60 * 15)  # Cache for 15 minutes
 
         return context
