@@ -117,3 +117,38 @@ def group_by_genre(books):
     
     # Remove any empty genre groups
     return OrderedDict((k, v) for k, v in genre_groups.items() if v)
+
+
+@register.filter
+def group_bookstore_pages_by_genre(books):
+    from collections import OrderedDict
+    
+    # Define the order of genres you want
+    genre_order = ['Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+    
+    # Use an OrderedDict to maintain the order
+    genre_groups = OrderedDict((genre, []) for genre in genre_order)
+    
+    # Group books by genre
+    for book in books:
+        for genre in book.genre.all():
+            if genre.name not in genre_groups:
+                genre_groups[genre.name] = []
+            genre_groups[genre.name].append(book)
+    
+    # Remove any empty genre groups
+    return OrderedDict((k, v) for k, v in genre_groups.items() if v)
+
+
+# @register.filter
+# def group_bookstore_pages_by_genre(books):
+#     from collections import OrderedDict
+    
+#     genre_groups = OrderedDict()
+#     for book in books:
+#         for genre in book.genre.all():
+#             if genre.name not in genre_groups:
+#                 genre_groups[genre.name] = []
+#             genre_groups[genre.name].append(book)
+    
+#     return genre_groups
