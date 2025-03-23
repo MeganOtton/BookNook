@@ -2,6 +2,9 @@ from django import template
 from profile.models import Profile  
 from django.db.models import Q
 from Store.models import BookStorePage, Genre
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Avg
 
 register = template.Library()
 
@@ -63,3 +66,34 @@ def filter_status(books, status):
     else:
         # It's likely a list
         return [book for book in books if book.status == status]
+    
+
+@register.filter
+def filter_new_additions(books):
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    return [book for book in books if book.created_on >= seven_days_ago]
+
+
+@register.filter
+def filter_new_additions_not_auth(books=None):
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    return BookStorePage.objects.filter(created_on__gte=seven_days_ago, status=1)
+
+
+@register.filter
+def filter_and_sort_by_rating_not_auth(books=None):
+    # Fetch all BookStorePages with status=1 (assuming 1 means published)
+    all_books = BookStorePage.objects.filter(status=1)
+
+    # Annotate each book with its average rating
+    books_with_ratings = all_books.annotate(avg_rating=Avg('comments__rating'))
+
+    # Filter books with average rating >= 4
+    filtered_books = books_with_ratings.filter(avg_rating__gte=4)
+
+    # If no books have a rating of 4 or higher, use all books
+    if not filtered_books.exists():
+        filtered_books = books_with_ratings
+
+    # Order the books by average rating in descending order
+    return filtered_books.order_by('-avg_rating')
