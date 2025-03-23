@@ -102,18 +102,28 @@ def filter_and_sort_by_rating_not_auth(books=None):
 
 @register.filter
 def group_by_genre(books):
-    # Define the order of genres you want
-    genre_order = ['Fantasy','Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+    # Define the order of genres you want, including "Popular" at the beginning
+    genre_order = ['Popular', 'Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
     
     # Use an OrderedDict to maintain the order
     genre_groups = OrderedDict((genre, []) for genre in genre_order)
+    
+    # Filter and sort popular books
+    popular_books = [book for book in books if book.average_rating >= 4]
+    if not popular_books:
+        popular_books = books
+    popular_books = sorted(popular_books, key=lambda x: x.average_rating or 0, reverse=True)[:10]  # Limit to top 10
+    
+    # Add popular books to the "Popular" category
+    genre_groups['Popular'] = popular_books
     
     # Other genres will be added at the end in the order they appear
     for book in books:
         for genre in book.genre.all():
             if genre.name not in genre_groups:
                 genre_groups[genre.name] = []
-            genre_groups[genre.name].append(book)
+            if book not in genre_groups[genre.name]:  # Avoid duplicates
+                genre_groups[genre.name].append(book)
     
     # Remove any empty genre groups
     return OrderedDict((k, v) for k, v in genre_groups.items() if v)
@@ -140,15 +150,16 @@ def group_bookstore_pages_by_genre(books):
     return OrderedDict((k, v) for k, v in genre_groups.items() if v)
 
 
-# @register.filter
-# def group_bookstore_pages_by_genre(books):
-#     from collections import OrderedDict
+@register.filter
+def get_recommended_books(books, user):
+    if not user.is_authenticated or not user.profile.favorite_genre:
+        return []
+
+    favorite_genre = user.profile.favorite_genre
+    recommended_books = [book for book in books if favorite_genre in book.genre.all()]
     
-#     genre_groups = OrderedDict()
-#     for book in books:
-#         for genre in book.genre.all():
-#             if genre.name not in genre_groups:
-#                 genre_groups[genre.name] = []
-#             genre_groups[genre.name].append(book)
+    # Sort recommended books by rating
+    recommended_books.sort(key=lambda x: x.average_rating or 0, reverse=True)
     
-#     return genre_groups
+    # Limit to top 10 recommendations
+    return recommended_books[:10]
