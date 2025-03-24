@@ -12,6 +12,7 @@ The live project can found here: ADD LINK HERE
 </p>
 
 <h2 align="center"> Table of Contents:</h2>
+
 1. [Introduction](#introduction)
 2. [Project Outline](#project-outline)
    - [Key Objectives](#key-objectives)
@@ -26,7 +27,7 @@ The live project can found here: ADD LINK HERE
 8. [Responsive Design](#responsive-design)
 9. [AI Implementation](#ai-implementation)
 10. [Testing](#testing)
-    - [Optimization](#optimazation)
+    - [Optimization](#optimization)
 11. [Credit](#credit)
 
 
@@ -317,7 +318,7 @@ In terms of how i used AI to optimize my workflow I found it very helpful to hig
 
 Testing was done throughout the project to ensure after each feature was added in that it worked effectively and did not break any previous features. 
 
-### Optimazation
+### Optimization
 
 Due to my lack of experience with both Python and Django this project was quite ambitious to take on when it came to removing my placeholders and filling the database with real books the website that ran smoothly before started to breakdown and slow loading times became prevelant. Using Django Debug tool, and Charlie Flockharts help, it helped track down where my problems where and what I should be optimizing.
 
