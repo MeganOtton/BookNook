@@ -202,117 +202,120 @@
 {% endif %}
 
 <!-- Review Section -->
-<div class="review-box">
-    <!-- Review Info -->
-    <div class="reviews-info">
-        <h5 class="review-total">Reviews Total: {{ book.comments.count }}</h5>
+<div class="review-box-flex">
+    <div class="review-box">
+        <!-- Review Info -->
+        <div class="reviews-info">
+            <h5 class="review-total">Reviews Total: {{ book.comments.count }}</h5>
 
-        <div class="rating">
-            {% with total=book.average_rating|default:0 %}
-                {% for i in "12345" %}
-                    {% if total >= i|add:"0" %}
-                        <span>★</span>
-                    {% else %}
-                        <span>☆</span>
-                    {% endif %}
-                {% endfor %}
-            {% endwith %}
-        </div>
-
-    </div>
-
-    <!-- Create A Review -->
-    <div class="leave-review">
-        <div class="create-a-review-box">
-            <div class="Create-review-header">
-                <i class="fa-solid fa-plus fa-xl toggle-review-form create-review-icon" style="cursor: pointer;"></i>
-                <h3 class="create-review-text">Create a Review</h3>
-            </div>  
-        </div>
-
-        <div class="leave-review-form" style="display: none;">
-            <div class="card-body">
-                {% if user.is_authenticated %}
-                    {% if not user.is_superuser and user.profile.role != 'Author' %}
-                        {% if book in user.profile.purchased_books.all %}
-                            <h3>Leave a Review:</h3>
-                            <p>Posting as: {{ user.username }}</p>
-                            <form id="commentForm" method="POST" style="margin-top: 1.3em;">
-                                {{ comment_form | crispy }}
-                                {% csrf_token %}
-                                <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
-                            </form>
+            <div class="rating">
+                {% with total=book.average_rating|default:0 %}
+                    {% for i in "12345" %}
+                        {% if total >= i|add:"0" %}
+                            <span>★</span>
                         {% else %}
-                            <p>Purchase the Book to leave a Review</p>
+                            <span>☆</span>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            </div>
+
+        </div>
+
+        <!-- Create A Review -->
+        <div class="leave-review">
+            <div class="create-a-review-box">
+                <div class="Create-review-header">
+                    <i class="fa-solid fa-plus fa-xl toggle-review-form create-review-icon" style="cursor: pointer;"></i>
+                    <h3 class="create-review-text">Create a Review</h3>
+                </div>  
+            </div>
+
+            <div class="leave-review-form" style="display: none;">
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                        {% if not user.is_superuser and user.profile.role != 'Author' %}
+                            {% if book in user.profile.purchased_books.all %}
+                                <h3>Leave a Review:</h3>
+                                <p>Posting as: {{ user.username }}</p>
+                                <form id="commentForm" method="POST" style="margin-top: 1.3em;">
+                                    {{ comment_form | crispy }}
+                                    {% csrf_token %}
+                                    <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
+                                </form>
+                            {% else %}
+                                <p>Purchase the Book to leave a Review</p>
+                            {% endif %}
+                        {% else %}
+                            <p>As an Author or Administrator, you cannot leave reviews.</p>
                         {% endif %}
                     {% else %}
-                        <p>As an Author or Administrator, you cannot leave reviews.</p>
+                        <p>Log in to leave a Review</p>
                     {% endif %}
-                {% else %}
-                    <p>Log in to leave a Review</p>
-                {% endif %}
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Reviews Are Listed Here -->
-    <div class="Reviews">
-        <div class="view-reviews">
-            {% if user.is_authenticated %}
-                {% for comment in comments %}
-                    <div id="comment-{{ comment.id }}" class="comment">
-                        {% if comment.author == user %}
-                            <div class="p-2 review{% if not comment.approved %} faded{% endif %}">
-                                <div class="review-user-info">
-                                    <h3 class="Review-Author">
-                                        {{ comment.author }} (You)
-                                    </h3>
-                                    <h3 class="User-Review-Rating">
-                                        {{ comment.rating }}/5
-                                    </h3>  
-                                    <h3 class="User-Review-Date">
-                                        {{ comment.created_on }}
-                                    </h3>  
+        <!-- Reviews Are Listed Here -->
+        <div class="Reviews">
+            <div class="view-reviews">
+                {% if user.is_authenticated %}
+                    {% for comment in comments %}
+                        <div id="comment-{{ comment.id }}" class="comment">
+                            {% if comment.author == user %}
+                                <div class="p-2 review{% if not comment.approved %} faded{% endif %}">
+                                    <div class="review-user-info">
+                                        <h3 class="Review-Author">
+                                            {{ comment.author }} (You)
+                                        </h3>
+                                        <h3 class="User-Review-Rating">
+                                            {{ comment.rating }}/5
+                                        </h3>  
+                                        <h3 class="User-Review-Date">
+                                            {{ comment.created_on }}
+                                        </h3>  
+                                    </div>
+                                    <div>
+                                        <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
+                                        <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
+                                    </div>
+                                    {% if not comment.approved %}
+                                        <p class="approval">This Review is awaiting approval</p>
+                                    {% endif %}
+                                    <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
+                                    <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
                                 </div>
-                                <div>
-                                    <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
-                                    <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
-                                </div>
-                                {% if not comment.approved %}
-                                    <p class="approval">This Review is awaiting approval</p>
-                                {% endif %}
-                                <button class="btn btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
-                                <button class="btn btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-            {% for comment in comments %}
-                {% if comment.author != user %}
-                    <div class="p-2 review{% if not comment.approved %} d-none{% endif %}">
-                        <div class="review-user-info">
-                            <h3 class="Review-Author">
-                                {{ comment.author }}
-                            </h3>
-                            <h3 class="User-Review-Rating">
-                                {{ comment.rating }}/5
-                            </h3>  
-                            <h3 class="User-Review-Date">
-                                {{ comment.created_on }}
-                            </h3>  
+                            {% endif %}
                         </div>
-                        <div>
-                            <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
-                            <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 {% endif %}
-            {% endfor %}
+
+                {% for comment in comments %}
+                    {% if comment.author != user %}
+                        <div class="p-2 review{% if not comment.approved %} d-none{% endif %}">
+                            <div class="review-user-info">
+                                <h3 class="Review-Author">
+                                    {{ comment.author }}
+                                </h3>
+                                <h3 class="User-Review-Rating">
+                                    {{ comment.rating }}/5
+                                </h3>  
+                                <h3 class="User-Review-Date">
+                                    {{ comment.created_on }}
+                                </h3>  
+                            </div>
+                            <div>
+                                <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
+                                <div id="text{{ comment.id }}" style="font-weight: bold;">{{ comment.body | linebreaks }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    </div>    
 </div>
+
 
 <!-- Delete confirmation modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
