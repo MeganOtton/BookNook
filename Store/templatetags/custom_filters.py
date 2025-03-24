@@ -230,3 +230,16 @@ def get_recommended_books(books, user):
     
     # Limit to top 10 recommendations
     return recommended_books[:10]
+
+
+
+@register.filter
+def filter_and_sort_by_rating_search(books):
+    # Annotate books with average rating
+    books_with_ratings = books.annotate(avg_rating=Avg('comments__rating'))
+
+    # Filter books with average rating >= 4 or no rating
+    filtered_books = books_with_ratings.filter(Q(avg_rating__gte=4) | Q(avg_rating__isnull=True))
+
+    # Order the books by average rating in descending order, with unrated books at the end
+    return filtered_books.order_by(F('avg_rating').desc(nulls_last=True))
