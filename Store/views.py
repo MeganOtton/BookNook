@@ -132,7 +132,6 @@ class BookListSearch(generic.ListView):
     model = BookStorePage
     template_name = "store/search.html"
     context_object_name = 'book_list_search'
-    paginate_by = 6
 
     def get_queryset(self):
         query = self.request.GET.get('q')
