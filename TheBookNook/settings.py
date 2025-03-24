@@ -52,8 +52,9 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'django_summernote',
     'cloudinary',
+    'profile.apps.ProfileConfig',
     'Store',
-    'profile',
+    # 'profile',
 ]
 
 MIDDLEWARE = [
