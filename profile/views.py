@@ -27,7 +27,7 @@ class AuthorSignupView(FormView):
         login(self.request, user)
 
         # Update the visible books for the new user
-        update_user_visible_books(user.profile)
+        # update_user_visible_books(user.profile)
 
         return super().form_valid(form)
 
@@ -62,7 +62,7 @@ class ProfileDetailedView(DetailView, LoginRequiredMixin):
                 role_updated = True
 
                 # Update visible books when role changes
-                update_user_visible_books(self.object)
+                # update_user_visible_books(self.object)
 
         if role_updated:
             messages.info(request, f"Your role has been updated to {new_role} based on your current age.")

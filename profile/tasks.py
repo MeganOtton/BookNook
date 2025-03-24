@@ -19,15 +19,17 @@ def update_user_visible_books(profile):
     # If the user is a child, filter out adult books
     if profile.role == 'Child':
         visible_books = visible_books.filter(age_rating__lte=17)
+    else:
+        visible_books = visible_books.filter(age_rating__lte=99)
 
     # Update the visible_books field
     profile.visible_books.set(visible_books)
 
-def check_and_update_user_role(profile):
-    today = timezone.now().date()
-    if profile.birthdate:
-        age = today.year - profile.birthdate.year - ((today.month, today.day) < (profile.birthdate.month, profile.birthdate.day))
-        if age >= 18 and profile.role == 'Child':
-            profile.role = 'Adult'
-            profile.save()
-            update_user_visible_books(profile)
+# def check_and_update_user_role(profile):
+#     today = timezone.now().date()
+#     if profile.birthdate:
+#         age = today.year - profile.birthdate.year - ((today.month, today.day) < (profile.birthdate.month, profile.birthdate.day))
+#         if age >= 18 and profile.role == 'Child':
+#             profile.role = 'Adult'
+#             profile.save()
+#             update_user_visible_books(profile)
