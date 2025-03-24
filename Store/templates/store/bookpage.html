@@ -415,7 +415,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <button type="submit" class="btn btn-primary modal-button-hide">Save Changes</button>
+                    <button type="submit" class="btn btn-primary modal-button-hide" id="saveChangesBtn">Save Changes</button>
                 </form>
             </div>
         </div>
@@ -434,4 +434,56 @@
 {% block extras %}
 <script src="{% static 'js/eye.js' %}"></script>
 <script src="{% static 'js/comments.js' %}"></script>
+<script>
+//     document.addEventListener('DOMContentLoaded', function() {
+//     const form = document.getElementById('hideOptionsForm');
+//     form.addEventListener('submit', function(e) {
+//         e.preventDefault();
+//         fetch(this.action, {
+//             method: 'POST',
+//             body: new FormData(this),
+//             headers: {
+//                 'X-Requested-With': 'XMLHttpRequest',
+//                 'X-CSRFToken': getCookie('csrftoken')  // Add this line
+//             },
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error(`HTTP error! status: ${response.status}`);
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             if (data.success) {
+//                 alert('Changes saved successfully!');
+//                 // Close the modal
+//                 var modal = bootstrap.Modal.getInstance(document.getElementById('optionsModal'));
+//                 modal.hide();
+//             } else {
+//                 alert('Error saving changes: ' + (data.error || 'Unknown error'));
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             alert('An error occurred. Please try again. Error: ' + error.message);
+//         });
+//     });
+// });
+
+// // Function to get CSRF token
+// function getCookie(name) {
+//     let cookieValue = null;
+//     if (document.cookie && document.cookie !== '') {
+//         const cookies = document.cookie.split(';');
+//         for (let i = 0; i < cookies.length; i++) {
+//             const cookie = cookies[i].trim();
+//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                 break;
+//             }
+//         }
+//     }
+//     return cookieValue;
+// }
+    </script>
 {% endblock extras %}

@@ -78,17 +78,17 @@ class Profile(models.Model):
         all_books = BookStorePage.objects.filter(status=1)
         if profile.role == 'Child':
             visible_books = all_books.filter(age_restriction=False)
-            Profile.remove_purchased_from_visible(profile)
+            Profile.update_visible_books(profile)
         else:  # Adult
             visible_books = all_books  # This includes all books, including those with age restrictions
-            Profile.remove_purchased_from_visible(profile)
+            Profile.update_visible_books(profile)
 
         if role_changed:
             profile.save()
 
         return role_changed
     
-    #3rd place
+    #3rd place - OLD VERSION
     def remove_purchased_from_visible(self):
         # Get the set of purchased books
         purchased_books = set(self.purchased_books.all())
@@ -105,28 +105,28 @@ class Profile(models.Model):
         # Call the remove_hidden_from_visible method
         self.remove_hidden_from_visible()
     
-    #4th place
+    #4th place - OLD VERSION
     def remove_hidden_from_visible(self):
         print("remove_hidden_from_visible")
         # Get the set of hidden books
         hidden_books = set(self.hidden_books.all())
         
-        # Get the set of purchased books
-        purchased_books = set(self.purchased_books.all())
-        
         # Get the current set of visible books
         visible_books = set(self.visible_books.all())
         
-        # Remove both hidden and purchased books from visible books
-        updated_visible_books = visible_books - (hidden_books | purchased_books)
-
-        # Call the new method to remove books with hidden topics
-        updated_visible_books = self.remove_hidden_topics_from_visible(updated_visible_books)
+        # Remove only hidden books from visible books
+        updated_visible_books = visible_books - hidden_books
         
         # Update the visible_books field
         self.visible_books.set(updated_visible_books)
 
-    #5th place
+        # Call the method to remove books with hidden topics
+        updated_visible_books = self.remove_hidden_topics_from_visible(updated_visible_books)
+        
+        # Update the visible_books field again after removing books with hidden topics
+        self.visible_books.set(updated_visible_books)
+
+    #5th place - OLD VERSION
     def remove_hidden_topics_from_visible(self, visible_books):
         print("remove_hidden_topics_from_visible")
         # Get the set of books with hidden topics
@@ -136,6 +136,27 @@ class Profile(models.Model):
         updated_visible_books = visible_books - books_with_hidden_topics
         
         return updated_visible_books
+    
+    #NEW VERSION 
+    def update_visible_books(self):
+        # Start with all books
+        all_books = set(BookStorePage.objects.filter(status=1))
+        
+        # Remove purchased books from visible books
+        visible_books = all_books - set(self.purchased_books.all())
+        
+        # Remove hidden books from visible books
+        visible_books -= set(self.hidden_books.all())
+        
+        # Remove books with hidden topics from visible books
+        books_with_hidden_topics = set(BookStorePage.objects.filter(topics__in=self.hidden_topics.all()))
+        visible_books -= books_with_hidden_topics
+        
+        # Update the visible_books field
+        self.visible_books.set(visible_books)
+        
+        # Save the changes
+        self.save()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

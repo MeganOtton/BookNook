@@ -14,6 +14,8 @@ import json
 from django.core.cache import cache
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.views.decorators.http import require_POST
+
 
 
 class BookList(generic.ListView):
@@ -341,3 +343,12 @@ def invalidate_book_cache(sender, instance, **kwargs):
         cache.delete(f'book_list_user_{user.user.id}')
         cache.delete(f'context_data_user_{user.user.id}')
     cache.delete('context_data_anonymous')
+
+
+# @require_POST
+# def hide_options(request, item_id):
+#     if request.user.is_authenticated:
+#         user_profile = request.user.profile
+
+    
+#         Profile.update_profile_on_login(user_profile)
