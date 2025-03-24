@@ -1,10 +1,9 @@
 ![Hero Image](Readme_files/Hero_Image/Hero_Image_Readme.png)
 
-# The Book Nook
+<h1 align="center"> The Book Nook </h1>
 | Add Live Link Here |
 
 <h1 align="center"> Introduction: </h1>
-___
 
 <p>
 The Book Nook is my last assessed portfolio project developed as part of the Code Institute Full Stack Software Developer Bootcamp, consisting of learning outcomes to utilise HTML5, CSS3 & Bootstrap, Django in order to fulfil the necessary requirements for the brief.
@@ -13,10 +12,9 @@ The live project can found here: ADD LINK HERE
 </p>
 
 <h2 align="center"> Table of Contents:</h2>
-___
 
 ## Project Outline
-___
+
 
 The Book Nook is a fictional library harnessing Django. The website primary use is to access information on published books and make reviews, as my MVP. However my extended goal is to have it function fully as online library with adding features such as having the ability to read the books online, having author accounts that can publish theyre books with ease and the admin can review the content before allowing to be released to the main site. I'm aiming to have it so that the users can hide specific topics, authors or books that they'd not like to see on their pages, so the website is fully customised to the user. 
 
@@ -30,7 +28,7 @@ The Book Nook is a fictional library harnessing Django. The website primary use 
 - I want it to be fully responsive across various sizes, especially phone and tablet due to that being more practical for reading.
 
 ## UX Design
-___
+
 
 ### User Stories
 
