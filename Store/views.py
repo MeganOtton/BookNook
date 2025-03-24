@@ -39,18 +39,14 @@ class BookList(generic.ListView):
         cached_context = cache.get(cache_key)
         if cached_context:
             context.update(cached_context)
-            print("Using cached context")
             return context
 
         all_books = self.get_queryset().annotate(avg_rating=Avg('comments__rating'))
-        print(f"Total books in queryset: {all_books.count()}")
 
         five_days_ago = timezone.now() - timedelta(days=5)
         context['new_additions'] = all_books.filter(created_on__gte=five_days_ago).order_by('-created_on')[:6]
-        print(f"New additions: {context['new_additions'].count()}")
 
         context['popular_books'] = all_books.filter(Q(avg_rating__gte=4) | Q(avg_rating__isnull=True)).order_by(F('avg_rating').desc(nulls_last=True))[:12]
-        print(f"Popular books: {len(context['popular_books'])}")
 
         # Group books by genre
         books_by_genre = {}
@@ -65,17 +61,14 @@ class BookList(generic.ListView):
         if self.request.user.is_authenticated:
             profile = self.request.user.profile
             purchased_books = profile.purchased_books.all()
-            print(f"Purchased books: {purchased_books.count()}")
 
             genre_counts = Genre.objects.filter(books__in=purchased_books).annotate(
                 count=Count('books')
             ).order_by('-count')
-            print(f"Genre counts: {genre_counts.count()}")
 
             if genre_counts.exists():
                 max_count = genre_counts.first().count
                 top_genres = genre_counts.filter(count=max_count)
-                print(f"Top genres: {top_genres.count()}")
                 
                 if top_genres.count() == 1:
                     favorite_genre = top_genres.first()
@@ -98,8 +91,6 @@ class BookList(generic.ListView):
 
             context['recommended_books'] = recommended_books
             context['favorite_genre'] = favorite_genre
-            print(f"Recommended books: {recommended_books.count()}")
-            print(f"Favorite genre: {favorite_genre}")
 
         cache.set(cache_key, {
             'new_additions': context['new_additions'],

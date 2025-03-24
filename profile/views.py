@@ -329,8 +329,5 @@ def book_details_list(request, slug):
         context['topic_visibility'] = {str(topic.id): topic in profile.hidden_topics.all() for topic in book.topics.all()}
     else:
         context['topic_visibility'] = {str(topic.id): False for topic in book.topics.all()}
-
-    print("Topic Visibility:", context['topic_visibility'])
-    print("Book Topics:", [f"{topic.id}: {topic.name}" for topic in book.topics.all()])
     
     return render(request, 'store/bookpage.html', context)
