@@ -155,6 +155,48 @@ def group_by_genre(books, user=None):
 
 
 @register.filter
+def group_by_genre_no_auth(books=None):
+    # Define the order of genres you want (without "Popular")
+    genre_order = ['Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+    
+    # Get all BookStorePages with status=1 (assuming 1 means published)
+    books = BookStorePage.objects.filter(status=1)
+
+    # Annotate books with average rating and prefetch genres
+    books = books.annotate(
+        avg_rating=Coalesce(Avg('comments__rating'), 0.0)
+    ).prefetch_related(
+        Prefetch('genre', queryset=Genre.objects.only('name'))
+    )
+    
+    # Use an OrderedDict to maintain the order
+    genre_groups = OrderedDict((genre, []) for genre in genre_order)
+    
+    # Add "Other" category for genres not in the predefined list
+    genre_groups['Other'] = []
+    
+    # Populate genre groups
+    for book in books:
+        book_genres = book.genre.all()
+        if not book_genres:
+            genre_groups['Other'].append(book)
+        else:
+            for genre in book_genres:
+                if genre.name in genre_groups:
+                    genre_groups[genre.name].append(book)
+                else:
+                    genre_groups['Other'].append(book)
+    
+    # Sort books in each genre by average rating
+    for genre in genre_groups:
+        genre_groups[genre] = sorted(genre_groups[genre], key=lambda x: x.avg_rating, reverse=True)
+    
+    # Remove empty genres
+    genre_groups = OrderedDict((k, v) for k, v in genre_groups.items() if v)
+    
+    return genre_groups
+
+@register.filter
 def group_bookstore_pages_by_genre(books):
     from collections import OrderedDict
     
