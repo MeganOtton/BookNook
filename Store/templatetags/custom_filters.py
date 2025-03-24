@@ -106,11 +106,14 @@ def group_by_genre(books, user=None):
         if not book_genres:
             genre_groups['Other'].append(book)
         else:
+            added = False
             for genre in book_genres:
                 if genre.name in genre_groups:
                     genre_groups[genre.name].append(book)
-                else:
-                    genre_groups['Other'].append(book)
+                    added = True
+                    break  # Add the book to only one genre
+            if not added:
+                genre_groups['Other'].append(book)
     
     # Sort books in each genre by average rating
     for genre in genre_groups:
