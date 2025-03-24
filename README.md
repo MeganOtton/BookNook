@@ -12,9 +12,25 @@ The live project can found here: ADD LINK HERE
 </p>
 
 <h2 align="center"> Table of Contents:</h2>
+1. [Introduction](#introduction)
+2. [Project Outline](#project-outline)
+   - [Key Objectives](#key-objectives)
+3. [UX Design](#ux-design)
+   - [User Stories](#user-stories)
+   - [Color Design](#color-design)
+4. [Wireframes](#wireframes)
+5. [Imagery](#imagery)
+6. [Features](#features)
+   - [General Features](#general-features)
+7. [Agile Section](#agile-section)
+8. [Responsive Design](#responsive-design)
+9. [AI Implementation](#ai-implementation)
+10. [Testing](#testing)
+    - [Optimization](#optimazation)
+11. [Credit](#credit)
+
 
 ## Project Outline
-
 
 The Book Nook is a fictional library harnessing Django. The website primary use is to access information on published books and make reviews, as my MVP. However my extended goal is to have it function fully as online library with adding features such as having the ability to read the books online, having author accounts that can publish theyre books with ease and the admin can review the content before allowing to be released to the main site. I'm aiming to have it so that the users can hide specific topics, authors or books that they'd not like to see on their pages, so the website is fully customised to the user. 
 
@@ -231,6 +247,15 @@ Some key adjustments are as follow:
 - The ability to create your own shelf and move books between shelves as it became over-complicated for my first time using Django and for the shelves to be saved it had to be part of a model and then display correctly.
 - I also had to relocate the recommended shelf from the index.html to the search due to the amount of shelves causing some optimazation issues.
 
+### Agile Section
+
+I have throughout this project followed an agile workflow and methodology. I iterated and bug tested throughout due to the time constraint paired with dailing back on the overall scope of the project, for example in this final project the author's can publish themselves and the reading function had to be put off. I primarily focused on the must haves and really tried to perfect them before moving onto the next.
+
+At the start of the project i set up a project board to keep track of user stories and my progress on them using the 'To do', 'In Progress' and the 'Done' columns. I created a list of user stories each assigned a 'MOSCOW' prioritisation (must have, should have, could have, won't have) tag. This is following the KanBan method of tracking progress for a better workflow management.
+
+You can see how the project has developed from looking at the original wireframes in the images below to the current deployed website.
+Here is my project board: INSERT LINK
+
 #### Index Page
 ![Index Page](Readme_files/WebPage_Final_SC/Index.png)
 
@@ -241,6 +266,27 @@ This is the final version of the website. This is the index. I am overall really
 
 This is the final search page which turned out really well and for my first time coding a search bar into any of my websites im surprised with how well it functions. 
 
+#### Library Page
+![Search Page](Readme_files/WebPage_Final_SC/My_Library.png)
+
+#### Account Page (Reader)
+![Account Page (Reader)](Readme_files/WebPage_Final_SC/Account_Page_Reader.png)
+
+#### Account Page (Admin)
+![Account Page (Admin)](Readme_files/WebPage_Final_SC/Account_Admin.png)
+
+#### Individual Book Page
+![Individual Book Page](Readme_files/WebPage_Final_SC/Bookstore_Page.png)
+
+#### Sign In
+![Sign In Page](Readme_files/WebPage_Final_SC/Sign_in.png)
+
+#### Sign Out
+![Sign Out Page](Readme_files/WebPage_Final_SC/Sign_out.png)
+
+#### Register
+![Register Page](Readme_files/WebPage_Final_SC/Register.png)
+
 ## Responsive Design
 
 I will be utilising the Bootstrap Framework to speed up my effeciency when it comes to media queries and the overall project. With some experimentation I have been able to create a page that is fully responsive to modern standards with the use of media queries and a JavaSript script for the shelves due to Bootstraps carousels causing some technical glitches that would take the project away from my wireframes. 
@@ -248,19 +294,43 @@ I will be utilising the Bootstrap Framework to speed up my effeciency when it co
 Below is an image of my website from different devices.
 
 ![Responsive Design](Readme_files/Responsive_Image/Responsive_Image.png)
+Due to the way my project detects which device the user is using the regular method of showcasing a website's responsivity did not work, so the above image is replacement using inspect tools device sizing.
 
 ## AI Implementation
 
 #### Use Cases and Reflections:
 #### - Code Creation
-  - I used AI like copilot to help implement and generate elements from bootstrap without having to source it from bootstraps website. This sped up creation time exponentially in a project where time is limited.
-  - I used it to generate code that .
+  - I used AI like Copilot, Claude and Chatgpt to help implement and generate elements from bootstrap without having to source it from bootstraps website. This sped up creation time exponentially in a project where time is limited.
+  - I used it to also generate, edit and fix code that I was stuck on to save time during development.
 
 #### - Debugging 
-  - I used Copilot to fix or change elements of my own code to make them more aligned with the websites vision. This was a useful time saving technique which if nto used could have taken hours of research to fix/edit manually.
+  - I used Copilot, Claude and Chatgpt to fix or change elements of my own code to make them more aligned with the websites vision. This was a useful time saving technique which if nto used could have taken hours of research to fix/edit manually.
 
 #### - Overall Impact
   - AI tools streamlined repetive tasks and basic jobs, enabling me to focus on the more complex elements of the development. (Same goes for the Bootstrap elements)
 
+More Information:
+ 
+In terms of how i used AI to optimize my workflow I found it very helpful to highlight segments of code and give very specific prompts to Claude or Copilot to optimize, debug or fix code that i created. Also when generating code from scratch i broke down what the function of the code down into small bulletpoints and was very precise in order to ensure the result of the ai generated code to be as close to its prompt as possible, I then went and tweaked and edited the code to refine it to match the purpose even further. When it came to Debugging with copilot, I found it useful to highlight the sections of code and ask Copilot to debug why this section had broken.  When it came to optimazation of the project it was also quite useful in the production and debugging of Media Queries in CSS. Following a similar method as above I found highlighting the specific section that was broken a good way of narrowing the AI's attention onto the specific task at hand.
 
+## Testing
 
+Testing was done throughout the project to ensure after each feature was added in that it worked effectively and did not break any previous features. 
+
+### Optimazation
+
+Due to my lack of experience with both Python and Django this project was quite ambitious to take on when it came to removing my placeholders and filling the database with real books the website that ran smoothly before started to breakdown and slow loading times became prevelant. Using Django Debug tool, and Charlie Flockharts help, it helped track down where my problems where and what I should be optimizing.
+
+![Pre Optimazation](Readme_files/Optimisations/Bad_Optimisation.png)
+
+This was what could be seen pre-optimazation in the Django debug tool, as you can see on my index alone it was running over 578 queries for all of the various shelves on the index to create the customisable user experience. By adding all those filters that ran per shelf each time on page load it severly bottlenecked the website.
+
+![Post Optimazation](Readme_files/Optimisations/Good_Optimisation.png)
+
+This is what I managed to optimize it down to. Instead of 578 queries i managed to simplify the index code to only run 6 queries with help of changing the way the users are set up. Instead of running all of those filters to customise the website on the shelves themselves instead I used a many to many field of all accessible books to the user that updates when certain conditions are met so i could effectvely bypass using all the front end filters that had to re-read all 60+ books and sort it per shelf. This got the load time from 20 Seconds down to 1/2 a second.
+
+### Credit
+
+As one of my final modules, I am exceptionally thankful for the team at Code Institute for their exceptional lesson plans, Guidance and Professionalism. I have learnt so much in the last 16 weeks and i'd have not been able to do this incredible feat without their patience and guidance.
+
+Lastly, for his tremendous help and genious level expertise Charlie Flockhart, who helped debug and test the website and offering expertise when needed. 
