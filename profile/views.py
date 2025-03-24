@@ -1,17 +1,18 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import DetailView, FormView
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from .models import Profile
-from Store.models import BookStorePage, Comment, Topic, Genre
+from Store.models import BookStorePage, Comment, Topic, Genre, STATUS
 from django.contrib.auth import login
 from .forms import CustomAuthorSignupForm
 from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from .tasks import update_user_visible_books
+from django.contrib.auth.models import User
 
 @login_required
 def library_view(request):
@@ -80,14 +81,24 @@ class ProfileAuthorDetailedView(DetailView, LoginRequiredMixin):
     def get_object(self):
         return get_object_or_404(Profile, user=self.request.user)
 
-class ProfileAdminDetailedView(DetailView, LoginRequiredMixin):
+class ProfileAdminDetailedView(UserPassesTestMixin, LoginRequiredMixin, DetailView):
     model = Profile
     template_name = "profile/account_admin.html"
     context_object_name = "profile_admin"
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get_object(self):
         return get_object_or_404(Profile, user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        published_status = [status for status, label in STATUS if label == "Published"][0]
+        context['total_books'] = BookStorePage.objects.filter(status=published_status).count()
+        context['total_authors'] = BookStorePage.objects.filter(status=published_status).values('authorname').distinct().count()
+        context['total_users'] = User.objects.count()
+        return context
 
 @login_required
 def account_view(request):
@@ -335,3 +346,5 @@ def book_details_list(request, slug):
         context['topic_visibility'] = {str(topic.id): False for topic in book.topics.all()}
     
     return render(request, 'store/bookpage.html', context)
+
+

@@ -892,7 +892,29 @@ li {
     flex-direction: row;
 }
 
+.review-user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.reviewer-rating {
+    display: flex;
+}
+
+.Review-Author, .User-Review-Date {
+    margin-bottom: 0px !important;
+    font-size: 1.2rem;
+}
+
+.review-rating {
+    margin-left: 1rem;
+}
+
+.star-size {
+    font-size: 1.4rem;
+    color: var(--ribbon-red);
+}
 
 
 /* Media Queries */

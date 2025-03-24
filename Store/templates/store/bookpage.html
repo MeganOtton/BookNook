@@ -265,15 +265,28 @@
                             {% if comment.author == user %}
                                 <div class="p-2 review{% if not comment.approved %} faded{% endif %}">
                                     <div class="review-user-info">
-                                        <h3 class="Review-Author">
-                                            {{ comment.author }} (You)
-                                        </h3>
-                                        <h3 class="User-Review-Rating">
-                                            {{ comment.rating }}/5
-                                        </h3>  
-                                        <h3 class="User-Review-Date">
+                                        <div class="reviewer-rating">
+                                            <p class="Review-Author">
+                                                {{ comment.author }} (You)
+                                            </p>
+                                            <div class="review-rating">
+                                                {% with total=comment.rating|default:0 %}
+                                                    {% for i in "12345" %}
+                                                        {% if total >= i|add:"0" %}
+                                                            <span class="star-size">★</span>
+                                                        {% else %}
+                                                            <span class="star-size">☆</span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+
+                                        
+                                         
+                                        <p class="User-Review-Date">
                                             {{ comment.created_on }}
-                                        </h3>  
+                                        </p>  
                                     </div>
                                     <div>
                                         <h4 id="title{{ comment.id }}">{{ comment.title }}</h4>
@@ -294,12 +307,25 @@
                     {% if comment.author != user %}
                         <div class="p-2 review{% if not comment.approved %} d-none{% endif %}">
                             <div class="review-user-info">
-                                <h3 class="Review-Author">
-                                    {{ comment.author }}
-                                </h3>
-                                <h3 class="User-Review-Rating">
-                                    {{ comment.rating }}/5
-                                </h3>  
+                                <div class="reviewer-rating">
+                                    <p class="Review-Author">
+                                        {{ comment.author }}
+                                    </p>
+                                    <div class="review-rating">
+                                        {% with total=comment.rating|default:0 %}
+                                            {% for i in "12345" %}
+                                                {% if total >= i|add:"0" %}
+                                                    <span class="star-size">★</span>
+                                                {% else %}
+                                                    <spanclass="star-size">☆</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </div>
+                                </div> 
+
+                                
+                                
                                 <h3 class="User-Review-Date">
                                     {{ comment.created_on }}
                                 </h3>  
