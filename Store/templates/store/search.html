@@ -29,9 +29,9 @@
         <div class="Search_Info">
             <h2 class="searchtext">Search Results for "{{ request.GET.q }}"</h2>
         </div>
-        <div class="row row-cols-3 row-cols-md-4 row-cols-lg-8">
+        <div class="row row-cols-lg-8 search-results">
             {% for book in book_list_search %}
-                <div class="col mb-2">
+                <div class="col mb-2 search-books">
                     <div class="card Book ">
                         <a href="{% url 'book_details_list' book.slug %}">
                             <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">

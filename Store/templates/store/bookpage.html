@@ -106,53 +106,6 @@
     </p>
 </div>
 
-<!-- Series NOT COMPLETE -->
-<!-- <div class="container mt-5 shelf-container-nonfiction">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">Series</span>
-    </div>
-
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Non-Fiction' %}
-                        {% if forloop.counter0|divisibleby:device_type %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
-                        </div>
-
-                        {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                                </div> 
-                            </div> 
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-        
-        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-
-        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div> -->
-
 <!-- Similar Books -->
 {% if similar_books %}
     {% if user.is_authenticated %}
@@ -434,56 +387,4 @@
 {% block extras %}
 <script src="{% static 'js/eye.js' %}"></script>
 <script src="{% static 'js/comments.js' %}"></script>
-<script>
-//     document.addEventListener('DOMContentLoaded', function() {
-//     const form = document.getElementById('hideOptionsForm');
-//     form.addEventListener('submit', function(e) {
-//         e.preventDefault();
-//         fetch(this.action, {
-//             method: 'POST',
-//             body: new FormData(this),
-//             headers: {
-//                 'X-Requested-With': 'XMLHttpRequest',
-//                 'X-CSRFToken': getCookie('csrftoken')  // Add this line
-//             },
-//         })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error(`HTTP error! status: ${response.status}`);
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             if (data.success) {
-//                 alert('Changes saved successfully!');
-//                 // Close the modal
-//                 var modal = bootstrap.Modal.getInstance(document.getElementById('optionsModal'));
-//                 modal.hide();
-//             } else {
-//                 alert('Error saving changes: ' + (data.error || 'Unknown error'));
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             alert('An error occurred. Please try again. Error: ' + error.message);
-//         });
-//     });
-// });
-
-// // Function to get CSRF token
-// function getCookie(name) {
-//     let cookieValue = null;
-//     if (document.cookie && document.cookie !== '') {
-//         const cookies = document.cookie.split(';');
-//         for (let i = 0; i < cookies.length; i++) {
-//             const cookie = cookies[i].trim();
-//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//                 break;
-//             }
-//         }
-//     }
-//     return cookieValue;
-// }
-    </script>
 {% endblock extras %}

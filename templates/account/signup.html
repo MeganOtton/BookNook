@@ -15,7 +15,6 @@
       {% url 'account_signup_author' as account_signup_author_url %}
       {% blocktrans %}Registering as an Author? Then please <a href="{{ account_signup_author_url }}">sign up as author</a>.{% endblocktrans %}
     </p>
-    <!-- <p>{% blocktrans %}Registering as a Author? Then please <a href="{{% account_signup_author_url %}}">sign up as author</a>.{% endblocktrans %}</p> GET URL, Make page -->
 
     <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
