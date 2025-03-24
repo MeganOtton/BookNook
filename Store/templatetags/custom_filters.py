@@ -85,7 +85,7 @@ from django.db.models.functions import Coalesce
 @register.filter
 def group_by_genre(books, user=None):
     # Define the order of genres you want, including "Popular" at the beginning
-    genre_order = ['Popular', 'Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+    genre_order = ['Popular', 'Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science-fiction', 'Non-Fiction']
     
     # Annotate books with average rating and prefetch genres
     books = books.annotate(
@@ -133,7 +133,7 @@ def group_by_genre(books, user=None):
 @register.filter
 def group_by_genre_no_auth(books=None):
     # Define the order of genres you want (without "Popular")
-    genre_order = ['Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science Fiction', 'Non-Fiction']
+    genre_order = ['Fantasy', 'Romance', 'Mystery', 'Thriller', 'Science-fiction', 'Non-Fiction']
     
     # Get all BookStorePages with status=1 (assuming 1 means published)
     books = BookStorePage.objects.filter(status=1)
