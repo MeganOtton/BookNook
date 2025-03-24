@@ -1,7 +1,7 @@
 ![Hero Image](Readme_files/Hero_Image/Hero_Image_Readme.png)
 
 <h1 align="center"> The Book Nook </h1>
-| Add Live Link Here |
+<p align="center">| Add Live Link Here |</p>
 
 <h1 align="center"> Introduction: </h1>
 
@@ -24,15 +24,74 @@ The Book Nook is a fictional library harnessing Django. The website primary use 
  - A clear and easy to navigate website,
  - The ability for users to Create, Read, Update and Delete book reviews,
  - A large collection of books for Users to review.
-
-- I want it to be fully responsive across various sizes, especially phone and tablet due to that being more practical for reading.
+ - I want it to be fully responsive across various sizes, especially phone and tablet due to that being more practical for reading.
+ - I want the website to be customizeable for logged in Users.
 
 ## UX Design
 
-
 ### User Stories
 
-- 
+- As a Reader,
+  I would like to purchase books directly from the website,
+  So that I can easily obtain books I want to read.
+
+  For this to be done, these goals need to be met:
+
+    - Books should have clear pricing.
+    - Purchased books should be accessible from a user’s library.
+    - The books purchased should be viewable from the account purchase history,
+
+- As a Reader,
+  I would like to leave reviews on books
+  So that I can share my opinions and help others decide whether to read a book.
+
+  For this to be done, these goals need to be met:
+
+    - A review system must be implemented with a rating system (e.g., stars, thumbs up/down).
+    - Users must be able to write, edit and delete reviews.
+    - Reviews should be visible on the book’s page.
+    - When reviews are deleted they should be notified.
+
+- As a New User,
+  I would like to be able to create an account that matches me
+  So that I can See things appropriate for my age.
+
+  For this to be done, these goals need to be met:
+
+    - Two main reader accounts i.e. Child and Adult available at account creation,
+    - Create an account Page, Sign in and Account Pages.
+
+- As a Reader,
+  I would like to create a Wishlist of books
+  So that I can keep track of books I want to read or buy later.
+
+  For this to be done, these goals need to be met:
+
+    - Users should be able to add books to a personal Wishlist,
+    - The Wishlist should be accessible from a Users personal Library,
+    - When a User purchases a book it gets removed from the wishlist,
+
+- As a Reader,
+  I would like personalised homepage
+  So that I can easily find books that match my interests.
+
+  For this to be done, these goals need to be met:
+
+    - The homepage should recommend books based on previous purchases, Wishlist, and reviews.
+    - A section should highlight trending books and new releases.
+    - Books should be broken up by genre also.
+
+- As a Admin,
+  I would like to have a quick overview of important statistics
+  So that I can provide a more optimal service to the customers.
+
+  For this to be done, these goals need to be met:
+
+    - Total User count available through admin,
+    - Total Book Count,
+    - Total Author Count,
+
+
 
 ### Color Design
 
