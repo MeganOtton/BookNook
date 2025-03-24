@@ -6,6 +6,7 @@ from Store.models import BookStorePage, Topic
 import datetime
 from Store.models import Genre
 from django.utils import timezone
+from django.contrib.auth.signals import user_logged_in
 
 class Profile(models.Model):
     ROLE_CHOICES = [
@@ -56,6 +57,13 @@ class Profile(models.Model):
             visible_books = visible_books.filter(age_restriction=False)
         self.visible_books.set(visible_books)
     
+    #Starts Here!!!!
+    @receiver(user_logged_in)
+    def update_profile_on_login(sender, user, request, **kwargs):
+        profile = Profile.objects.get(user=user)
+        Profile.check_and_update_user_role(profile)
+
+    #2nd place
     @staticmethod
     def check_and_update_user_role(profile):
         role_changed = False
@@ -70,29 +78,64 @@ class Profile(models.Model):
         all_books = BookStorePage.objects.filter(status=1)
         if profile.role == 'Child':
             visible_books = all_books.filter(age_restriction=False)
+            Profile.remove_purchased_from_visible(profile)
         else:  # Adult
             visible_books = all_books  # This includes all books, including those with age restrictions
-
-        if role_changed:
-            # If role changed to Adult, set all books as visible
-            profile.visible_books.set(all_books)
-        else:
-            # Remove books that are hidden or have hidden topics only if role didn't change
-            visible_books = visible_books.exclude(
-                models.Q(id__in=profile.hidden_books.all()) |
-                models.Q(topics__in=profile.hidden_topics.all())
-            )
-            # Update the visible_books
-            profile.visible_books.set(visible_books)
+            Profile.remove_purchased_from_visible(profile)
 
         if role_changed:
             profile.save()
 
-        # Call the function in tasks.py to perform additional tasks
-        from .tasks import perform_additional_tasks
-        perform_additional_tasks(profile)
-
         return role_changed
+    
+    #3rd place
+    def remove_purchased_from_visible(self):
+        # Get the set of purchased books
+        purchased_books = set(self.purchased_books.all())
+        
+        # Get the current set of visible books
+        visible_books = set(self.visible_books.all())
+        
+        # Remove purchased books from visible books
+        updated_visible_books = visible_books - purchased_books
+        
+        # Update the visible_books field
+        self.visible_books.set(updated_visible_books)
+
+        # Call the remove_hidden_from_visible method
+        self.remove_hidden_from_visible()
+    
+    #4th place
+    def remove_hidden_from_visible(self):
+        print("remove_hidden_from_visible")
+        # Get the set of hidden books
+        hidden_books = set(self.hidden_books.all())
+        
+        # Get the set of purchased books
+        purchased_books = set(self.purchased_books.all())
+        
+        # Get the current set of visible books
+        visible_books = set(self.visible_books.all())
+        
+        # Remove both hidden and purchased books from visible books
+        updated_visible_books = visible_books - (hidden_books | purchased_books)
+
+        # Call the new method to remove books with hidden topics
+        updated_visible_books = self.remove_hidden_topics_from_visible(updated_visible_books)
+        
+        # Update the visible_books field
+        self.visible_books.set(updated_visible_books)
+
+    #5th place
+    def remove_hidden_topics_from_visible(self, visible_books):
+        print("remove_hidden_topics_from_visible")
+        # Get the set of books with hidden topics
+        books_with_hidden_topics = set(BookStorePage.objects.filter(topics__in=self.hidden_topics.all()))
+        
+        # Remove books with hidden topics from visible books
+        updated_visible_books = visible_books - books_with_hidden_topics
+        
+        return updated_visible_books
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -111,4 +154,3 @@ def save_user_profile(sender, instance, **kwargs):
 def update_visible_books_on_change(sender, instance, action, **kwargs):
     if action in ["post_add", "post_remove", "post_clear"]:
         instance.update_visible_books()
-        Profile.check_and_update_user_role(instance.profile)
