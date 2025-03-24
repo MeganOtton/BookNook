@@ -248,53 +248,6 @@
     {% endif %}
 {% endif %}
 
-<!-- By Author NOT COMPLETE -->
-<!-- <div class="container mt-5 shelf-container-nonfiction">
-
-    <div class="shelf-title-wrapper">
-        <span class="shelf-title">By Author</span>
-    </div>
-
-    <div id="nonFictionCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            {% for book in book_list %}
-                {% for genre in book.genre.all %}
-                    {% if genre.name == 'Non-Fiction' %}
-                        {% if forloop.counter0|divisibleby:device_type %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="d-flex justify-content-center">
-                        {% endif %}
-
-                        <div class="card mx-2 Book">
-                            <a href="{% url 'book_details_list' book.slug %}">
-                                <img src="{{ book.bookcover.url }}" class="card-img-top" alt="{{ book.booktitle }}">
-                            </a>
-                            <div class="card-body book-title-index">
-                                <h5 class="card-title">{{ book.booktitle }}</h5>
-                            </div>
-                        </div>
-
-                        {% if forloop.counter|divisibleby:device_type or forloop.last %}
-                                </div> 
-                            </div> 
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-    
-        <button class="carousel-control-prev" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-
-        <button class="carousel-control-next" type="button" data-bs-target="#nonFictionCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
-
-        <img src="{% static 'images/Wood_Shelf.webp' %}" class="wood-shelf" alt="Wood Shelf">
-    </div>
-</div> -->
-
 <!-- Review Section -->
 <div class="review-box">
     <!-- Review Info -->
@@ -441,12 +394,6 @@
             <div class="modal-body">
                 <form id="hideOptionsForm" method="POST" action="{% url 'hide_options' book.id %}">
                     {% csrf_token %}
-                    <!-- <div class="mb-3">
-                        <label class="form-check-label">
-                            <input type="checkbox" name="hide_author" class="form-check-input">
-                            Hide Author <i class="fa-solid fa-eye-slash"></i>
-                        </label>
-                    </div> -->
                     <div class="mb-3 hide-option">
                         <input type="checkbox" name="hide_book" class="form-check-input visually-hidden" id="hideBook" {% if is_book_hidden %}checked{% endif %}>
                         <label class="form-check-label d-flex align-items-center" for="hideBook">
@@ -486,6 +433,5 @@
 
 {% block extras %}
 <script src="{% static 'js/eye.js' %}"></script>
-<script src="{% static 'js/script.js' %}"></script>
 <script src="{% static 'js/comments.js' %}"></script>
 {% endblock extras %}

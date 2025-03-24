@@ -17,9 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             collapseArrow.classList.remove('fa-chevron-down');
             collapseArrow.classList.add('fa-chevron-up');
         });
-    } else {
-        console.log('One or both elements (purchasedBooks, collapseArrow) not found in the DOM');
-    }
+    } 
 });
 
 

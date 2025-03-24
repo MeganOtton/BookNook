@@ -8,7 +8,6 @@ function getDeviceType() {
     } else {
         deviceType = 8; // Laptop and Desktop
     }
-    console.log("Current device type:", deviceType);
     return deviceType;
 }
 
@@ -24,7 +23,6 @@ function updateDeviceType() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Server response:", data);
         if (data.refresh) {
             location.reload();
         }
