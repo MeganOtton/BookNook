@@ -115,6 +115,7 @@ The Book Nook is a fictional library harnessing Django. The website primary use 
 For this project I have mimicked a previous project I completed on a similar topic to help speed up time, I have chosen simple reds to mimic old fashioned ribbon bookmarks. I have used a wooden background to mimic the back of a library shelf with the actual shelves themselves having shelf images. The design of this webpage is to represent an actual library bookshelf but digitally.
 
 ![Colour Palette](Readme_files/Color_Palette/Colour_Palette.png)
+
 This is the original design plan.
 
 ## Wireframes
