@@ -247,14 +247,14 @@ I will be utilising the Bootstrap Framework to speed up my effeciency when it co
 
 Below is an image of my website from different devices.
 
-
+INSERT IMAGE!!!
 
 ## AI Implementation
-___
+
 #### Use Cases and Reflections:
 #### - Code Creation
   - I used AI like copilot to help implement and generate elements from bootstrap without having to source it from bootstraps website. This sped up creation time exponentially in a project where time is limited.
-  - I used it to generate code that i had not yet learned ie the Java Script element for the NavBar.
+  - I used it to generate code that .
 
 #### - Debugging 
   - I used Copilot to fix or change elements of my own code to make them more aligned with the websites vision. This was a useful time saving technique which if nto used could have taken hours of research to fix/edit manually.
