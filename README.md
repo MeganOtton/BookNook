@@ -1,4 +1,4 @@
-<img src=(Readme_files/Hero_Image/Hero_Image_Readme.png)>
+![Hero Image](Readme_files/Hero_Image/Hero_Image_Readme.png)
 
 # The Book Nook
 | Add Live Link Here |
@@ -199,6 +199,6 @@ ___
 
 #### - Overall Impact
   - AI tools streamlined repetive tasks and basic jobs, enabling me to focus on the more complex elements of the development. (Same goes for the Bootstrap elements)
-    
+
 
 
