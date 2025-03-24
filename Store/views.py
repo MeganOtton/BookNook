@@ -176,8 +176,6 @@ class BookListSearch(generic.ListView):
         context['book_list'] = all_books  # This is needed for the custom filter in the template
         context['popular_books'] = popular_books
         context['recommended_books'] = all_books.order_by('-created_on')[:6]
-        # context['romance_books'] = all_books.filter(genre__name='Romance')[:6]
-        # context['fantasy_books'] = all_books.filter(genre__name='Fantasy')[:6]
         context['new_additions'] = new_additions
 
         return context
@@ -343,12 +341,3 @@ def invalidate_book_cache(sender, instance, **kwargs):
         cache.delete(f'book_list_user_{user.user.id}')
         cache.delete(f'context_data_user_{user.user.id}')
     cache.delete('context_data_anonymous')
-
-
-# @require_POST
-# def hide_options(request, item_id):
-#     if request.user.is_authenticated:
-#         user_profile = request.user.profile
-
-    
-#         Profile.update_profile_on_login(user_profile)

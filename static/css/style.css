@@ -493,6 +493,7 @@ body {
     margin: 0 auto;
     text-align: center;
     color: white;
+    font-size: 1.3rem;
 }
 
 .Options-Account-Info {
@@ -511,7 +512,6 @@ body {
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
-    width: 90%;
 
     margin-bottom: 10px;
     padding-top: 10px;
@@ -529,11 +529,15 @@ body {
 }
 
 /* Account Stats */
+.tablet-view {
+    width: 90%;
+    margin-left: 0px;
+}
+
 .account-stats {
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
-    width: 90%;
     
     padding-top: 10px;
     
@@ -680,6 +684,12 @@ body {
     align-items: center;
     flex-direction: column;
 }
+
+.author-overview, .Books-Overview {
+    width: 90%;
+    padding: 0px;
+}
+
 
 /* account_admin.html */
 /* admin-overview-box */
@@ -856,8 +866,60 @@ li {
     color: var(--white);
 }
 
+.search-results{
+    margin-left: 0px;
+}
 
-@media only screen and (min-width: 375px) and (max-width: 425px) {
+.search-books {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.book-title-purchases-table {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-black);
+}
+
+.book-title-purchases {
+    font-size: 14px;
+    color: var(--text-black);
+}
+
+.account-extras {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.review-user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reviewer-rating {
+    display: flex;
+}
+
+.Review-Author, .User-Review-Date {
+    margin-bottom: 0px !important;
+    font-size: 1.2rem;
+}
+
+.review-rating {
+    margin-left: 1rem;
+}
+
+.star-size {
+    font-size: 1.4rem;
+    color: var(--ribbon-red);
+}
+
+
+/* Media Queries */
+
+@media only screen and (min-width: 376px) and (max-width: 425px) {
     /* Adjust hero image */
     .hero_image {
         height: auto;
@@ -934,6 +996,34 @@ li {
     .book-info-top {
         width: 11rem;
         justify-content: normal;
+    }
+
+    /* Search.html */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .search-books {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    /* account.html */
+    /* reader */
+
+    .account-purchases {
+        width: 90%;
+        padding: 0px;
+    }
+
+    .account-extras {
+        justify-content: center;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
     }
 
 }
@@ -1013,7 +1103,21 @@ li {
         justify-content: normal;
     }
 
-    
+    /* account.html */
+    /* reader */
+
+    .account-purchases {
+        width: 90%;
+        padding: 0px;
+    }
+
+    .account-extras {
+        justify-content: center;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
 }
 
 @media only screen and (min-width: 577px) and (max-width: 600px) {
@@ -1097,7 +1201,34 @@ li {
         width: 100%;
         height: 21rem; 
     }
+
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* account.html */
+    /* reader */
+
+    .account-purchases {
+        width: 90%;
+        padding: 0px;
+    }
     
+    .account-extras {
+        justify-content: center;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 /* Media query for tablet devices */
@@ -1141,9 +1272,12 @@ li {
     }
 
     /* Adjust carousel controls */
-    .carousel-control-prev,
+    .carousel-control-prev {
+        left: -25px;
+    }
+
     .carousel-control-next {
-        top: -12px;
+        right: -25px;
     }
 
     /* Adjust footer */
@@ -1204,6 +1338,24 @@ li {
         height: 21rem; 
     }
 
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+    }
+
+    .account-extras {
+        justify-content: center;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
 
 }
 
@@ -1248,9 +1400,12 @@ li {
     }
 
     /* Adjust carousel controls */
-    .carousel-control-prev,
+    .carousel-control-prev {
+        left: -25px;
+    }
+
     .carousel-control-next {
-        top: -12px;
+        right: -25px;
     }
 
     /* Adjust footer */
@@ -1311,6 +1466,28 @@ li {
         height: 21rem; 
     }
 
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* account.HTML */
+    /* reader.HTML */
+
+    .account-extras {
+        justify-content: center;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
 
 }
 
@@ -1360,7 +1537,7 @@ li {
 
     /* Adjust wood shelf */
     .wood-shelf {
-        height: 1.5rem;
+        height: 1rem;
         object-fit: cover;
         object-position: center;
     }
@@ -1390,6 +1567,19 @@ li {
     /* Adjust spacing between shelves */
     .shelf-container {
         margin-bottom: 3rem;
+    }
+
+    /* Adjust carousel controls */
+    .carousel-control-prev {
+        left: -36px;
+    }
+
+    .carousel-control-next {
+        right: -36px;
+    }
+
+    .Book {
+        width: 4rem;
     }
 
     .book-info {
@@ -1437,6 +1627,7 @@ li {
         display: block;
         width: 25rem;
         margin-left: 1rem;
+        height: 22.3rem;
     }
 
     .book-info-bottom {
@@ -1457,6 +1648,68 @@ li {
         margin-right: 10rem;
     }
 
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: .2rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .account-extras {
+        justify-content: center;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
+    }
 
 }
 
@@ -1490,11 +1743,6 @@ li {
         margin-top: 3rem !important;
     }
 
-
-    .Book {
-        width: 6rem;
-    }
-
     .shelf-title {
         font-size: 16px;
         padding: 12px 24px;
@@ -1502,7 +1750,7 @@ li {
 
     /* Adjust wood shelf */
     .wood-shelf {
-        height: 1.5rem;
+        height: 1rem;
         object-fit: cover;
         object-position: center;
     }
@@ -1584,6 +1832,7 @@ li {
         display: block;
         width: 25rem;
         margin-left: 1rem;
+        height: 22.3rem;
     }
 
     .book-info-bottom {
@@ -1602,6 +1851,81 @@ li {
     .register-box, .login-info-box {
         margin-left: 10rem;
         margin-right: 10rem;
+    }
+
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* Adjust carousel controls */
+    .carousel-control-prev {
+        left: -50px;
+    }
+
+    .carousel-control-next {
+        right: -50px;
+    }
+
+    .Book {
+        width: 4.3rem;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .account-extras {
+        justify-content: center;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: 0 !important;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
     }
 
 }
@@ -1640,6 +1964,10 @@ li {
         width: 6rem;
     }
 
+    .shelf-title-wrapper {
+        left: -300px;
+    }
+
     .shelf-title {
         font-size: 16px;
         padding: 12px 24px;
@@ -1729,6 +2057,7 @@ li {
         display: block;
         width: 25rem;
         margin-left: 1rem;
+        height: 22.3rem;
     }
 
     .book-info-bottom {
@@ -1747,6 +2076,90 @@ li {
     .register-box, .login-info-box {
         margin-left: 10rem;
         margin-right: 10rem;
+    }
+
+    /* Search.HTML */
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* Adjust carousel controls */
+    .carousel-control-prev {
+        left: -28px;
+    }
+
+    .carousel-control-next {
+        right: -28px;
+    }
+
+    .Book {
+        width: 5.4rem;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+        width: 40rem;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .account-extra-box {
+        width: 40rem;
+    }
+
+    .account-extras {
+        justify-content: center;
+        
+    }
+
+    .account-purchases {
+        width: 40rem;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: 0 !important;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
     }
 
 }
@@ -1781,11 +2194,6 @@ li {
         margin-top: 3rem !important;
     }
 
-
-    .Book {
-        width: 6rem;
-    }
-
     .shelf-title {
         font-size: 16px;
         padding: 12px 24px;
@@ -1875,6 +2283,7 @@ li {
         display: block;
         width: 25rem;
         margin-left: 1rem;
+        height: 22.3rem;
     }
 
     .book-info-bottom {
@@ -1893,6 +2302,100 @@ li {
     .register-box, .login-info-box {
         margin-left: 10rem;
         margin-right: 10rem;
+    }
+
+    .review-box {
+        width: 50rem;
+    }
+
+    .review-box-flex {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* Adjust carousel controls */
+    .carousel-control-prev {
+        left: -28px;
+    }
+
+    .carousel-control-next {
+        right: -28px;
+    }
+
+    .Book {
+        width: 5.4rem;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+        width: 40rem;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .account-extra-box {
+        width: 40rem;
+    }
+
+    .account-extras {
+        justify-content: center;
+        
+    }
+
+    .account-purchases {
+        width: 40rem;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: 0 !important;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
     }
 
 }
@@ -1932,10 +2435,6 @@ li {
         left: -500px;
     }
 
-    .Book {
-        width: 6rem;
-    }
-
     .shelf-title {
         font-size: 16px;
         padding: 12px 24px;
@@ -1945,7 +2444,7 @@ li {
 
     /* Adjust wood shelf */
     .wood-shelf {
-        height: 1.5rem;
+        height: 1rem;
         object-fit: cover;
         object-position: center;
     }
@@ -2027,6 +2526,7 @@ li {
         display: block;
         width: 25rem;
         margin-left: 1rem;
+        height: 22.3rem;
     }
 
     .book-info-bottom {
@@ -2045,6 +2545,99 @@ li {
     .register-box, .login-info-box {
         margin-left: 10rem;
         margin-right: 10rem;
+    }
+
+    .review-box {
+        width: 50rem;
+    }
+
+    .review-box-flex {
+        display: flex;
+        justify-content: center;
+    }
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* Adjust carousel controls */
+    .carousel-control-prev {
+        left: -28px;
+    }
+
+    .carousel-control-next {
+        right: -28px;
+    }
+
+    .Book {
+        width: 6rem;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+        width: 40rem;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .account-extra-box {
+        width: 40rem;
+    }
+
+    .account-extras {
+        justify-content: center;
+        
+    }
+
+    .account-purchases {
+        width: 40rem;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: 0 !important;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
     }
 
 }
@@ -2174,6 +2767,7 @@ li {
         display: block;
         width: 25rem;
         margin-left: 1rem;
+        height: 22.3rem;
     }
 
     .book-info-bottom {
@@ -2193,10 +2787,92 @@ li {
         margin-left: 10rem;
         margin-right: 10rem;
     }
+
+    .review-box {
+        width: 50rem;
+    }
+
+    .review-box-flex {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+        width: 40rem;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .account-extra-box {
+        width: 40rem;
+    }
+
+    .account-extras {
+        justify-content: center;
+        
+    }
+
+    .account-purchases {
+        width: 40rem;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: 0 !important;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
+    }
+
 }
 
 /* Media query for Desktop devices */
-@media only screen and (min-width: 2560px) {
+@media only screen and (min-width: 1901px) and (max-width: 2000px) {
     /* Hero image adjustments */
     .hero_image {
         height: 5rem;
@@ -2320,6 +2996,7 @@ li {
         display: block;
         width: 25rem;
         margin-left: 1rem;
+        height: 22.3rem;
     }
 
     .book-info-bottom {
@@ -2339,4 +3016,315 @@ li {
         margin-left: 10rem;
         margin-right: 10rem;
     }
+
+    .review-box {
+        width: 50rem;
+    }
+
+    .review-box-flex {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+        width: 40rem;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .account-extra-box {
+        width: 40rem;
+    }
+
+    .account-extras {
+        justify-content: center;
+        
+    }
+
+    .account-purchases {
+        width: 40rem;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: 0 !important;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
+    }
+
+}
+
+/* Media query for Desktop devices */
+@media only screen and (min-width: 2001px) and (max-width: 2560px) {
+    /* Hero image adjustments */
+    .hero_image {
+        height: 5rem;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .wood-shelf-hero {
+        height: 1.2rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Book shelf adjustments */
+    .shelf-container-recommended {
+        margin-top: 3rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+
+    .shelf-title-wrapper {
+        top: -25px;
+        left: 0px;
+    }
+
+    .Book {
+        width: 6rem;
+    }
+
+    .shelf-title {
+        font-size: 16px;
+        padding: 12px 24px;
+        position: sticky;
+        left: 0;
+    }
+
+    /* Adjust wood shelf */
+    .wood-shelf {
+        height: 1.5rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Footer adjustments */
+    .footer {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .footer-icons {
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .fix-footer {
+        padding-top: 80px !important;
+    }
+
+    /* Navbar adjustments */
+    .nav-item {
+        font-size: 16px;
+    }
+
+    /* Adjust spacing between shelves */
+    .shelf-container {
+        margin-bottom: 3rem;
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 30rem;
+        margin-right: 30rem;
+    }
+
+    .book-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .book-info-top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: normal;
+        
+        height: fit-content;
+        width: 25rem; 
+        margin-left: 1rem;
+    }
+
+    .author-name-flex {
+        display: flex;
+        width: 100%;
+    }
+
+    .bookpage-author-name {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .genre-chapter-flex {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .rating-box-flex {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+
+    .book-info-bottom-tablet {
+        display: block;
+        width: 25rem;
+        margin-left: 1rem;
+        height: 22.3rem;
+    }
+
+    .book-info-bottom {
+        display: none;
+    }
+
+    .main_purchase_info {
+        justify-content: center
+    }
+
+    .Book-Cover-Image {
+        width: 100%;
+        height: 31.3rem; 
+    }
+
+    .register-box, .login-info-box {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+
+    .review-box {
+        width: 50rem;
+    }
+
+    .review-box-flex {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Search.HTML */
+
+    .search-results{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    /* account.HTML */
+    /* reader */
+
+    .tablet-view {
+        display: flex;
+        width: 40rem;
+    }
+
+    .account-stats {
+        margin-left: 10px;
+        height: 8rem;
+    }
+
+    .accountbox {
+        height: 8rem;
+    }
+
+    .account-extra-box {
+        width: 40rem;
+    }
+
+    .account-extras {
+        justify-content: center;
+        
+    }
+
+    .account-purchases {
+        width: 40rem;
+    }
+
+    .your-review-button {
+        margin-left: 1rem;
+    }
+
+    .Purchased-books-stats {
+        margin-top: 0 !important;
+    }
+
+    .hidden-tab-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* account.HTML */
+    /* admin */
+
+    .Quick-Overview {
+        width: 40rem;
+    }
+
+    .requested-features {
+        width: 40rem;
+    }
+
+    .bug-reports {
+        width: 40rem;
+    }
+
+    /* account.HTML */
+    /* author */
+
+    .author-overview, .Books-Overview {
+        width: 40rem;
+    }
+
 }
