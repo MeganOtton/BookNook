@@ -1,15 +1,15 @@
 ![Hero Image](Readme_files/Hero_Image/Hero_Image_Readme.png)
 
 <h1 align="center"> The Book Nook </h1>
-<p align="center">| Add Live Link Here |</p>
+<p align="center"><a href="https://booknook-megan-9235b81ca921.herokuapp.com" target="_blank">| Live Link Here |</a></p>
 
 <h1 align="center"> Introduction: </h1>
 
 <p>
 The Book Nook is my last assessed portfolio project developed as part of the Code Institute Full Stack Software Developer Bootcamp, consisting of learning outcomes to utilise HTML5, CSS3 & Bootstrap, Django in order to fulfil the necessary requirements for the brief.
 
-The live project can found here: ADD LINK HERE
-</p>
+The live project can found here: <a href="https://booknook-megan-9235b81ca921.herokuapp.com" target="_blank">| Live Link Here |</a>
+
 
 <h2 align="center"> Table of Contents:</h2>
 
@@ -255,7 +255,7 @@ I have throughout this project followed an agile workflow and methodology. I ite
 At the start of the project i set up a project board to keep track of user stories and my progress on them using the 'To do', 'In Progress' and the 'Done' columns. I created a list of user stories each assigned a 'MOSCOW' prioritisation (must have, should have, could have, won't have) tag. This is following the KanBan method of tracking progress for a better workflow management.
 
 You can see how the project has developed from looking at the original wireframes in the images below to the current deployed website.
-Here is my project board: INSERT LINK
+Here is my project board: <a href="[https://github.com/users/MeganOtton/projects/5]" target="_blank">| Here |</a>
 
 #### Index Page
 ![Index Page](Readme_files/WebPage_Final_SC/Index.png)
