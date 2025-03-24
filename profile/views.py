@@ -33,7 +33,7 @@ class AuthorSignupView(FormView):
 
 # Profile detailed view
 # This view displays the user's profile page
-# It displays the user's purchased games
+# It displays the user's purchased Books
 # It also displays the user's profile information
 # It is only accessible to logged in users
 class ProfileDetailedView(DetailView, LoginRequiredMixin):
@@ -146,14 +146,14 @@ def account_view(request):
     }
     return render(request, 'profile/account.html', context)
 
-# Function to move a game to the user's purchased games
+# Function to move a Book to the user's purchased Books
 # This function is called when a user clicks the purchase button
-# It adds the game to the user's purchased games
+# It adds the Book to the user's purchased Books
 # It also displays a message to the user
-# It redirects the user to the game detail page
+# It redirects the user to the Book detail page
 
 # If the user is not logged in, it displays a message to the user
-# It redirects the user to the game detail page
+# It redirects the user to the Book detail page
 
 def move_book_to_chosen(request, booktitle):
     post = get_object_or_404(BookStorePage, booktitle=booktitle)
@@ -181,22 +181,22 @@ def move_book_to_chosen(request, booktitle):
     return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
 
 
-# Function to check if the user owns the game
-# This function is called when a user views a game detail page
-# It checks if the user owns the game
-# It redirects the user to the game detail page
+# Function to check if the user owns the Book
+# This function is called when a user views a Book detail page
+# It checks if the user owns the Book
+# It redirects the user to the Book detail page
 
-# If the user owns the game, it adds a query parameter to the URL
+# If the user owns the Book, it adds a query parameter to the URL
 # The query parameter is used to display a message to the user
-# If the user does not own the game, it adds a query parameter to the URL
+# If the user does not own the Book, it adds a query parameter to the URL
 # The query parameter is used to display a message to the user
 
 # If the user is not logged in, it adds a query parameter to the URL
 # The query parameter is used to display a message to the user
-# It redirects the user to the game detail page
+# It redirects the user to the Book detail page
 
 # The function returns an HTTP response
-# The HTTP response contains the URL of the game detail page
+# The HTTP response contains the URL of the Book detail page
 # The URL contains the query parameter
 # The query parameter is used to display a message to the user
 def check_book_ownership(request, booktitle):
@@ -214,14 +214,14 @@ def check_book_ownership(request, booktitle):
         return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
 
     
-# Function to move a game to the user's purchased games
+# Function to move a Book to the user's purchased Books
 # This function is called when a user clicks the purchase button
-# It adds the game to the user's purchased games
+# It adds the Book to the user's purchased Books
 # It also displays a message to the user
-# It redirects the user to the game detail page
+# It redirects the user to the Book detail page
 
 # If the user is not logged in, it displays a message to the user
-# It redirects the user to the game detail page
+# It redirects the user to the Book detail page
 
 def move_book_to_wishlist(request, booktitle):
     post = get_object_or_404(BookStorePage, booktitle=booktitle)
@@ -329,8 +329,5 @@ def book_details_list(request, slug):
         context['topic_visibility'] = {str(topic.id): topic in profile.hidden_topics.all() for topic in book.topics.all()}
     else:
         context['topic_visibility'] = {str(topic.id): False for topic in book.topics.all()}
-
-    print("Topic Visibility:", context['topic_visibility'])
-    print("Book Topics:", [f"{topic.id}: {topic.name}" for topic in book.topics.all()])
     
     return render(request, 'store/bookpage.html', context)

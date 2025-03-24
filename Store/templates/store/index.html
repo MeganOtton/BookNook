@@ -139,7 +139,6 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if (data.refresh) {
                 // If the server indicates we need to refresh, do so
                 window.location.reload();
