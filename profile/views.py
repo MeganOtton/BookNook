@@ -3,14 +3,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, FormView
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect
 from .models import Profile
 from Store.models import BookStorePage, Comment, Topic, Genre
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from .forms import CustomSignupForm, CustomAuthorSignupForm
+from .forms import CustomAuthorSignupForm
 from datetime import date
-from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from .tasks import update_user_visible_books

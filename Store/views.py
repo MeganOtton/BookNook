@@ -1,32 +1,20 @@
-from django.shortcuts import render, get_object_or_404, reverse, redirect
+from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from .models import BookStorePage, Comment
+from django.http import HttpResponseRedirect, JsonResponse
+from .models import BookStorePage, Comment, Genre
 from .forms import RatingForm
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from profile.models import Profile
-from django.db.models import Q
+from django.db.models import Q, Count, Avg, F
 from django.utils import timezone
 from datetime import timedelta
-from django.db.models import Count
-from .models import Genre
 import random
 import json
 from django.core.cache import cache
-from django.conf import settings
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.db.models import Avg, F, Q, Count
-from django.core.cache import cache
 
-# Device detection view
-def device_detection_view(request):
-    if 'device_type' in request.session:
-        return redirect('index')
-    return render(request, 'store/device_detection.html')
 
 class BookList(generic.ListView):
     context_object_name = 'book_list'

@@ -20,9 +20,3 @@ class RatingForm(forms.ModelForm):
         model = Comment
         fields = ('title','rating','body')  # Include other fields as necessary
 
-
-# class CommentForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Comment
-#         fields = ('title','rating','body',)
