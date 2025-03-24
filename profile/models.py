@@ -61,7 +61,8 @@ class Profile(models.Model):
     @receiver(user_logged_in)
     def update_profile_on_login(sender, user, request, **kwargs):
         profile = Profile.objects.get(user=user)
-        Profile.check_and_update_user_role(profile)
+        # Profile.check_and_update_user_role(profile)
+        Profile.update_visible_books(profile)
 
     #2nd place
     @staticmethod
@@ -78,10 +79,10 @@ class Profile(models.Model):
         all_books = BookStorePage.objects.filter(status=1)
         if profile.role == 'Child':
             visible_books = all_books.filter(age_restriction=False)
-            Profile.update_visible_books(profile)
+            # Profile.update_visible_books(profile)
         else:  # Adult
             visible_books = all_books  # This includes all books, including those with age restrictions
-            Profile.update_visible_books(profile)
+            # Profile.update_visible_books(profile)
 
         if role_changed:
             profile.save()
@@ -138,9 +139,33 @@ class Profile(models.Model):
         return updated_visible_books
     
     #NEW VERSION 
+    # def update_visible_books(self):
+    #     # Start with all books
+    #     all_books = set(BookStorePage.objects.filter(status=1))
+        
+    #     # Remove purchased books from visible books
+    #     visible_books = all_books - set(self.purchased_books.all())
+        
+    #     # Remove hidden books from visible books
+    #     visible_books -= set(self.hidden_books.all())
+        
+    #     # Remove books with hidden topics from visible books
+    #     books_with_hidden_topics = set(BookStorePage.objects.filter(topics__in=self.hidden_topics.all()))
+    #     visible_books -= books_with_hidden_topics
+        
+    #     # Update the visible_books field
+    #     self.visible_books.set(visible_books)
+        
+    #     # Save the changes
+    #     self.save()
+
+    #NEW NEW VERSION
     def update_visible_books(self):
-        # Start with all books
-        all_books = set(BookStorePage.objects.filter(status=1))
+        # Start with all published books
+        if self.role == 'Child':
+            all_books = set(BookStorePage.objects.filter(status=1, age_restriction=False))
+        else:
+            all_books = set(BookStorePage.objects.filter(status=1))
         
         # Remove purchased books from visible books
         visible_books = all_books - set(self.purchased_books.all())
@@ -163,12 +188,12 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
         instance.profile.save()
-        Profile.check_and_update_user_role(instance.profile)
+        Profile.update_visible_books(instance.profile)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
-    Profile.check_and_update_user_role(instance.profile)
+    Profile.update_visible_books(instance.profile)
 
 @receiver(m2m_changed, sender=Profile.hidden_books.through)
 @receiver(m2m_changed, sender=Profile.hidden_topics.through)

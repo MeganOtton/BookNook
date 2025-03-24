@@ -9,5 +9,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for profile in Profile.objects.all():
-            Profile.check_and_update_user_role(profile)
+            Profile.update_visible_books(profile)
         self.stdout.write(self.style.SUCCESS('Successfully checked and updated user roles and visible books'))

@@ -172,7 +172,7 @@ def move_book_to_chosen(request, booktitle):
                 messages.info(request, f"{booktitle} has been removed from your wishlist as you've purchased it.")
             
             profile.save()
-            Profile.check_and_update_user_role(profile)
+            Profile.update_visible_books(profile)
             messages.success(request, f"You have purchased the book: {booktitle}")
         
         return HttpResponseRedirect(f"{reverse('book_details_list', kwargs={'slug': post.slug})}")
@@ -276,7 +276,7 @@ def hide_options(request, item_id):
             book = get_object_or_404(BookStorePage, id=item_id)
             user_profile.hidden_books.remove(book)
             messages.success(request, f"'{book.booktitle}' has been unhidden.")
-            Profile.check_and_update_user_role(user_profile)
+            Profile.update_visible_books(user_profile)
             return redirect('account')  # Redirect back to the account page
 
         # Unhide topic from account page
@@ -284,7 +284,7 @@ def hide_options(request, item_id):
             topic = get_object_or_404(Topic, id=item_id)
             user_profile.hidden_topics.remove(topic)
             messages.success(request, f"'{topic.name}' has been unhidden.")
-            Profile.check_and_update_user_role(user_profile)
+            Profile.update_visible_books(user_profile)
             return redirect('account')  # Redirect back to the account page
 
         # Handle hide options from book page
@@ -307,7 +307,7 @@ def hide_options(request, item_id):
                     user_profile.hidden_topics.remove(topic)
 
             user_profile.save()
-            Profile.check_and_update_user_role(user_profile)
+            Profile.update_visible_books(user_profile)
             messages.success(request, "Hide options updated successfully.")
             return redirect('book_details_list', slug=book.slug)
 
