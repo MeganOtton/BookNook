@@ -1,14 +1,14 @@
 ![Hero Image](Readme_files/Hero_Image/Hero_Image_Readme.png)
 
 <h1 align="center"> The Book Nook </h1>
-<p align="center"><a href="https://booknook-megan-9235b81ca921.herokuapp.com" target="_blank">| Live Link Here |</a></p>
+<p align="center"><a href="https://booknook-megan-9235b81ca921.herokuapp.com" target="_blank" rel="noopener noreferrer">| Live Link Here |</a></p>
 
 <h1 align="center"> Introduction: </h1>
 
 <p>
 The Book Nook is my last assessed portfolio project developed as part of the Code Institute Full Stack Software Developer Bootcamp, consisting of learning outcomes to utilise HTML5, CSS3 & Bootstrap, Django in order to fulfil the necessary requirements for the brief.
 
-The live project can found here: <a href="https://booknook-megan-9235b81ca921.herokuapp.com" target="_blank">| Live Link Here |</a>
+The live project can found here: <a href="https://booknook-megan-9235b81ca921.herokuapp.com" target="_blank" rel="noopener noreferrer">| Live Link Here |</a>
 
 
 <h2 align="center"> Table of Contents:</h2>
@@ -257,7 +257,7 @@ I have throughout this project followed an agile workflow and methodology. I ite
 At the start of the project i set up a project board to keep track of user stories and my progress on them using the 'To do', 'In Progress' and the 'Done' columns. I created a list of user stories each assigned a 'MOSCOW' prioritisation (must have, should have, could have, won't have) tag. This is following the KanBan method of tracking progress for a better workflow management.
 
 You can see how the project has developed from looking at the original wireframes in the images below to the current deployed website.
-Here is my project board: <a href="https://github.com/users/MeganOtton/projects/5/views/1" target="_blank">| Here |</a>
+Here is my project board: <a href="https://github.com/users/MeganOtton/projects/5/views/1" target="_blank" rel="noopener noreferrer">| Here |</a>
 
 #### Index Page
 ![Index Page](Readme_files/WebPage_Final_SC/Index.png)
@@ -383,6 +383,70 @@ Two warning occur on this page that ive hidden which is from two sections of cod
 
 ##### Index Inline Script Validation
 ![JS Validation](Readme_files/Code_Validation/JS/Inline_Index_JS_Validation.png)
+
+#### Python Validation
+##### Profile Validation
+###### Admin Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Admin_Validation.png)
+
+###### APPS Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Apps_Validation.png)
+
+###### Check User Ages Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Check_User_Ages_Validation.png)
+
+###### Forms Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Forms_Validation.png)
+
+###### Models Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Models_Validation.png)
+
+###### Tasks Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Tasks_Validation.png)
+
+###### URLS Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Urls_Validation.png)
+
+###### Views Validation
+![PY Validation](Readme_files/Code_Validation/PY/Profile/Views_Validation.png)
+
+##### Store Validation
+###### Admin Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Admin_Validation.png)
+
+###### APPS Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Apps_Validation.png)
+
+###### Context Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Context_Validation.png)
+
+###### Custom Filters Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Custom_Filters_Validation.png)
+
+###### Forms Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Forms_Validation.png)
+
+###### Models Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Models_Validation.png)
+
+###### URLS Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Urls_Validation.png)
+
+###### Views Validation
+![PY Validation](Readme_files/Code_Validation/PY/Store/Views_Validation.png)
+
+##### Root Validation
+###### ASGI Validation
+![PY Validation](Readme_files/Code_Validation/PY/TheBookNook/Asgi_Validation.png)
+
+###### Settings Validation
+![PY Validation](Readme_files/Code_Validation/PY/TheBookNook/Settings_Validation.png)
+
+###### URLS Validation
+![PY Validation](Readme_files/Code_Validation/PY/TheBookNook/Urls_Validation.png)
+
+###### WSGI Validation
+![PY Validation](Readme_files/Code_Validation/PY/TheBookNook/Wsgi_Validation.png)
 
 ### Lighthouse
 
