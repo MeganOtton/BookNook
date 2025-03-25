@@ -370,7 +370,7 @@ Click the "Code" button (found above the list of files).
 Copy the URL for the repository.
 Open Git Bash or your chosen terminal.
 Navigate to the directory where you want to clone the repository.
-Type: git clone https://github.com/charlieflockhart/Playstation-Website-Final-Project.git
+Type: git clone https://github.com/meganotton/Book-Nook.git
 Press Enter to create your local clone.
 
 
