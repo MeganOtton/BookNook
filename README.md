@@ -391,7 +391,7 @@ Make any necessary migrations: python3 manage.py makemigrations
 Migrate the data to the database: python3 manage.py migrate
 Create a superuser: python3 manage.py createsuperuser
 
-### Credit
+## Credit
 
 As one of my final modules, I am exceptionally thankful for the team at Code Institute for their exceptional lesson plans, Guidance and Professionalism. I have learnt so much in the last 16 weeks and i'd have not been able to do this incredible feat without their patience and guidance.
 
