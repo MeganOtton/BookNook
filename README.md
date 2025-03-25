@@ -332,6 +332,10 @@ This was what could be seen pre-optimazation in the Django debug tool, as you ca
 
 This is what I managed to optimize it down to. Instead of 578 queries i managed to simplify the index code to only run 6 queries with help of changing the way the users are set up. Instead of running all of those filters to customise the website on the shelves themselves instead I used a many to many field of all accessible books to the user that updates when certain conditions are met so i could effectvely bypass using all the front end filters that had to re-read all 60+ books and sort it per shelf. This got the load time from 20 Seconds down to 1/2 a second.
 
+### Validation
+
+### Lighthouse
+
 ## Deployment
 
 The website was deployed to Heroku and can be found at the top.
