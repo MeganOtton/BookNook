@@ -28,7 +28,8 @@ The live project can found here: <a href="https://booknook-megan-9235b81ca921.he
 9. [AI Implementation](#ai-implementation)
 10. [Testing](#testing)
     - [Optimization](#optimization)
-11. [Credit](#credit)
+11. [Deployment](#deployment)
+12. [Credit](#credit)
 
 
 ## Project Outline
@@ -330,6 +331,62 @@ This was what could be seen pre-optimazation in the Django debug tool, as you ca
 ![Post Optimazation](Readme_files/Optimisations/Good_Optimisation.png)
 
 This is what I managed to optimize it down to. Instead of 578 queries i managed to simplify the index code to only run 6 queries with help of changing the way the users are set up. Instead of running all of those filters to customise the website on the shelves themselves instead I used a many to many field of all accessible books to the user that updates when certain conditions are met so i could effectvely bypass using all the front end filters that had to re-read all 60+ books and sort it per shelf. This got the load time from 20 Seconds down to 1/2 a second.
+
+##Deployment
+The website was deployed to Heroku and can be found at the top.
+
+###Heroku
+Heroku is a cloud platform that lets developers create, deploy, monitor and manage apps.
+You will need a Heroku log-in to be able to deploy a website to Heroku.
+Once you have logged into Heroku:
+Click 'New' > 'Create new app'
+Choose a unique name, choose your region and press 'Create app'
+Click on 'Settings' and then 'Reveal Config Vars'
+Add a key of 'DISABLE_COLLECTSTATIC' with a value of '1'.
+Add a key of 'DATABASE_URL' - the value will be the URL you were emailed when creating your database.
+Add a key of 'SECRET_KEY' - the value will be any random secret key (google 'secret key generator' and use it to generate a random string of numbers, letters and characters)
+In your terminal, type the code you will need to install project requirements:
+pip3 install gunicorn~=20.1
+pip3 install -r requirements.txt
+pip3 freeze --local > requirements.txt
+Create an 'env.py' file at the root directory which contains the following:
+import os
+os.environ["DATABASE_URL"]='CI database URL'
+os.environ["SECRET_KEY"]=" Your secret key"
+Create a file at the root directory called Procfile. In this file enter: "web: gunicorn my_project.wsgi" (without the quotes)
+In settings.py, set DEBUG to False.
+YOU SHOULD ALWAYS SET DEBUG TO FALSE BEFORE DEPLOYING FOR SECURITY
+Add ",'.herokuapp.com' " (without the double quotes) to the ALLOWED_HOSTS list in settings.py
+Add, commit and push your code.
+Go back to Heroku, click on the 'Deploy' tab.
+Connect your project to GitHub.
+Scroll to the bottom and click 'Deploy Branch' and your project will be deployed!
+
+
+###Cloning
+To clone a GitHub repository:
+On GitHub.com, navigate to the repository you want to clone.
+Click the "Code" button (found above the list of files).
+Copy the URL for the repository.
+Open Git Bash or your chosen terminal.
+Navigate to the directory where you want to clone the repository.
+Type: git clone https://github.com/charlieflockhart/Playstation-Website-Final-Project.git
+Press Enter to create your local clone.
+
+
+###Forking
+'Forking' the GitHub repository means creating a copy which can be viewed/changed without changing the original.
+To fork a GitHub repository:
+Login to GitHub and navigate to the repository you want to fork.
+Click the "Fork" button (found above the Settings button).
+You will now have a copy of the original repository in your GitHub account.
+*Once the project is cloned or forked, in order to run it locally, you'll need to follow these steps:
+
+Run the server: python3 manage.py runserver
+Stop the app once it's loaded: CTRL+C or ⌘+C
+Make any necessary migrations: python3 manage.py makemigrations
+Migrate the data to the database: python3 manage.py migrate
+Create a superuser: python3 manage.py createsuperuser
 
 ### Credit
 
