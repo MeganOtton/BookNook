@@ -256,7 +256,7 @@ I have throughout this project followed an agile workflow and methodology. I ite
 At the start of the project i set up a project board to keep track of user stories and my progress on them using the 'To do', 'In Progress' and the 'Done' columns. I created a list of user stories each assigned a 'MOSCOW' prioritisation (must have, should have, could have, won't have) tag. This is following the KanBan method of tracking progress for a better workflow management.
 
 You can see how the project has developed from looking at the original wireframes in the images below to the current deployed website.
-Here is my project board: <a href="[https://github.com/users/MeganOtton/projects/5]" target="_blank">| Here |</a>
+Here is my project board: <a href="(https://github.com/users/MeganOtton/projects/5/views/1)" target="_blank">| Here |</a>
 
 #### Index Page
 ![Index Page](Readme_files/WebPage_Final_SC/Index.png)
