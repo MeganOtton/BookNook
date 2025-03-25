@@ -464,29 +464,53 @@ The website was deployed to Heroku and can be found at the top.
 ### Heroku
 
 Heroku is a cloud platform that lets developers create, deploy, monitor and manage apps.
+
 You will need a Heroku log-in to be able to deploy a website to Heroku.
+
 Once you have logged into Heroku:
+
 Click 'New' > 'Create new app'
+
 Choose a unique name, choose your region and press 'Create app'
+
 Click on 'Settings' and then 'Reveal Config Vars'
+
 Add a key of 'DISABLE_COLLECTSTATIC' with a value of '1'.
+
 Add a key of 'DATABASE_URL' - the value will be the URL you were emailed when creating your database.
+
 Add a key of 'SECRET_KEY' - the value will be any random secret key (google 'secret key generator' and use it to generate a random string of numbers, letters and characters)
+
 In your terminal, type the code you will need to install project requirements:
+
 pip3 install gunicorn~=20.1
+
 pip3 install -r requirements.txt
+
 pip3 freeze --local > requirements.txt
+
 Create an 'env.py' file at the root directory which contains the following:
+
 import os
+
 os.environ["DATABASE_URL"]='CI database URL'
+
 os.environ["SECRET_KEY"]=" Your secret key"
+
 Create a file at the root directory called Procfile. In this file enter: "web: gunicorn my_project.wsgi" (without the quotes)
+
 In settings.py, set DEBUG to False.
+
 YOU SHOULD ALWAYS SET DEBUG TO FALSE BEFORE DEPLOYING FOR SECURITY
+
 Add ",'.herokuapp.com' " (without the double quotes) to the ALLOWED_HOSTS list in settings.py
+
 Add, commit and push your code.
+
 Go back to Heroku, click on the 'Deploy' tab.
+
 Connect your project to GitHub.
+
 Scroll to the bottom and click 'Deploy Branch' and your project will be deployed!
 
 ### Cloning
