@@ -32,10 +32,10 @@ function convertRatingToChoice(rating) {
 for (let button of editButtons) {
     button.addEventListener("click", (e) => {
         let commentId = e.target.getAttribute("data-comment_id");
+        let commentRating = e.target.getAttribute("data-rating");
 
         let commentElement = e.target.closest('.review');
         let commentTitle = safeGetInnerText(commentElement.querySelector(`#title${commentId}`));
-        let commentRating = safeGetInnerText(commentElement.querySelector('.User-Review-Rating')).split('/')[0];
         let commentText = safeGetInnerText(commentElement.querySelector(`#text${commentId}`));
 
         if (commentTitle_Value) commentTitle_Value.value = commentTitle;
