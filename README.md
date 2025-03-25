@@ -516,28 +516,44 @@ Scroll to the bottom and click 'Deploy Branch' and your project will be deployed
 ### Cloning
 
 To clone a GitHub repository:
+
 On GitHub.com, navigate to the repository you want to clone.
+
 Click the "Code" button (found above the list of files).
+
 Copy the URL for the repository.
+
 Open Git Bash or your chosen terminal.
+
 Navigate to the directory where you want to clone the repository.
+
 Type: git clone https://github.com/meganotton/Book-Nook.git
+
 Press Enter to create your local clone.
 
 
 ### Forking
 
 'Forking' the GitHub repository means creating a copy which can be viewed/changed without changing the original.
+
 To fork a GitHub repository:
+
 Login to GitHub and navigate to the repository you want to fork.
+
 Click the "Fork" button (found above the Settings button).
+
 You will now have a copy of the original repository in your GitHub account.
+
 *Once the project is cloned or forked, in order to run it locally, you'll need to follow these steps:
 
 Run the server: python3 manage.py runserver
+
 Stop the app once it's loaded: CTRL+C or ⌘+C
+
 Make any necessary migrations: python3 manage.py makemigrations
+
 Migrate the data to the database: python3 manage.py migrate
+
 Create a superuser: python3 manage.py createsuperuser
 
 ## Credit
