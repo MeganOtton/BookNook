@@ -28,8 +28,9 @@ The live project can found here: <a href="https://booknook-megan-9235b81ca921.he
 9. [AI Implementation](#ai-implementation)
 10. [Testing](#testing)
     - [Optimization](#optimization)
-11. [Deployment](#deployment)
-12. [Credit](#credit)
+11. [Database](#database)
+12. [Deployment](#deployment)
+13. [Credit](#credit)
 
 
 ## Project Outline
