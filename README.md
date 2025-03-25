@@ -6,7 +6,7 @@
 <h1 align="center"> Introduction: </h1>
 
 <p>
-The Book Nook is my last assessed portfolio project developed as part of the Code Institute Full Stack Software Developer Bootcamp, consisting of learning outcomes to utilise HTML5, CSS3, Bootstrap, Python & Django in order to fulfil the necessary requirements for the brief.
+The Book Nook is my last assessed portfolio project developed as part of the Code Institute Full Stack Software Developer Bootcamp, consisting of learning outcomes to utilise HTML5, CSS3, Bootstrap, Python, Django, Cloudinary & Heroku in order to fulfil the necessary requirements for the brief.
 
 The live project can found here: <a href="https://booknook-megan-9235b81ca921.herokuapp.com" target="_blank" rel="noopener noreferrer">| Live Link Here |</a>
 
