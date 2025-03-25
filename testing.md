@@ -19,14 +19,14 @@
 | Footer                      | Instagram Link              | On click goes to Instagram in new tab                                                           | Pass        |
 | Footer                      | X Link                      | On click goes to X in new tab                                                                   | Pass        |
 | Footer                      | Email Link                  | On click goes to Email app                                                                      | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \----------|
+| \--------------             | \--------------             | \--------------                                                                                 | \---------|
 | Sign Out Page               | Sign Out Button             | On click goes Signs User Out                                                                    | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \----------|
+| \--------------             | \--------------             | \--------------                                                                                 | \---------|
 | Sign In Page                | Username Input              | Allows User to input their Username                                                             | Pass        |
 | Sign In Page                | Password Input              | Allows User to input their Password                                                             | Pass        |
 | Sign In Page                | Remember Me Checkbox        | Allows User to select their info to be remembered                                               | Pass        |
 | Sign In Page                | Sign In Button              | Allows User to Sign into their account if all details = correct                                 | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \----------|
+| \--------------             | \--------------             | \--------------                                                                                 | \---------|
 | Sign Up User Page           | Sign In Redirect            | On click goes to Sign In webpage                                                                | Pass        |
 | Sign Up User Page           | Sign Up As Author Redirect  | On click goes to Sign Up Author webpage                                                         | Pass        |
 | Sign Up User Page           | Username Input              | Allows User to input their Username                                                             | Pass        |
