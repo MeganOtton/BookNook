@@ -332,10 +332,12 @@ This was what could be seen pre-optimazation in the Django debug tool, as you ca
 
 This is what I managed to optimize it down to. Instead of 578 queries i managed to simplify the index code to only run 6 queries with help of changing the way the users are set up. Instead of running all of those filters to customise the website on the shelves themselves instead I used a many to many field of all accessible books to the user that updates when certain conditions are met so i could effectvely bypass using all the front end filters that had to re-read all 60+ books and sort it per shelf. This got the load time from 20 Seconds down to 1/2 a second.
 
-##Deployment
+## Deployment
+
 The website was deployed to Heroku and can be found at the top.
 
-###Heroku
+### Heroku
+
 Heroku is a cloud platform that lets developers create, deploy, monitor and manage apps.
 You will need a Heroku log-in to be able to deploy a website to Heroku.
 Once you have logged into Heroku:
@@ -362,8 +364,8 @@ Go back to Heroku, click on the 'Deploy' tab.
 Connect your project to GitHub.
 Scroll to the bottom and click 'Deploy Branch' and your project will be deployed!
 
+### Cloning
 
-###Cloning
 To clone a GitHub repository:
 On GitHub.com, navigate to the repository you want to clone.
 Click the "Code" button (found above the list of files).
@@ -374,7 +376,8 @@ Type: git clone https://github.com/meganotton/Book-Nook.git
 Press Enter to create your local clone.
 
 
-###Forking
+### Forking
+
 'Forking' the GitHub repository means creating a copy which can be viewed/changed without changing the original.
 To fork a GitHub repository:
 Login to GitHub and navigate to the repository you want to fork.
