@@ -12,21 +12,21 @@
 | Navbar                      | Logout link                 | Only Shown if User Logged In + On click goes to Sign out webpage                                | Pass        |
 | Navbar                      | Register Link               | Only Shown if User Logged Out + On click goes to Sign up webpage                                | Pass        |
 | Navbar                      | Login Link                  | Only Shown if User Logged Out + On click goes to Sign in webpage                                | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Footer                      | Github Link                 | On click goes to Github in new tab                                                              | Pass        |
 | Footer                      | Youtube Link                | On click goes to Youtube in new tab                                                             | Pass        |
 | Footer                      | Facebook Link               | On click goes to Facebook in new tab                                                            | Pass        |
 | Footer                      | Instagram Link              | On click goes to Instagram in new tab                                                           | Pass        |
 | Footer                      | X Link                      | On click goes to X in new tab                                                                   | Pass        |
 | Footer                      | Email Link                  | On click goes to Email app                                                                      | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \----------|
 | Sign Out Page               | Sign Out Button             | On click goes Signs User Out                                                                    | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \----------|
 | Sign In Page                | Username Input              | Allows User to input their Username                                                             | Pass        |
 | Sign In Page                | Password Input              | Allows User to input their Password                                                             | Pass        |
 | Sign In Page                | Remember Me Checkbox        | Allows User to select their info to be remembered                                               | Pass        |
 | Sign In Page                | Sign In Button              | Allows User to Sign into their account if all details = correct                                 | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \----------|
 | Sign Up User Page           | Sign In Redirect            | On click goes to Sign In webpage                                                                | Pass        |
 | Sign Up User Page           | Sign Up As Author Redirect  | On click goes to Sign Up Author webpage                                                         | Pass        |
 | Sign Up User Page           | Username Input              | Allows User to input their Username                                                             | Pass        |
@@ -34,7 +34,7 @@
 | Sign Up User Page           | Password Input              | Allows User to input their Password                                                             | Pass        |
 | Sign Up User Page           | Password Input 2            | Allows User to input their Password Again to match First Password Input                         | Pass        |
 | Sign Up User Page           | Sign Up Button              | Allows User to Sign Up to an account if all details = correct                                   | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Sign Up Author Page         | Sign In Redirect            | On click goes to Sign In webpage                                                                | Pass        |
 | Sign Up Author Page         | Sign Up As Reader Redirect  | On click goes to Sign Up Reader webpage                                                         | Pass        |
 | Sign Up Author Page         | Username Input              | Allows User to input their Username                                                             | Pass        |
@@ -42,7 +42,7 @@
 | Sign Up Author Page         | Password Input              | Allows User to input their Password                                                             | Pass        |
 | Sign Up Author Page         | Password Input 2            | Allows User to input their Password Again to match First Password Input                         | Pass        |
 | Sign Up Author Page         | Sign Up Button              | Allows User to Sign Up to an account if all details = correct                                   | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Account Page                | Display Username            | Displays the Signed In Username                                                                 | Pass        |
 | Account Page                | Display Account Type        | Displays the Signed In Account Type (Child, Adult, Author)                                      | Pass        |
 | Account Page                | Favourite Genre             | Displays the Favourite Genre based on Users Purchases                                           | Pass        |
@@ -60,14 +60,14 @@
 | Account Page                | Your Reviews Dropdown       | On click toggles Dropdown                                                                       | Pass        |
 | Account Page                | Display Your Reviews        | Displays all Users Reviews                                                                      | Pass        |
 | Account Page                | View Review Button          | On click goes to Book Page And Scrolls to Review                                                | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Index Page                  | Generate Shelf and Title    | Generate All Shelves if Book In Genre and Put Genre in Title                                    | Pass        |
 | Index Page                  | Shelf Carousel              | If More than 8 Books on Desktop Arrows Appear and Clickable to scroll                           | Pass        |
 | Index Page                  | Shelf Carousel              | If More than 4 Books on Tablet Arrows Appear and Clickable to scroll                            | Pass        |
 | Index Page                  | Shelf Carousel              | If More than 3 Books on Mobile Arrows Appear and Clickable to scroll                            | Pass        |
 | Index Page                  | Display Book Image          | On click goes to Book Slug ID                                                                   | Pass        |
 | Index Page - Optimisation   | Changing Resolution         | Changing Resoultion Brings up Optimisation Message and Calculates new Amount of Books on Shelf  | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Search Page                 | Generate Shelf and Title    | Generate All Shelves if Book In Genre and Put Genre in Title                                    | Pass        |
 | Search Page                 | Shelf Carousel              | If More than 8 Books on Desktop Arrows Appear and Clickable to scroll                           | Pass        |
 | Search Page                 | Shelf Carousel              | If More than 4 Books on Tablet Arrows Appear and Clickable to scroll                            | Pass        |
@@ -75,7 +75,7 @@
 | Search Page                 | Display Book Image          | On click goes to Book Slug ID                                                                   | Pass        |
 | Search Page                 | Changing Resolution         | Changing Resoultion Brings up Optimisation Message and Calculates new Amount of Books on Shelf  | Pass        |
 | Search Page                 | Search Bar                  | Searching (Titles, Genres, Authors and Topic)                                                   | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Library Page                | Empty Library               | If No User Purchases Show Notification Empty                                                    | Pass        |
 | Library Page                | Generate Shelf and Title    | Generate Purchased Books Shelf if User has Purchases                                            | Pass        |
 | Library Page                | Shelf Carousel              | If More than 8 Books on Desktop Arrows Appear and Clickable to scroll                           | Pass        |
@@ -83,7 +83,7 @@
 | Library Page                | Shelf Carousel              | If More than 3 Books on Mobile Arrows Appear and Clickable to scroll                            | Pass        |
 | Library Page                | Display Book Image          | On click goes to Book Slug ID                                                                   | Pass        |
 | Library Page                | Changing Resolution         | Changing Resoultion Brings up Optimisation Message and Calculates new Amount of Books on Shelf  | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Book Page                   | Display Book Title          | Displays Book Title                                                                             | Pass        |
 | Book Page                   | Wishlist Button             | Adds to Wishlist and Notifies User / If already Purchased wont allow user to add to wishlist    | Pass        |
 | Book Page                   | Settings Button             | Opens Setting Window                                                                            | Pass        |
@@ -114,10 +114,10 @@
 | Book Page                   | Edit Button                 | On click opens Review Form and Inputs All Data                                                  | Pass        |
 | Book Page                   | Update Button               | On click submits the new Review Form only if all fields are filled                              | Pass        |
 | Book Page                   | Delete Button               | On click opens window showing close button or delete button, going back or deleting the comment | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
 | Book Page - Settings Window | Close Button                | On click closes settings window                                                                 | Pass        |
 | Book Page - Settings Window | Hide Book Eye               | On click toggles eye to be visible or hidden                                                    | Pass        |
 | Book Page - Settings Window | Generates All Hide Topics   | Displays all Topics of the book with eye icon to click                                          | Pass        |
 | Book Page - Settings Window | Hide Topic Eye              | On click toggles eye to be visible or hidden                                                    | Pass        |
 | Book Page - Settings Window | Save Changes Button         | On click submits the hide options + goes back to Book Page + Notifies User                      | Pass        |
-| \--------------             | \--------------             | \--------------                                                                                 | \---------- |
+| \--------------             | \--------------             | \--------------                                                                                 | \--------- |
