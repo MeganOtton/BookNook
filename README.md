@@ -335,6 +335,55 @@ This is what I managed to optimize it down to. Instead of 578 queries i managed 
 
 ### Validation
 
+#### HTML Validation
+##### Index Validation
+![Index Validation](Readme_files/Code_Validation/HTML/Index_Html_Validation.png)
+
+##### Book Page Validation
+![BookPage Validation](Readme_files/Code_Validation/HTML/Bookpage_Validation.png)
+
+##### Search Page Validation
+![Search Validation](Readme_files/Code_Validation/HTML/Search_Validation.png)
+
+##### My Library Validation
+![My Library Validation](Readme_files/Code_Validation/HTML/my_library_validation.png)
+Two warning occur on this page that ive hidden which is from two sections of code that have the attribute 'display: None;', These sections are code that works but didnt have the Django backend functionality so the code is a placeholder, so that i can finish off that section after the hand-in on my own seperate forked branch.
+
+##### Account Validation Admin
+![Admin Account Validation](Readme_files/Code_Validation/HTML/account_validation_reader.png)
+
+##### Account Validation Reader
+![Reader Account Validation](Readme_files/Code_Validation/HTML/Admin_Account_Validation.png)
+
+
+##### Sign In Page Validation
+![Sign In Validation](Readme_files/Code_Validation/HTML/sign_in_validation.png)
+
+##### Register Page Validation
+![Register Validation](Readme_files/Code_Validation/HTML/Register_Validation.png)
+
+#### CSS Validation
+![CSS Validation](Readme_files/Code_Validation/CSS/CSS_Validation.png)
+
+#### JavaScript Validation
+##### Character Count Script (Book About Section) Validation
+![JS Validation](Readme_files/Code_Validation/JS/Char_Count_JS_Validation.png)
+
+##### Comments Validation
+![JS Validation](Readme_files/Code_Validation/JS/Comments_JS_Validation.png)
+
+##### Device Detection Validation
+![JS Validation](Readme_files/Code_Validation/JS/Device_Detection_JS_Validation.png)
+
+##### Eye (Hide Books & Topics Model) Validation
+![JS Validation](Readme_files/Code_Validation/JS/eye_js_Validation.png)
+
+##### Hidden Book, Topics List Validation
+![JS Validation](Readme_files/Code_Validation/JS/Hidden_Account_JS_Validation.png)
+
+##### Index Inline Script Validation
+![JS Validation](Readme_files/Code_Validation/JS/Inline_Index_JS_Validation.png)
+
 ### Lighthouse
 
 ## Deployment
