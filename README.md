@@ -527,7 +527,7 @@ Open Git Bash or your chosen terminal.
 
 Navigate to the directory where you want to clone the repository.
 
-Type: git clone https://github.com/meganotton/Book-Nook.git
+Type: git clone https://github.com/MeganOtton/BookNook.git
 
 Press Enter to create your local clone.
 
