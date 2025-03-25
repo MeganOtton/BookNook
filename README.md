@@ -456,6 +456,19 @@ Two warning occur on this page that ive hidden which is from two sections of cod
 #### Desktop
 ![Desktop Lighthouse](Readme_files/Lighthouse/Desktop_Lighthouse.png)
 
+## Database
+- I used Code Institute's PostgreSQL database.
+
+### Database planning 
+- I created ERD Diagrams using DBDiagram.io to plan out the database models and fields.
+
+### Creating a database
+1. Navigate to [PostgreSQL]() from Code Institute.
+2. Enter your student email address in the input field provided.
+3. Click Submit.
+4. Wait while the database is created.
+5. Check your email.
+6. You now have a URL you can use to connect your app to your database.
 
 ## Deployment
 
