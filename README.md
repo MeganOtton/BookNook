@@ -317,6 +317,7 @@ More Information:
 In terms of how i used AI to optimize my workflow I found it very helpful to highlight segments of code and give very specific prompts to Claude or Copilot to optimize, debug or fix code that i created. Also when generating code from scratch i broke down what the function of the code down into small bulletpoints and was very precise in order to ensure the result of the ai generated code to be as close to its prompt as possible, I then went and tweaked and edited the code to refine it to match the purpose even further. When it came to Debugging with copilot, I found it useful to highlight the sections of code and ask Copilot to debug why this section had broken.  When it came to optimazation of the project it was also quite useful in the production and debugging of Media Queries in CSS. Following a similar method as above I found highlighting the specific section that was broken a good way of narrowing the AI's attention onto the specific task at hand.
 
 ## Testing
+- Please see [testing.md](testing.md) file for all testing.
 
 Testing was done throughout the project to ensure after each feature was added in that it worked effectively and did not break any previous features. 
 
