@@ -450,6 +450,13 @@ Two warning occur on this page that ive hidden which is from two sections of cod
 
 ### Lighthouse
 
+#### Mobile
+![Mobile Lighthouse](Readme_files/Lighthouse/Mobile_Lighthouse.png)
+
+#### Desktop
+![Desktop Lighthouse](Readme_files/Lighthouse/Desktop_Lighthouse.png)
+
+
 ## Deployment
 
 The website was deployed to Heroku and can be found at the top.
